@@ -2,6 +2,10 @@ package cmput301w16t15.shareo;
 
 import android.test.ActivityInstrumentationTestCase2;
 
+import thing.Game;
+import thing.Thing;
+import user.User;
+
 /**
  * Created by A on 2016-02-09.
  */
@@ -12,19 +16,19 @@ public class BiddingTest extends ActivityInstrumentationTestCase2 {
 
     public void testBidOnThing() {
         User bidder = new User("Frank");
-        Thing t1 = new Thing(Thing.AVAILABLE);
-        Thing t2 = new Thing(Thing.BIDDED);
-        Thing t3 = new Thing(Thing.BORROWED);
+        Thing t1 = new Game(Thing.Status.AVAILABLE);
+        Thing t2 = new Game(Thing.Status.BIDDED);
+        Thing t3 = new Game(Thing.Status.BORROWED);
 
         try {
-            t1.placeBid(bidder, 0.1);
+            t1.addBid(bidder, 0.1);
             assertTrue(t1.getStatus() == Thing.BIDDED);
             assertTrue(t1.getBidders().contains(bidder));
         } catch (ThingUnavailableException e) {
             fail();
         }
         try {
-            t2.placeBid(bidder, 0.2);
+            t2.addBid(bidder, 0.2);
             assertTrue(t2.getStatus() == Thing.BIDDED);
             assertTrue(t1.getBidders().contains(bidder));
         } catch (ThingUnavailableException e) {
@@ -32,7 +36,7 @@ public class BiddingTest extends ActivityInstrumentationTestCase2 {
         }
 
         try {
-            t1.placeBid(bidder, 0.1);
+            t1.addBid(bidder, 0.1);
             fail();
         } catch (ThingUnavailableException e) {
             assertTrue(t1.getStatus() == Thing.BORROWED);
@@ -43,11 +47,11 @@ public class BiddingTest extends ActivityInstrumentationTestCase2 {
     public void testViewUserBids() {
         User bidder = new User("Frank");
 
-        Thing t1 = new Thing(Thing.AVAILABLE);
-        Thing t2 = new Thing(Thing.BIDDED);
+        Thing t1 = new Game(Thing.AVAILABLE);
+        Thing t2 = new Game(Thing.BIDDED);
 
-        t1.placeBid(bidder, 0.1);
-        t2.placeBid(bidder, 0.2);
+        t1.addBid(bidder, 0.1);
+        t2.addBid(bidder, 0.2);
 
         assertTrue(t1.getBidders().contains(bidder));
         assertTrue(t2.getBidders().contains(bidder));
