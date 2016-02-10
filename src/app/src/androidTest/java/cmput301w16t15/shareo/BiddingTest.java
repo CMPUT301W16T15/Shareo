@@ -39,4 +39,19 @@ public class BiddingTest extends ActivityInstrumentationTestCase2 {
             assertFalse(t1.getBidders().contains(bidder));
         }
     }
+
+    public void testViewUserBids() {
+        User bidder = new User("Frank");
+
+        Thing t1 = new Thing(Thing.AVAILABLE);
+        Thing t2 = new Thing(Thing.BIDDED);
+
+        t1.placeBid(bidder, 0.1);
+        t2.placeBid(bidder, 0.2);
+
+        assertTrue(t1.getBidders().contains(bidder));
+        assertTrue(t2.getBidders().contains(bidder));
+        assertTrue(bidder.getCurrentBids().contains(t1));
+        assertTrue(bidder.getCurrentBids().contains(t2));
+    }
 }
