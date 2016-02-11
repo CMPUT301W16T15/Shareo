@@ -11,7 +11,10 @@ import user.User;
 public class ShareoData extends MVCModel {
     public ShareoData() {}
 
+    public void addUser(User user) {}
     public User getUserByName(String name) { return null; }
+
+    public void addThing(Thing thing) {}
     public List<Thing> getThingsByUser(User user) { return null; }
     public List<Thing> getThingsByDescrption(String[] keywords) { return null; }
 }

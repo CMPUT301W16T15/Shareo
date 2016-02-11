@@ -10,7 +10,7 @@ import user.User;
 public class Bid {
     public Bid(User user, Thing thing, int centsPerHour) {}
 
-    public Thing getThing() {
-        return null;
-    }
+    public Thing getThing() { return null; }
+    public User getUser() { return null; }
+    public int getBidAmount() { return 0; }
 }

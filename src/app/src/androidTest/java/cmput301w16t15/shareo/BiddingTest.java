@@ -30,9 +30,9 @@ public class BiddingTest extends ActivityInstrumentationTestCase2 {
         bidder1 = new User("Frank");
         bidder2 = new User("George");
 
-        Thing t1 = new Game(Thing.Status.AVAILABLE);
-        Thing t2 = new Game(Thing.Status.BIDDED);
-        Thing t3 = new Game(Thing.Status.BORROWED);
+        Thing t1 = new Game(Thing.Status.AVAILABLE, "Blank");
+        Thing t2 = new Game(Thing.Status.BIDDED, "Blank");
+        Thing t3 = new Game(Thing.Status.BORROWED, "Blank");
     }
 
     public void testBidOnThing() {
