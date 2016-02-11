@@ -10,7 +10,7 @@ import user.User;
 public abstract class Thing {
     public enum Status {AVAILABLE, BIDDED, BORROWED}
 
-    public Thing(Status status) {}
+    public Thing(Status status, String description) {}
 
     public Object getStatus() { return null; }
     public List<User> getBidders() { return null; }
