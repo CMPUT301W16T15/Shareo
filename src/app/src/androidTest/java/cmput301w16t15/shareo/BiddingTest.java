@@ -72,7 +72,7 @@ public class BiddingTest extends ActivityInstrumentationTestCase2 {
         }
 
         try {
-            t2.addBid(bidder1, 20));
+            t2.addBid(bidder1, 20);
         } catch (ThingUnavailableException e) {
             fail();
         }
