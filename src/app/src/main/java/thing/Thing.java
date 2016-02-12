@@ -12,7 +12,8 @@ public abstract class Thing {
 
     public Thing(Status status, String description) {}
 
-    public Object getStatus() { return null; }
+    public void setStatus(Status status) { }
+    public Status getStatus() { return null; }
     public List<User> getBidders() { return null; }
     public List<Bid> getBids() { return null; }
 

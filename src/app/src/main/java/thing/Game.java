@@ -5,7 +5,7 @@ package thing;
  */
 public class Game extends Thing {
     public Game(Status status, String description) {
-        super(status);
+        super(status, description);
     }
 
 }
