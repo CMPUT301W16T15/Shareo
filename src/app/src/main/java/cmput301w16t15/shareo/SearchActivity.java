@@ -6,15 +6,13 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
-import java.util.ArrayList;
+public class SearchActivity extends AppCompatActivity {
 
-public class MainActivity extends AppCompatActivity {
-
-    private static final String TAG = "TAGMain";
+    private static final String TAG = "TAGSearchActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,4 +85,5 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(savedInstanceState);
 
     }
+
 }
