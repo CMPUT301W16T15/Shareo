@@ -16,8 +16,10 @@ public class User {
     public List<Bid> getBids() { return null; }
     public void addOwnedGame(Thing game) {}
     public void addBorrowedGame(Thing game){ }
+    public void removeBorrowedGame(Thing game){ }
     public List<Thing> getBorrowedGames() { return null; }
     public List<Thing> getOwnedGames() { return null; }
     public void addThing(Thing thing) {}
+    public void setReturned(Thing thing) {}
     public List<Thing> getThings() { return null; }
 }

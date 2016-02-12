@@ -11,8 +11,9 @@ public abstract class Thing {
     public enum Status {AVAILABLE, BIDDED, BORROWED}
 
     public Thing(Status status, String description) {}
-
     public void setStatus(Status status) { }
+    public User getOwner() {return null; }
+    public User getBorrower() {return null; }
     public Status getStatus() { return null; }
     public List<User> getBidders() { return null; }
     public List<Bid> getBids() { return null; }

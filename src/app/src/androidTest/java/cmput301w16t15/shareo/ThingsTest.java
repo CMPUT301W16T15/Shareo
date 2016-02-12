@@ -11,6 +11,7 @@ import thing.GameSet;
  * Created by Larin on 2016/2/10.
  */
 
+/*
 public class ThingsTest extends ActivityInstrumentationTestCase2{
     public ThingsTest() {
         super(MainActivity.class);
@@ -42,3 +43,4 @@ public class ThingsTest extends ActivityInstrumentationTestCase2{
 
     }
 }
+*/
