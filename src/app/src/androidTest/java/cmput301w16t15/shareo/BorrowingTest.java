@@ -8,6 +8,7 @@ import java.util.List;
 import thing.Game;
 import thing.Thing;
 import thing.ThingUnavailableException;
+import user.NoGamesFoundException;
 import user.User;
 
 /**
@@ -48,7 +49,7 @@ public class BorrowingTest extends ActivityInstrumentationTestCase2 {
             borrower1.addBorrowedGame(t3);
             assertTrue(borrower1.getBorrowedGames().contains(t3));
         }
-        catch (Exception e)
+        catch (NoGamesFoundException e)
         {
            fail();
         }
@@ -57,7 +58,7 @@ public class BorrowingTest extends ActivityInstrumentationTestCase2 {
         {
             assertFalse(borrower1.getBorrowedGames().contains(t1));
         }
-        catch (Exception e)
+        catch (NoGamesFoundException e)
         {
             fail();
         }
@@ -73,7 +74,7 @@ public class BorrowingTest extends ActivityInstrumentationTestCase2 {
             assertTrue(borrower2.getBorrowedGames().contains(t3));
         }
 
-        catch (Exception e)
+        catch (NoGamesFoundException e)
         {
             fail();
         }
@@ -86,7 +87,7 @@ public class BorrowingTest extends ActivityInstrumentationTestCase2 {
             borrower1.addBorrowedGame(t1);
             assertTrue(owner1.getOwnedGames().contains(t1));
             assertTrue(borrower1.getBorrowedGames().contains(t1));
-        } catch (Exception e)
+        } catch (NoGamesFoundException e)
         {
             fail();
         }
@@ -95,7 +96,7 @@ public class BorrowingTest extends ActivityInstrumentationTestCase2 {
         {
             assertFalse(owner1.getOwnedGames().contains(t2));
         }
-        catch (Exception e)
+        catch (NoGamesFoundException e)
         {
             fail();
         }
@@ -113,7 +114,7 @@ public class BorrowingTest extends ActivityInstrumentationTestCase2 {
             assertTrue(borrower1.getBorrowedGames().contains(t2));
             assertTrue(borrower2.getBorrowedGames().contains(t3));
         }
-        catch (Exception e)
+        catch (NoGamesFoundException e)
         {
             fail();
         }

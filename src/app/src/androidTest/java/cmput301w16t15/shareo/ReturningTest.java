@@ -6,6 +6,7 @@ import java.util.List;
 
 import thing.Game;
 import thing.Thing;
+import user.NoGamesFoundException;
 import user.User;
 
 /**
@@ -53,7 +54,7 @@ public class ReturningTest extends ActivityInstrumentationTestCase2 {
 
             assertTrue(t1.getStatus() == Thing.Status.AVAILABLE);
         }
-        catch (Exception e)
+        catch (NoGamesFoundException e)
         {
             fail();
         }
@@ -76,7 +77,7 @@ public class ReturningTest extends ActivityInstrumentationTestCase2 {
             assertTrue(t3.getStatus() == Thing.Status.AVAILABLE);
             assertTrue(t2.getStatus() == Thing.Status.AVAILABLE);
         }
-        catch (Exception e)
+        catch (NoGamesFoundException e)
         {
             fail();
         }

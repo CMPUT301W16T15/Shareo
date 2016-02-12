@@ -4,8 +4,11 @@ import android.test.ActivityInstrumentationTestCase2;
 
 import thing.Bid;
 import thing.Game;
+import thing.InvalidSearchException;
 import thing.Search;
 import thing.Thing;
+import thing.ThingUnavailableException;
+import user.NoGamesFoundException;
 import user.User;
 
 /**
@@ -71,7 +74,7 @@ public class SearchTest extends ActivityInstrumentationTestCase2 {
             s1 = new Search(Thing.getAllUnborrowedThings(Thing.getAllThings()));
             assertTrue(s1.getCurrentThings().size() == 0);
         }
-        catch (Exception e)
+        catch (InvalidSearchException e)
         {
             fail();
         }
@@ -86,7 +89,7 @@ public class SearchTest extends ActivityInstrumentationTestCase2 {
             assertFalse(s1.getCurrentThings().contains(t2));
         }
 
-        catch (Exception e)
+        catch (InvalidSearchException e)
         {
             fail();
         }
@@ -102,14 +105,22 @@ public class SearchTest extends ActivityInstrumentationTestCase2 {
             owner1.addOwnedGame(t3);
             owner1.addOwnedGame(t4);
 
-            t1.addBid(bidder1, 10);
+            try
+            {
+                t1.addBid(bidder1, 10);
+            }
+
+            catch (ThingUnavailableException e)
+                {
+                     fail();
+                }
             s1 = new Search();
             s1.setCurrentBids(owner1.getBids());
             assertTrue(s1.bidFilterByDescription("automatically").contains(b1));
             assertFalse(s1.bidFilterByDescription("automatically").contains(b2));
 
         }
-        catch (Exception e)
+        catch (InvalidSearchException e)
         {
             fail();
         }
@@ -124,7 +135,7 @@ public class SearchTest extends ActivityInstrumentationTestCase2 {
             assertTrue(s1.getCurrentBids().contains(b2));
         }
 
-        catch (Exception e)
+        catch (InvalidSearchException e)
         {
             fail();
         }
@@ -138,11 +149,31 @@ public class SearchTest extends ActivityInstrumentationTestCase2 {
         try
         {
             borrower1.addBorrowedGame((t1));
-            s1 = new Search(borrower1.getBorrowedGames());
+            try
+            {
+                s1 = new Search(borrower1.getBorrowedGames());
+            }
+            catch (NoGamesFoundException e)
+            {
+                fail();
+            }
             assertTrue(s1.filterByKeyword("automatically").contains(t1));
         }
 
-        catch(Exception e)
+        catch(InvalidSearchException e)
+        {
+            fail();
+        }
+    }
+
+    public void testNoSearchCriteria()
+    {
+        try {
+            borrower1.addBorrowedGame((t1));
+            s1 = new Search();
+            assertTrue(s1.filterByKeyword("automatically").contains(t1));
+        }
+        catch(InvalidSearchException e)
         {
             fail();
         }
