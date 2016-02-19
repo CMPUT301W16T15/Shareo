@@ -1,4 +1,15 @@
 <resources>
     <string name="app_name">Shareo</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_profile">ProfileActivity</string>
+    <string name="title_activity_profile_info">ProfileInfoActivity</string>
+    <string name="title_activity_my_owned_things">MyOwnedThingsActivity</string>
+    <string name="title_activity_my_borrowed_things">MyBorrowedThingsActivity</string>
+    <string name="title_activity_add_game">AddGameActivity</string>
+    <string name="title_activity_edit_game">EditGameActivity</string>
+    <string name="title_activity_game_information">GameInformationActivity</string>
+    <string name="title_activity_my_bids">MyBidsActivity</string>
+    <string name="title_activity_selling_bids">SellingBidsActivity</string>
+    <string name="title_activity_search">SearchActivity</string>
 </resources>

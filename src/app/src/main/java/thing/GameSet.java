@@ -44,7 +44,7 @@ public class GameSet {
         return PricePerDay;
     }
 
-    public void setPricePerDay(float pricePerDay) {
+    public void setPricePerDay(double pricePerDay) {
         this.PricePerDay = PricePerDay;
     }
 }
