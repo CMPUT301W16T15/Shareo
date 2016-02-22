@@ -41,10 +41,10 @@ public class SearchTest extends ActivityInstrumentationTestCase2 {
         bidder1 = new User("Joey");
         bidder2 = new User("Johnny");
 
-        t1 = new Game(Thing.Status.AVAILABLE, "These words will become keywords automatically.");
-        t2 = new Game(Thing.Status.BIDDED, "These are all keywords");
-        t3 = new Game(Thing.Status.BORROWED, "Board Game");
-        t4 = new Game(Thing.Status.AVAILABLE, "Card Game");
+        t1 = new Game("These words will become keywords automatically.", Thing.Status.AVAILABLE);
+        t2 = new Game("These are all keywords", Thing.Status.BIDDED);
+        t3 = new Game("Board Game", Thing.Status.BORROWED);
+        t4 = new Game("Card Game", Thing.Status.AVAILABLE);
 
         b1 = new Bid(borrower1, t1, 20);
         b2 = new Bid(borrower2, t4,  30);
@@ -54,8 +54,8 @@ public class SearchTest extends ActivityInstrumentationTestCase2 {
     public void testsearchForUnborrowedGames() {
         initializeTestData();
         try {
-            owner1.addOwnedGame((t1));
-            owner1.addOwnedGame((t4));
+            owner1.addOwnedThing((t1));
+            owner1.addOwnedThing((t4));
             s1 = new Search(Thing.getAllUnborrowedThings(Thing.getAllThings()));
             assertTrue(s1.filterByKeyword("automatically").contains(t1));
             assertTrue(s1.filterByKeyword("automatically").contains(t4));
@@ -69,8 +69,8 @@ public class SearchTest extends ActivityInstrumentationTestCase2 {
 
         try
         {
-            owner1.addOwnedGame(t3);
-            owner1.addOwnedGame(t2);
+            owner1.addOwnedThing(t3);
+            owner1.addOwnedThing(t2);
             s1 = new Search(Thing.getAllUnborrowedThings(Thing.getAllThings()));
             assertTrue(s1.getCurrentThings().size() == 0);
         }
@@ -81,8 +81,8 @@ public class SearchTest extends ActivityInstrumentationTestCase2 {
 
         try
         {
-            owner1.addOwnedGame((t1));
-            owner1.addOwnedGame((t4));
+            owner1.addOwnedThing((t1));
+            owner1.addOwnedThing((t4));
             s1 = new Search(Thing.getAllUnborrowedThings(Thing.getAllThings()));
             assertTrue(s1.getCurrentThings().contains(t1));
             assertTrue(s1.getCurrentThings().contains(t4));
@@ -100,10 +100,10 @@ public class SearchTest extends ActivityInstrumentationTestCase2 {
         initializeTestData();
         try
         {
-            owner1.addOwnedGame(t1);
-            owner1.addOwnedGame(t2);
-            owner1.addOwnedGame(t3);
-            owner1.addOwnedGame(t4);
+            owner1.addOwnedThing(t1);
+            owner1.addOwnedThing(t2);
+            owner1.addOwnedThing(t3);
+            owner1.addOwnedThing(t4);
 
             try
             {
@@ -127,8 +127,8 @@ public class SearchTest extends ActivityInstrumentationTestCase2 {
 
         try
         {
-            owner1.addOwnedGame((t1));
-            owner1.addOwnedGame((t4));
+            owner1.addOwnedThing((t1));
+            owner1.addOwnedThing((t4));
             s1 = new Search();
             s1.setCurrentBids(owner1.getBids());
             assertTrue(s1.getCurrentBids().contains(b1));
@@ -148,10 +148,10 @@ public class SearchTest extends ActivityInstrumentationTestCase2 {
         initializeTestData();
         try
         {
-            borrower1.addBorrowedGame((t1));
+            borrower1.addBorrowedThing((t1));
             try
             {
-                s1 = new Search(borrower1.getBorrowedGames());
+                s1 = new Search(borrower1.getBorrowedThings());
             }
             catch (NoGamesFoundException e)
             {
@@ -169,7 +169,7 @@ public class SearchTest extends ActivityInstrumentationTestCase2 {
     public void testNoSearchCriteria()
     {
         try {
-            borrower1.addBorrowedGame((t1));
+            borrower1.addBorrowedThing((t1));
             s1 = new Search();
             assertTrue(s1.filterByKeyword("automatically").contains(t1));
         }

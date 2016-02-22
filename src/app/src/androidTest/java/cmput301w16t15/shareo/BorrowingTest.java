@@ -2,12 +2,10 @@ package cmput301w16t15.shareo;
 
 import android.test.ActivityInstrumentationTestCase2;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import thing.Game;
 import thing.Thing;
-import thing.ThingUnavailableException;
 import user.NoGamesFoundException;
 import user.User;
 
@@ -35,9 +33,9 @@ public class BorrowingTest extends ActivityInstrumentationTestCase2 {
         owner1 = new User("Michael");
         owner2 = new User("Teddy");
 
-        t1 = new Game(Thing.Status.AVAILABLE, "Blank");
-        t2 = new Game(Thing.Status.BIDDED, "Blank");
-        t3 = new Game(Thing.Status.BORROWED, "Blank");
+        t1 = new Game("Blank", Thing.Status.AVAILABLE);
+        t2 = new Game("Blank", Thing.Status.BIDDED);
+        t3 = new Game("Blank", Thing.Status.BORROWED);
     }
 
     public void testViewBorrowedList()
@@ -46,8 +44,8 @@ public class BorrowingTest extends ActivityInstrumentationTestCase2 {
         {
             initializeTestData();
 
-            borrower1.addBorrowedGame(t3);
-            assertTrue(borrower1.getBorrowedGames().contains(t3));
+            borrower1.addBorrowedThing(t3);
+            assertTrue(borrower1.getBorrowedThings().contains(t3));
         }
         catch (NoGamesFoundException e)
         {
@@ -56,7 +54,7 @@ public class BorrowingTest extends ActivityInstrumentationTestCase2 {
 
         try
         {
-            assertFalse(borrower1.getBorrowedGames().contains(t1));
+            assertFalse(borrower1.getBorrowedThings().contains(t1));
         }
         catch (NoGamesFoundException e)
         {
@@ -65,13 +63,13 @@ public class BorrowingTest extends ActivityInstrumentationTestCase2 {
 
         try
         {
-            borrower2.addBorrowedGame(t1);
-            borrower2.addBorrowedGame(t2);
-            borrower2.addBorrowedGame(t3);
+            borrower2.addBorrowedThing(t1);
+            borrower2.addBorrowedThing(t2);
+            borrower2.addBorrowedThing(t3);
 
-            assertTrue(borrower2.getBorrowedGames().contains(t1));
-            assertTrue(borrower2.getBorrowedGames().contains(t2));
-            assertTrue(borrower2.getBorrowedGames().contains(t3));
+            assertTrue(borrower2.getBorrowedThings().contains(t1));
+            assertTrue(borrower2.getBorrowedThings().contains(t2));
+            assertTrue(borrower2.getBorrowedThings().contains(t3));
         }
 
         catch (NoGamesFoundException e)
@@ -83,10 +81,10 @@ public class BorrowingTest extends ActivityInstrumentationTestCase2 {
     public void testviewMyGamesBorrowedList() {
         initializeTestData();
         try {
-            owner1.addOwnedGame(t1);
-            borrower1.addBorrowedGame(t1);
-            assertTrue(owner1.getOwnedGames().contains(t1));
-            assertTrue(borrower1.getBorrowedGames().contains(t1));
+            owner1.addOwnedThing(t1);
+            borrower1.addBorrowedThing(t1);
+            assertTrue(owner1.getOwnedThings().contains(t1));
+            assertTrue(borrower1.getBorrowedThings().contains(t1));
         } catch (NoGamesFoundException e)
         {
             fail();
@@ -94,7 +92,7 @@ public class BorrowingTest extends ActivityInstrumentationTestCase2 {
 
         try
         {
-            assertFalse(owner1.getOwnedGames().contains(t2));
+            assertFalse(owner1.getOwnedThings().contains(t2));
         }
         catch (NoGamesFoundException e)
         {
@@ -103,16 +101,16 @@ public class BorrowingTest extends ActivityInstrumentationTestCase2 {
 
         try
         {
-            owner1.addOwnedGame(t2);
-            owner1.addOwnedGame(t3);
-            borrower1.addBorrowedGame(t2);
-            borrower2.addBorrowedGame(t3);
+            owner1.addOwnedThing(t2);
+            owner1.addOwnedThing(t3);
+            borrower1.addBorrowedThing(t2);
+            borrower2.addBorrowedThing(t3);
 
-            assertTrue(owner1.getOwnedGames().contains(t2));
-            assertTrue(owner2.getOwnedGames().contains(t3));
+            assertTrue(owner1.getOwnedThings().contains(t2));
+            assertTrue(owner2.getOwnedThings().contains(t3));
 
-            assertTrue(borrower1.getBorrowedGames().contains(t2));
-            assertTrue(borrower2.getBorrowedGames().contains(t3));
+            assertTrue(borrower1.getBorrowedThings().contains(t2));
+            assertTrue(borrower2.getBorrowedThings().contains(t3));
         }
         catch (NoGamesFoundException e)
         {

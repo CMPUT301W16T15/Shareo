@@ -3,7 +3,6 @@ package cmput301w16t15.shareo;
 import android.test.ActivityInstrumentationTestCase2;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import thing.Bid;
@@ -30,9 +29,9 @@ public class BiddingTest extends ActivityInstrumentationTestCase2 {
         bidder1 = new User("Frank");
         bidder2 = new User("George");
 
-        Thing t1 = new Game(Thing.Status.AVAILABLE, "Blank");
-        Thing t2 = new Game(Thing.Status.BIDDED, "Blank");
-        Thing t3 = new Game(Thing.Status.BORROWED, "Blank");
+        Thing t1 = new Game("Blank", Thing.Status.AVAILABLE);
+        Thing t2 = new Game("Blank", Thing.Status.BIDDED);
+        Thing t3 = new Game("Blank", Thing.Status.BORROWED);
     }
 
     public void testBidOnThing() {

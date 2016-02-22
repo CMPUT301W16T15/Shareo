@@ -33,10 +33,10 @@ public class ReturningTest extends ActivityInstrumentationTestCase2 {
         owner1 = new User("Michael");
         owner2 = new User("Teddy");
 
-        t1 = new Game(Thing.Status.AVAILABLE, "Blank");
-        t2 = new Game(Thing.Status.BIDDED, "Blank");
-        t3 = new Game(Thing.Status.BORROWED, "Blank");
-        t4 = new Game(Thing.Status.AVAILABLE, "Blank");
+        t1 = new Game("Blank", Thing.Status.AVAILABLE);
+        t2 = new Game("Blank", Thing.Status.BIDDED);
+        t3 = new Game("Blank", Thing.Status.BORROWED);
+        t4 = new Game("Blank", Thing.Status.AVAILABLE);
     }
 
     public void testreturnToAvailable()
@@ -44,13 +44,13 @@ public class ReturningTest extends ActivityInstrumentationTestCase2 {
         initializeTestData();
         try
         {
-            owner1.addOwnedGame(t1);
-            borrower1.addBorrowedGame(t1);
+            owner1.addOwnedThing(t1);
+            borrower1.addBorrowedThing(t1);
             assertTrue(t1.getStatus() == Thing.Status.BORROWED);
-            borrower1.removeBorrowedGame(t1);
-            assertFalse(borrower1.getBorrowedGames().contains(t1));
+            borrower1.removeBorrowedThing(t1);
+            assertFalse(borrower1.getBorrowedThings().contains(t1));
             owner1.setReturned(t1);
-            assertTrue(owner1.getOwnedGames().contains(t1));
+            assertTrue(owner1.getOwnedThings().contains(t1));
 
             assertTrue(t1.getStatus() == Thing.Status.AVAILABLE);
         }
@@ -61,17 +61,17 @@ public class ReturningTest extends ActivityInstrumentationTestCase2 {
 
         try
         {
-            owner1.addOwnedGame(t3);
-            owner1.addOwnedGame(t2);
-            borrower1.addBorrowedGame(t3);
+            owner1.addOwnedThing(t3);
+            owner1.addOwnedThing(t2);
+            borrower1.addBorrowedThing(t3);
             assertTrue(t3.getStatus() == Thing.Status.BORROWED);
-            borrower2.addBorrowedGame(t2);
+            borrower2.addBorrowedThing(t2);
             assertTrue(t2.getStatus() == Thing.Status.BORROWED);
-            borrower1.removeBorrowedGame(t3);
-            assertFalse(borrower1.getBorrowedGames().contains(t3));
-            assertTrue(borrower2.getBorrowedGames().contains(t2));
-            borrower2.removeBorrowedGame(t3);
-            assertTrue(owner1.getOwnedGames().contains(t3));
+            borrower1.removeBorrowedThing(t3);
+            assertFalse(borrower1.getBorrowedThings().contains(t3));
+            assertTrue(borrower2.getBorrowedThings().contains(t2));
+            borrower2.removeBorrowedThing(t3);
+            assertTrue(owner1.getOwnedThings().contains(t3));
             owner1.setReturned(t3);
             owner1.setReturned(t2);
             assertTrue(t3.getStatus() == Thing.Status.AVAILABLE);
