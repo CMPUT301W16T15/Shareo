@@ -6,7 +6,6 @@ import java.util.List;
 
 import thing.Game;
 import thing.Thing;
-import user.NoGamesFoundException;
 import user.User;
 
 /**
@@ -42,45 +41,31 @@ public class ReturningTest extends ActivityInstrumentationTestCase2 {
     public void testreturnToAvailable()
     {
         initializeTestData();
-        try
-        {
-            owner1.addOwnedThing(t1);
-            borrower1.addBorrowedThing(t1);
-            assertTrue(t1.getStatus() == Thing.Status.BORROWED);
-            borrower1.removeBorrowedThing(t1);
-            assertFalse(borrower1.getBorrowedThings().contains(t1));
-            owner1.setReturned(t1);
-            assertTrue(owner1.getOwnedThings().contains(t1));
+        owner1.addOwnedThing(t1);
+        borrower1.addBorrowedThing(t1);
+        assertTrue(t1.getStatus() == Thing.Status.BORROWED);
+        borrower1.removeBorrowedThing(t1);
+        assertFalse(borrower1.getBorrowedThings().contains(t1));
+        owner1.setReturned(t1);
+        assertTrue(owner1.getOwnedThings().contains(t1));
 
-            assertTrue(t1.getStatus() == Thing.Status.AVAILABLE);
-        }
-        catch (NoGamesFoundException e)
-        {
-            fail();
-        }
+        assertTrue(t1.getStatus() == Thing.Status.AVAILABLE);
 
-        try
-        {
-            owner1.addOwnedThing(t3);
-            owner1.addOwnedThing(t2);
-            borrower1.addBorrowedThing(t3);
-            assertTrue(t3.getStatus() == Thing.Status.BORROWED);
-            borrower2.addBorrowedThing(t2);
-            assertTrue(t2.getStatus() == Thing.Status.BORROWED);
-            borrower1.removeBorrowedThing(t3);
-            assertFalse(borrower1.getBorrowedThings().contains(t3));
-            assertTrue(borrower2.getBorrowedThings().contains(t2));
-            borrower2.removeBorrowedThing(t3);
-            assertTrue(owner1.getOwnedThings().contains(t3));
-            owner1.setReturned(t3);
-            owner1.setReturned(t2);
-            assertTrue(t3.getStatus() == Thing.Status.AVAILABLE);
-            assertTrue(t2.getStatus() == Thing.Status.AVAILABLE);
-        }
-        catch (NoGamesFoundException e)
-        {
-            fail();
-        }
+        owner1.addOwnedThing(t3);
+        owner1.addOwnedThing(t2);
+        borrower1.addBorrowedThing(t3);
+        assertTrue(t3.getStatus() == Thing.Status.BORROWED);
+        borrower2.addBorrowedThing(t2);
+        assertTrue(t2.getStatus() == Thing.Status.BORROWED);
+        borrower1.removeBorrowedThing(t3);
+        assertFalse(borrower1.getBorrowedThings().contains(t3));
+        assertTrue(borrower2.getBorrowedThings().contains(t2));
+        borrower2.removeBorrowedThing(t3);
+        assertTrue(owner1.getOwnedThings().contains(t3));
+        owner1.setReturned(t3);
+        owner1.setReturned(t2);
+        assertTrue(t3.getStatus() == Thing.Status.AVAILABLE);
+        assertTrue(t2.getStatus() == Thing.Status.AVAILABLE);
 
         try
         {

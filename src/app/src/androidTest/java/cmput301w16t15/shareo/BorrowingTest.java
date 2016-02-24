@@ -6,7 +6,6 @@ import java.util.List;
 
 import thing.Game;
 import thing.Thing;
-import user.NoGamesFoundException;
 import user.User;
 
 /**
@@ -40,82 +39,41 @@ public class BorrowingTest extends ActivityInstrumentationTestCase2 {
 
     public void testViewBorrowedList()
     {
-        try
-        {
-            initializeTestData();
+        initializeTestData();
 
-            borrower1.addBorrowedThing(t3);
-            assertTrue(borrower1.getBorrowedThings().contains(t3));
-        }
-        catch (NoGamesFoundException e)
-        {
-           fail();
-        }
+        borrower1.addBorrowedThing(t3);
+        assertTrue(borrower1.getBorrowedThings().contains(t3));
 
-        try
-        {
-            assertFalse(borrower1.getBorrowedThings().contains(t1));
-        }
-        catch (NoGamesFoundException e)
-        {
-            fail();
-        }
+        assertFalse(borrower1.getBorrowedThings().contains(t1));
 
-        try
-        {
-            borrower2.addBorrowedThing(t1);
-            borrower2.addBorrowedThing(t2);
-            borrower2.addBorrowedThing(t3);
+        borrower2.addBorrowedThing(t1);
+        borrower2.addBorrowedThing(t2);
+        borrower2.addBorrowedThing(t3);
 
-            assertTrue(borrower2.getBorrowedThings().contains(t1));
-            assertTrue(borrower2.getBorrowedThings().contains(t2));
-            assertTrue(borrower2.getBorrowedThings().contains(t3));
-        }
-
-        catch (NoGamesFoundException e)
-        {
-            fail();
-        }
+        assertTrue(borrower2.getBorrowedThings().contains(t1));
+        assertTrue(borrower2.getBorrowedThings().contains(t2));
+        assertTrue(borrower2.getBorrowedThings().contains(t3));
     }
 
     public void testviewMyGamesBorrowedList() {
         initializeTestData();
-        try {
-            owner1.addOwnedThing(t1);
-            borrower1.addBorrowedThing(t1);
-            assertTrue(owner1.getOwnedThings().contains(t1));
-            assertTrue(borrower1.getBorrowedThings().contains(t1));
-        } catch (NoGamesFoundException e)
-        {
-            fail();
-        }
+        owner1.addOwnedThing(t1);
+        borrower1.addBorrowedThing(t1);
+        assertTrue(owner1.getOwnedThings().contains(t1));
+        assertTrue(borrower1.getBorrowedThings().contains(t1));
 
-        try
-        {
-            assertFalse(owner1.getOwnedThings().contains(t2));
-        }
-        catch (NoGamesFoundException e)
-        {
-            fail();
-        }
+        assertFalse(owner1.getOwnedThings().contains(t2));
 
-        try
-        {
-            owner1.addOwnedThing(t2);
-            owner1.addOwnedThing(t3);
-            borrower1.addBorrowedThing(t2);
-            borrower2.addBorrowedThing(t3);
+        owner1.addOwnedThing(t2);
+        owner1.addOwnedThing(t3);
+        borrower1.addBorrowedThing(t2);
+        borrower2.addBorrowedThing(t3);
 
-            assertTrue(owner1.getOwnedThings().contains(t2));
-            assertTrue(owner2.getOwnedThings().contains(t3));
+        assertTrue(owner1.getOwnedThings().contains(t2));
+        assertTrue(owner2.getOwnedThings().contains(t3));
 
-            assertTrue(borrower1.getBorrowedThings().contains(t2));
-            assertTrue(borrower2.getBorrowedThings().contains(t3));
-        }
-        catch (NoGamesFoundException e)
-        {
-            fail();
-        }
+        assertTrue(borrower1.getBorrowedThings().contains(t2));
+        assertTrue(borrower2.getBorrowedThings().contains(t3));
     }
 
 

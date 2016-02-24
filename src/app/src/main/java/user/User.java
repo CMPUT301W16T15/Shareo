@@ -38,13 +38,17 @@ public class User {
         borrowed.remove(thing);
     }
 
-    public List<Thing> getBorrowedThings() throws NoGamesFoundException {
+    public List<Thing> getBorrowedThings() {
         return borrowed;
     }
 
-    public List<Thing> getOwnedThings() throws NoGamesFoundException {
+    public List<Thing> getOwnedThings() {
         return owned;
     }
 
     public void setReturned(Thing thing) {}
+
+    public boolean removeOwnedThing(Thing thing) {
+        return owned.remove(thing);
+    }
 }

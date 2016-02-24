@@ -8,7 +8,6 @@ import thing.InvalidSearchException;
 import thing.Search;
 import thing.Thing;
 import thing.ThingUnavailableException;
-import user.NoGamesFoundException;
 import user.User;
 
 /**
@@ -149,14 +148,7 @@ public class SearchTest extends ActivityInstrumentationTestCase2 {
         try
         {
             borrower1.addBorrowedThing((t1));
-            try
-            {
-                s1 = new Search(borrower1.getBorrowedThings());
-            }
-            catch (NoGamesFoundException e)
-            {
-                fail();
-            }
+            s1 = new Search(borrower1.getBorrowedThings());
             assertTrue(s1.filterByKeyword("automatically").contains(t1));
         }
 

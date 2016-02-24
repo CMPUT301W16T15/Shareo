@@ -38,10 +38,23 @@ public abstract class Thing {
         this.status = status;
     }
 
+    /**
+     * Set the owner of the Thing, and modify the {@link User} that previously owned the thing.
+     * The new user will be modified to own this Thing, and this Thing will now know its new owner.
+     * @param user new owner.
+     */
     public void setOwner(User user) {
+        if (this.owner != null) {
+            owner.removeOwnedThing(this);
+        }
         this.owner = user;
+        owner.addOwnedThing(this);
     }
 
+    /**
+     * 
+     * @param user
+     */
     public void setBorrower(User user) {
         this.borrower = user;
     }
