@@ -37,7 +37,11 @@ public class Bid {
             e.printStackTrace();
         }
 
-        thing.addBid(this);
+        try {
+            thing.addBid(this);
+        } catch (BidNotMadeForThingException e) {
+            e.printStackTrace();
+        }
     }
 
     public Thing getThing() { return biddee; }

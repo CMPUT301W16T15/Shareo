@@ -88,7 +88,15 @@ public abstract class Thing {
         Bid bid = new Bid(bidder, this, centsPerHour);
     }
 
-    public void addBid(Bid bid) {
-        bids.add(bid);
+    public void addBid(Bid bid) throws BidNotMadeForThingException {
+        // make sure that the bid is for this thing
+        if (!bid.getThing().equals(this)) {
+            throw new BidNotMadeForThingException();
+        }
+
+        // protect from duplicates
+        if (!bids.contains(bid)) {
+            bids.add(bid);
+        }
     }
 }
