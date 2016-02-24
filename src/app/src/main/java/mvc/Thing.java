@@ -44,13 +44,13 @@ public abstract class Thing {
     public void setOwner(User user) {
         // remove from old owner, if not null
         if (this.owner != null) {
-            owner.removeOwnedThing(this);
+            owner.removeOwnedThingSimple(this);
         }
 
         // add to new owner, if not null
         this.owner = user;
         if (this.owner != null) {
-            owner.addOwnedThing(this);
+            owner.addOwnedThingSimple(this);
         }
     }
 
@@ -73,13 +73,13 @@ public abstract class Thing {
     public void setBorrower(User user) {
         // remove old borrower, if not null
         if (borrower != null) {
-            borrower.removeBorrowedThing(this);
+            borrower.removeBorrowedThingSimple(this);
         }
 
         // add new borrower, if not null
         borrower = user;
         if (borrower != null) {
-            borrower.addBorrowedThing(this);
+            borrower.addBorrowedThingSimple(this);
         }
     }
 

@@ -47,13 +47,35 @@ public class User {
         owned.add(thing);
     }
 
+    protected void addOwnedThingSimple(Thing thing) {
+        owned.add(thing);
+    }
+
+    public boolean removeOwnedThing(Thing thing) {
+        thing.setOwnerSimple(null);
+        return owned.remove(thing);
+    }
+
+    protected boolean removeOwnedThingSimple(Thing thing) {
+        return owned.remove(thing);
+    }
+
     public void addBorrowedThing(Thing thing){
         thing.setBorrowerSimple(this);
         borrowed.add(thing);
     }
 
-    public void removeBorrowedThing(Thing thing){
-        borrowed.remove(thing);
+    protected void addBorrowedThingSimple(Thing thing) {
+        borrowed.add(thing);
+    }
+
+    public boolean removeBorrowedThing(Thing thing) {
+        thing.setBorrowerSimple(null);
+        return borrowed.remove(thing);
+    }
+
+    protected boolean removeBorrowedThingSimple(Thing thing) {
+        return borrowed.remove(thing);
     }
 
     public List<Thing> getBorrowedThings() {
@@ -65,8 +87,4 @@ public class User {
     }
 
     public void setReturned(Thing thing) {}
-
-    public boolean removeOwnedThing(Thing thing) {
-        return owned.remove(thing);
-    }
 }
