@@ -4,19 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import thing.Bid;
-import thing.Game;
 import thing.Thing;
-import thing.ThingUnavailableException;
 
 /**
  * Created by A on 2016-02-10.
  */
 public class User {
-    String username;
+    private final String username;
 
-    List<Thing> owned;
-    List<Bid> bids;
-    List<Thing> borrowed;
+    private List<Thing> owned;
+    private List<Bid> bids;
+    private List<Thing> borrowed;
 
     public User(String username) {
         this.username = username;

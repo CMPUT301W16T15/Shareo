@@ -9,13 +9,13 @@ import user.User;
  * Created by A on 2016-02-10.
  */
 public abstract class Thing {
-    String description;
-    Status status;
+    private String description;
+    private Status status;
 
-    User owner;
-    User borrower;
-    List<User> bidders;
-    List<Bid> bids;
+    private User owner;
+    private User borrower;
+    private List<User> bidders;
+    private List<Bid> bids;
 
 
     public enum Status {AVAILABLE, BIDDED, BORROWED}
