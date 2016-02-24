@@ -36,7 +36,7 @@ public class ModelTest extends ActivityInstrumentationTestCase2 {
         t1.setOwner(null);
         assertTrue(t1.getOwner() == null);
         assertTrue(!u1.getOwnedThings().contains(t1));
-        assertTrue(!u2.getOwnedThings().contains(t2));
+        assertTrue(!u2.getOwnedThings().contains(t1));
 
     }
 }
