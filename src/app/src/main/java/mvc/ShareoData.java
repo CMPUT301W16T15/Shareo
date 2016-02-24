@@ -6,9 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import thing.Thing;
-import user.User;
-
 /**
  * Created by A on 2016-02-10.
  */

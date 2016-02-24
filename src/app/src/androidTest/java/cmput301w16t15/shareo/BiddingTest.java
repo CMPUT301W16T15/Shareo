@@ -5,11 +5,11 @@ import android.test.ActivityInstrumentationTestCase2;
 import java.util.ArrayList;
 import java.util.List;
 
-import thing.Bid;
-import thing.Game;
-import thing.Thing;
-import thing.ThingUnavailableException;
-import user.User;
+import mvc.Bid;
+import mvc.Game;
+import mvc.Thing;
+import mvc.ThingUnavailableException;
+import mvc.User;
 
 /**
  * Created by A on 2016-02-09.

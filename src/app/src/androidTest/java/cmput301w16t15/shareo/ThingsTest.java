@@ -4,8 +4,7 @@ import android.test.ActivityInstrumentationTestCase2;
 
 import java.util.ArrayList;
 
-import thing.Game;
-import thing.GameSet;
+import mvc.GameSet;
 
 /**
  * Created by Larin on 2016/2/10.

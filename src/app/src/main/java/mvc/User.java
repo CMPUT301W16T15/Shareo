@@ -1,10 +1,7 @@
-package user;
+package mvc;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import thing.Bid;
-import thing.Thing;
 
 /**
  * Created by A on 2016-02-10.
@@ -44,11 +41,14 @@ public class User {
     }
 
     public List<Bid> getBids() { return bids; }
+
     public void addOwnedThing(Thing thing) {
+        thing.setOwnerSimple(this);
         owned.add(thing);
     }
 
     public void addBorrowedThing(Thing thing){
+        thing.setBorrowerSimple(this);
         borrowed.add(thing);
     }
 

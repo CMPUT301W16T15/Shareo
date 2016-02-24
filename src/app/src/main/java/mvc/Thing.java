@@ -1,9 +1,7 @@
-package thing;
+package mvc;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import user.User;
 
 /**
  * Created by A on 2016-02-10.
@@ -57,6 +55,16 @@ public abstract class Thing {
     }
 
     /**
+     * Simply set the owner of the Thing. Nothing is done to change the state of the {@link User}
+     * that now claims to use this object. This is primarily intended for use with
+     * {@link User#addOwnedThing(Thing)}
+     * @param user new owner.
+     */
+    protected void setOwnerSimple(User user) {
+        this.owner = user;
+    }
+
+    /**
      * Set the borrower of the Thing, and modify the {@link User} that previously was borrowing the
      * thing. The new borrower will be modified to be borrowing this Thing, and this Thing will now
      * know its new borrower.
@@ -73,6 +81,16 @@ public abstract class Thing {
         if (borrower != null) {
             borrower.addBorrowedThing(this);
         }
+    }
+
+    /**
+     * Simply set the owner of the Thing. Nothing is done to change the state of the {@link User}
+     * that now claims to use this object. This is primarily intended for use with
+     * {@link User#addBorrowedThing(Thing)}
+     * @param user new owner.
+     */
+    protected void setBorrowerSimple(User user) {
+        this.borrower = user;
     }
 
     public User getOwner() { return owner; }

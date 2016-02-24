@@ -4,8 +4,7 @@ import android.test.ActivityInstrumentationTestCase2;
 
 import java.util.ArrayList;
 
-import thing.ProfileSet;
-import user.User;
+import mvc.ProfileSet;
 
 /**
  * Created by Larin on 2016/2/11.

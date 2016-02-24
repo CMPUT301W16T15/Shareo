@@ -2,13 +2,13 @@ package cmput301w16t15.shareo;
 
 import android.test.ActivityInstrumentationTestCase2;
 
-import thing.Bid;
-import thing.Game;
-import thing.InvalidSearchException;
-import thing.Search;
-import thing.Thing;
-import thing.ThingUnavailableException;
-import user.User;
+import mvc.Bid;
+import mvc.Game;
+import mvc.InvalidSearchException;
+import mvc.Search;
+import mvc.Thing;
+import mvc.ThingUnavailableException;
+import mvc.User;
 
 /**
  * Created by anonymous on 2/12/2016.

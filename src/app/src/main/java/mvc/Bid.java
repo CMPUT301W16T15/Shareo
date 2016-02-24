@@ -1,9 +1,4 @@
-package thing;
-
-import java.math.BigDecimal;
-
-import user.BidNotMadeByUserException;
-import user.User;
+package mvc;
 
 /**
  * Created by A on 2016-02-10.

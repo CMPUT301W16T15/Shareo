@@ -1,4 +1,4 @@
-package thing;
+package mvc;
 
 import java.util.List;
 

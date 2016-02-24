@@ -4,9 +4,9 @@ import android.test.ActivityInstrumentationTestCase2;
 
 import java.util.List;
 
-import thing.Game;
-import thing.Thing;
-import user.User;
+import mvc.Game;
+import mvc.Thing;
+import mvc.User;
 
 /**
  * Created by anonymous on 2/12/2016.

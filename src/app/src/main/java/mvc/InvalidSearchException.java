@@ -1,4 +1,4 @@
-package thing;
+package mvc;
 
 /**
  * Created by bpharris on 2/12/16.
