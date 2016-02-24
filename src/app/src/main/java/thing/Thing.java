@@ -44,23 +44,39 @@ public abstract class Thing {
      * @param user new owner.
      */
     public void setOwner(User user) {
+        // remove from old owner, if not null
         if (this.owner != null) {
             owner.removeOwnedThing(this);
         }
+
+        // add to new owner, if not null
         this.owner = user;
-        owner.addOwnedThing(this);
+        if (this.owner != null) {
+            owner.addOwnedThing(this);
+        }
     }
 
     /**
-     * 
-     * @param user
+     * Set the borrower of the Thing, and modify the {@link User} that previously was borrowing the
+     * thing. The new borrower will be modified to be borrowing this Thing, and this Thing will now
+     * know its new borrower.
+     * @param user new borrower.
      */
     public void setBorrower(User user) {
-        this.borrower = user;
+        // remove old borrower, if not null
+        if (borrower != null) {
+            borrower.removeBorrowedThing(this);
+        }
+
+        // add new borrower, if not null
+        borrower = user;
+        if (borrower != null) {
+            borrower.addBorrowedThing(this);
+        }
     }
 
     public User getOwner() { return owner; }
-    public User getBorrower() {return borrower; }
+    public User getBorrower() { return borrower; }
     public Status getStatus() { return status; }
     public List<User> getBidders() { return bidders; }
     public List<Bid> getBids() { return bids; }
@@ -70,7 +86,6 @@ public abstract class Thing {
 
     public void addBid(User bidder, int centsPerHour) throws ThingUnavailableException {
         Bid bid = new Bid(bidder, this, centsPerHour);
-        bids.add(bid);
     }
 
     public void addBid(Bid bid) {

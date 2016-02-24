@@ -25,6 +25,24 @@ public class User {
     }
 
     public String getName() { return username; }
+
+    /**
+     * Add the {@link Bid} to the user. This verifies that the bid is not already in the user, and
+     * that the bid is made by this user.
+     * @param bid
+     */
+    public void addBid(Bid bid) throws BidNotMadeByUserException {
+        // make suer this user made the bid.
+        if (!bid.getUser().equals(this)) {
+            throw new BidNotMadeByUserException();
+        }
+
+        // make sure this bid is not already made by the user.
+        if (!bids.contains(bid)) {
+            bids.add(bid);
+        }
+    }
+
     public List<Bid> getBids() { return bids; }
     public void addOwnedThing(Thing thing) {
         owned.add(thing);
