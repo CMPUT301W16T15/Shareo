@@ -60,6 +60,7 @@ public class ShareoData extends MVCModel {
      * @param thing Thing to add to the database.
      * @see #removeThing(Thing)
      * @see #updateThing(Thing)
+     * @see #getThing(String)
      * @see #getThingsByDescrption(String[])
      * @see #addUser(User)
      * @see #addBid(Bid)
@@ -95,6 +96,11 @@ public class ShareoData extends MVCModel {
         return users.get(name);
     }
 
+    public Thing getThing(String ID) {
+        // TODO this will query the server, and get a thing by its ID
+        return null;
+    }
+
     /**
      * Get a list of things that match a set of keywords from the database.
      * TODO expand on search specifics.
@@ -118,13 +124,13 @@ public class ShareoData extends MVCModel {
         //TODO the user will need to be updated on server.
     }
 
-
     /**
      * Update a thing that is already in the database, by using an updated {@link Thing} object.
      * The thing with a matching id will be updated.
      * @param thing Thing, matching the id of the thing to be updated.
      * @see #addThing(Thing)
      * @see #removeThing(Thing)
+     * @see #getThing(String)
      * @see #getThingsByDescrption(String[])
      */
     public void updateThing(Thing thing) {

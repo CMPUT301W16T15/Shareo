@@ -7,6 +7,7 @@ import java.util.List;
  * Created by A on 2016-02-10.
  */
 public abstract class Thing {
+    private String ID;
     private String description;
     private Status status;
 
@@ -14,6 +15,10 @@ public abstract class Thing {
     private User borrower;
     private List<User> bidders;
     private List<Bid> bids;
+
+    public String getID() {
+        return ID;
+    }
 
 
     public enum Status {AVAILABLE, BIDDED, BORROWED}
