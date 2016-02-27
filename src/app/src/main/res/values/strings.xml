@@ -33,4 +33,8 @@
     <string name="hintCategory">Game category</string>
     <string name="textViewNumberPlayers">Number of Players</string>
     <string name="hintNumberPlayers"># Game Players</string>
+    <string name="buttonCancel">Cancel</string>
+    <string name="buttonSave">Save</string>
+    <string name="textViewAddGame">Add a Game</string>
+    <string name="textViewLogin">Login</string>
 </resources>
