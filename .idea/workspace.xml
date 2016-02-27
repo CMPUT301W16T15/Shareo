@@ -3,13 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="a1683622-7cd6-4c0c-939b-d7e0cf9251ce" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/app/src/main/res/layout/activity_add_game.xml" afterPath="$PROJECT_DIR$/src/app/src/main/res/layout/activity_add_game.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/app/src/main/res/layout/activity_login.xml" afterPath="$PROJECT_DIR$/src/app/src/main/res/layout/activity_login.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/app/.idea/libraries/appcompat_v7_23_1_1.xml" afterPath="$PROJECT_DIR$/src/app/.idea/libraries/appcompat_v7_23_1_1.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/app/.idea/libraries/design_23_1_1.xml" afterPath="$PROJECT_DIR$/src/app/.idea/libraries/design_23_1_1.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/app/.idea/misc.xml" afterPath="$PROJECT_DIR$/src/app/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/app/.idea/libraries/recyclerview_v7_23_1_1.xml" afterPath="$PROJECT_DIR$/src/app/.idea/libraries/recyclerview_v7_23_1_1.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/app/.idea/libraries/support_v4_23_1_1.xml" afterPath="$PROJECT_DIR$/src/app/.idea/libraries/support_v4_23_1_1.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/app/.idea/workspace.xml" afterPath="$PROJECT_DIR$/src/app/.idea/workspace.xml" />
     </list>
     <ignored path="Shareo.iws" />
@@ -194,7 +188,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="28" width="1602" height="1177" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />

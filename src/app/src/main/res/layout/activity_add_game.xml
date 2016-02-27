@@ -172,6 +172,8 @@
         android:orientation="horizontal">
 
         <Button
+            android:background="@drawable/graybutton"
+            style="@style/button_text"
             android:id="@+id/buttonCancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -187,9 +189,11 @@
         android:orientation="horizontal">
 
         <Button
+            android:background="@drawable/greenbutton"
             android:id="@+id/buttonSave"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/button_text"
             android:text="@string/buttonSave" />
 
     </LinearLayout>

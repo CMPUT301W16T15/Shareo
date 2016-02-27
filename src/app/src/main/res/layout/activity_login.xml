@@ -132,13 +132,15 @@
         android:gravity="center_horizontal"
         android:orientation="vertical">
         <Button
+            android:background="@drawable/greenbutton"
             android:id="@+id/buttonSignup"
-            style="?android:attr/buttonStyleSmall"
+            style="@style/button_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/buttonSignup" />
 
         <TextView
+            android:layout_marginTop="5dp"
             android:id="@+id/textViewOr"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -181,8 +183,9 @@
         android:orientation="vertical">
 
         <Button
+            android:background="@drawable/graybutton"
             android:id="@+id/buttonLogin"
-            style="?android:attr/buttonStyleSmall"
+            style="@style/button_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/buttonLogin" />
