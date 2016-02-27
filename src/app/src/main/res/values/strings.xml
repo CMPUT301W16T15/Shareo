@@ -23,12 +23,14 @@
     <string name="textViewUserName">Username</string>
     <string name="textViewEmail">Email Address</string>
     <string name="textViewMotto">Motto</string>
-    <string name="textViewGameName">Game Name</string>
-    <string name="hintGameName">Name of the game you are entering</string>
-    <string name="textViewDescription">Game Description</string>
-    <string name="hintDescription">Description of the game you are entering.</string>
-    <string name="textViewRate">Hourly borrowing rate</string>
-    <string name="hintRate">Hourly rate of game for borrowing</string>
+    <string name="textViewGameName">Name</string>
+    <string name="hintGameName">Game name</string>
+    <string name="textViewDescription">Description</string>
+    <string name="hintDescription">Game Description</string>
+    <string name="textViewRate">Rate</string>
+    <string name="hintRate">Hourly borrowing rate</string>
+    <string name="textViewCategory">Category</string>
+    <string name="hintCategory">Game category</string>
     <string name="textViewNumberPlayers">Number of Players</string>
-    <string name="hintNumberPlayers">Number of Players in the Game</string>
+    <string name="hintNumberPlayers"># Game Players</string>
 </resources>
