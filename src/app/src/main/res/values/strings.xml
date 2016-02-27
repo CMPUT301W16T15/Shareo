@@ -12,16 +12,23 @@
     <string name="title_activity_my_bids">MyBidsActivity</string>
     <string name="title_activity_selling_bids">SellingBidsActivity</string>
     <string name="title_activity_search">SearchActivity</string>
-    <string name="buttonSignupLabel">Signup</string>
-    <string name="buttonLoginLabel">Login</string>
+    <string name="buttonSignup">Signup</string>
+    <string name="buttonLogin">Login</string>
     <string name="hintFullName">name</string>
     <string name="hintEmail">email@provider.com</string>
     <string name="hintUserName">username</string>
     <string name="hintMotto">Favourite motto/expression</string>
-    <string name="textViewOrLabel">Or</string>
-    <string name="textViewFullNameLabel">Full Name</string>
-    <string name="textViewUserNameLabel">Username</string>
-    <string name="textViewEmailLabel">Email Address</string>
-    <string name="textViewMottoLabel">Motto</string>
-
+    <string name="textViewOr">Or</string>
+    <string name="textViewFullName">Full Name</string>
+    <string name="textViewUserName">Username</string>
+    <string name="textViewEmail">Email Address</string>
+    <string name="textViewMotto">Motto</string>
+    <string name="textViewGameName">Game Name</string>
+    <string name="hintGameName">Name of the game you are entering</string>
+    <string name="textViewDescription">Game Description</string>
+    <string name="hintDescription">Description of the game you are entering.</string>
+    <string name="textViewRate">Hourly borrowing rate</string>
+    <string name="hintRate">Hourly rate of game for borrowing</string>
+    <string name="textViewNumberPlayers">Number of Players</string>
+    <string name="hintNumberPlayers">Number of Players in the Game</string>
 </resources>
