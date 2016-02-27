@@ -17,6 +17,7 @@
         android:orientation="vertical">
 
         <TextView
+            android:layout_marginTop="10dp"
             android:gravity="center"
             android:id="@+id/textViewAddGame"
             android:layout_width="match_parent"
