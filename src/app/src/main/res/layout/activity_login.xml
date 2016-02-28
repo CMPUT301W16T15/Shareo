@@ -63,7 +63,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <EditText
-            android:id="@+id/editTextUserName"
+            android:id="@+id/editTextUserNameSignup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -165,7 +165,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <EditText
-            android:id="@+id/editTextUserName2"
+            android:id="@+id/editTextUserNameLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
