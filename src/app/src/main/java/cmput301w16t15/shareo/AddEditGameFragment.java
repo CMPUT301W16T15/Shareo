@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -43,6 +44,13 @@ public class AddEditGameFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(fragment_addeditgame, container, false);
+
+        /* There was a fragment over fragment bug from a transition of HomeFragment ->AddEditGame Fragment
+           It was fixed here http://stackoverflow.com/questions/18309815/fragments-displayed-over-each-other
+         */
+        if (container != null) {
+            container.removeAllViews();
+        }
 
         editTextGameName = (EditText) v.findViewById(R.id.editTextGameName);
         editTextDescription = (EditText) v.findViewById(R.id.editTextDescription);
