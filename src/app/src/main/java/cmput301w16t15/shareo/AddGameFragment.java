@@ -8,28 +8,57 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 
 /**
  * Created by Andrew on 2016-02-28.
  */
 public class AddGameFragment extends DialogFragment {
 
+    private EditText editTextGameName;
+    private EditText editTextDescription;
+    private EditText editTextRate;
+    private EditText editTextNumberPlayers;
+    private EditText editTextCategory;
+
+    private String gameName;
+    private String gameDescription;
+    private String gameRate;
+    private String numberPlayers;
+    private String category;
+
     public AddGameFragment() {
+
+    }
+
+    private void saveAllText()
+    {
+        gameName = editTextGameName.getText().toString();
+        gameDescription = editTextDescription.getText().toString();
+        gameRate = editTextRate.getText().toString();
+        numberPlayers = editTextNumberPlayers.getText().toString();
+        category = editTextCategory.getText().toString();
 
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.activity_add_game, null);
+        View v = inflater.inflate(R.layout.fragment_addeditgame, null);
+
+        editTextGameName = (EditText) v.findViewById(R.id.editTextGameName);
+        editTextDescription = (EditText) v.findViewById(R.id.editTextDescription);
+        editTextRate = (EditText) v.findViewById(R.id.editTextRate);
+        editTextNumberPlayers = (EditText) v.findViewById(R.id.editTextNumberPlayers);
+        editTextCategory = (EditText) v.findViewById(R.id.editTextCategory);
 
         // Build the dialog and set up the button click handlers
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage("Fuel Entry")
-                .setView(view)
+                .setView(v)
                 .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // TODO: save the game
+                        saveAllText();
                         dismiss();
                     }
                 })
