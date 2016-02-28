@@ -9,8 +9,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
+import android.widget.SearchView;
 
 public class SearchActivity extends AppCompatActivity {
+
 
     private static final String TAG = "TAGSearchActivity";
     @Override
