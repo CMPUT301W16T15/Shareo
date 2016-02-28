@@ -1,5 +1,6 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HomeFragment">
@@ -43,5 +44,10 @@
         android:layout_height="350dp"
         android:layout_marginTop="45dp">
     </ListView>
-
+    <ImageView
+        android:id="@+id/createGameView"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/ic_add"
+        android:layout_gravity="bottom|right"/>
 </FrameLayout>

@@ -35,8 +35,11 @@
     <string name="hintNumberPlayers"># Game Players</string>
     <string name="buttonCancel">Cancel</string>
     <string name="buttonSave">Save</string>
+    <string name="buttonSaveEdits">Save Edits</string>
+    <string name="buttonMiddle">Cancel</string>
     <string name="textViewAddGame">Add a Game</string>
     <string name="textViewLogin">Login</string>
     <string name="hintSearch">Search for a game</string>
     <string name="textViewSearchGame">Game Search</string>
+    <string name="textViewCreateProfile">Create User Profile</string>
 </resources>
