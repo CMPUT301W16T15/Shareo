@@ -4,10 +4,37 @@
     android:layout_height="match_parent"
     tools:context=".HomeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Home Fragment" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_available"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Available"
+            android:layout_margin="1dp"/>
+
+        <Button
+            android:id="@+id/button_iam_borrowing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Borrowing"
+            android:layout_margin="1dp"/>
+
+        <Button
+            android:id="@+id/button_others_borrowing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lending"
+            android:layout_margin="1dp"/>
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/data_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </ListView>
 
 </FrameLayout>
