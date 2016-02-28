@@ -18,7 +18,7 @@
     <string name="hintEmail">email@provider.com</string>
     <string name="hintUserName">username</string>
     <string name="hintMotto">Favourite motto/expression</string>
-    <string name="textViewOr">Or</string>
+    <string name="textViewOr">Shareo Account Login</string>
     <string name="textViewFullName">Full Name</string>
     <string name="textViewUserName">Username</string>
     <string name="textViewEmail">Email Address</string>
