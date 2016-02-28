@@ -3,7 +3,9 @@ package cmput301w16t15.shareo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,6 +16,7 @@ import android.widget.EditText;
 import static cmput301w16t15.shareo.R.layout.fragment_addeditgame;
 
 public class AddEditGameFragment extends Fragment {
+
 
     private EditText editTextGameName;
     private EditText editTextDescription;
@@ -77,13 +80,40 @@ public class AddEditGameFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Cancel Button Clicked");
+                removeCurrentFragment();
+                /* Call MainActivity or Fragment ?
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 AddEditGameFragment.this.startActivity(intent);
+                */
             }
         });
 
 
         return v;
+    }
+
+    @Override
+    public void onResume() {
+
+        super.onResume();
+        /* As seen here --> Handle Back Button in Fragment:
+         http://stackoverflow.com/questions/18755550/fragment-pressing-back-button */
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                    Log.d(TAG, "Back Button Clicked");
+                    removeCurrentFragment();
+                    return true;
+
+                }
+
+                return false;
+            }
+        });
     }
 
     private void saveAllText()
@@ -96,5 +126,20 @@ public class AddEditGameFragment extends Fragment {
 
     }
 
+    public void removeCurrentFragment()
+    {
+        /* From here : http://developer.android.com/guide/components/fragments.html#Transactions */
+        Fragment newFragment = new HomeFragment();
+        // consider using Java coding conventions (upper first char class names!!!)
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+        // Replace whatever is in the fragment_container view with this fragment,
+        // and add the transaction to the back stack
+        transaction.replace(R.id.AddEditGameFragment, newFragment);
+        transaction.addToBackStack(null);
+
+        // Commit the transaction
+        transaction.commit();
+    }
 
 }

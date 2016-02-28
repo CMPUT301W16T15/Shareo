@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="cmput301w16t15.shareo.AddEditGameFragment"
+    android:id="@+id/AddEditGameFragment"
     android:clickable="true">
 
 
