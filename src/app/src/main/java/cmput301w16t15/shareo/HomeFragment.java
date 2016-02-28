@@ -2,6 +2,7 @@ package cmput301w16t15.shareo;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +48,7 @@ public class HomeFragment extends Fragment {
         mButtonAvailable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG, "Clicked Available Button");
                 mSelectedMode = Selected.AVAILABLE;
 
                 // filter things by avail
@@ -56,6 +58,7 @@ public class HomeFragment extends Fragment {
         mButtonIamBorrowing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG, "Clicked Borrowing Button");
                 mSelectedMode = Selected.IAM_BORROWING;
 
                 // filter things by i am borrowing
@@ -65,6 +68,7 @@ public class HomeFragment extends Fragment {
         mButtonOthersBorrowing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG, "Clicked Lending Button");
                 mSelectedMode = Selected.OTHERS_BORROWING;
 
                 // filter things by others borrowing
