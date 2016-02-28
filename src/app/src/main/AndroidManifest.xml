@@ -39,10 +39,6 @@
             android:label="@string/title_activity_my_borrowed_things"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".AddGameActivity"
-            android:label="@string/title_activity_add_game"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".EditGameActivity"
             android:label="@string/title_activity_edit_game"
             android:theme="@style/AppTheme.NoActionBar" />

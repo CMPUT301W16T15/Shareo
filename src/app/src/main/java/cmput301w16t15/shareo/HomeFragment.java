@@ -2,8 +2,6 @@ package cmput301w16t15.shareo;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,19 +74,8 @@ public class HomeFragment extends Fragment {
         createGameView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Cancel Button Clicked");
-                /* From here : http://developer.android.com/guide/components/fragments.html#Transactions */
-                Fragment newFragment = new AddEditGameFragment();
-                // consider using Java coding conventions (upper first char class names!!!)
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-
-                // Replace whatever is in the fragment_container view with this fragment,
-                // and add the transaction to the back stack
-                transaction.replace(R.id.home_fragment, newFragment);
-                transaction.addToBackStack(null);
-
-                // Commit the transaction
-                transaction.commit();
+                AddGameFragment agf = new AddGameFragment();
+                agf.show(getFragmentManager(), "new game");
             }
         });
 

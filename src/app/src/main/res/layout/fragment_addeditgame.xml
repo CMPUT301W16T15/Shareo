@@ -169,61 +169,6 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/buttonsBottom2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
-
-        <Button
-            android:background="@drawable/graybutton"
-            style="@style/button_text"
-            android:id="@+id/buttonCancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/buttonCancel" />
-
-
-    </LinearLayout>
-    <!-- This button is only seen for Edit Game! -->
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:orientation="horizontal"
-        android:visibility="invisible">
-
-        <Button
-            android:background="@drawable/redbutton"
-            style="@style/button_text"
-            android:id="@+id/buttonMiddle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/buttonMiddle" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/buttonsBottom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:orientation="horizontal">
-
-        <Button
-            android:background="@drawable/greenbutton"
-            android:id="@+id/buttonSave"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/button_text"
-            android:text="@string/buttonSave" />
-
-    </LinearLayout>
-
-
 </RelativeLayout>
 
 
