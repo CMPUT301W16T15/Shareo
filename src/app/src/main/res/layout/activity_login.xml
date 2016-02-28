@@ -11,7 +11,6 @@
         android:orientation="vertical">
 
         <TextView
-            android:layout_marginTop="10dp"
             android:gravity="center"
             android:id="@+id/textViewLogin"
             android:layout_width="match_parent"
@@ -132,9 +131,8 @@
         android:gravity="center_horizontal"
         android:orientation="vertical">
         <Button
-            android:background="@drawable/greenbutton"
             android:id="@+id/buttonSignup"
-            style="@style/button_text"
+            style="@style/button_styleGreen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/buttonSignup" />
@@ -173,7 +171,9 @@
             android:hint="@string/hintUserName">
         </EditText>
     </LinearLayout>
-
+    <!-- style="@style/button_text"
+    android:background="@drawable/graybutton"
+    android:background="@drawable/greenbutton"-->
     <LinearLayout
         android:layout_marginLeft="10.0dip"
         android:layout_marginRight="10.0dip"
@@ -183,9 +183,8 @@
         android:orientation="vertical">
 
         <Button
-            android:background="@drawable/graybutton"
             android:id="@+id/buttonLogin"
-            style="@style/button_text"
+            style="@style/button_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/buttonLogin" />

@@ -17,6 +17,36 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="button_styleGreen" parent="@android:style/Widget.Button">
+        <item name="android:textSize">@dimen/button_textSize</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:background">@drawable/hbuttongreen</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">50.0dip</item>
+        <item name="android:layout_marginTop">8.0dip</item>
+    </style>
+
+    <style name="button_styleYellow" parent="@android:style/Widget.Button">
+        <item name="android:textSize">@dimen/button_textSize</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:background">@drawable/hbuttonyellow</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">50.0dip</item>
+        <item name="android:layout_marginTop">8.0dip</item>
+    </style>
+
+	<style name="button_style" parent="@android:style/Widget.Button">
+        <item name="android:textSize">@dimen/button_textSize</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:background">@drawable/hbutton</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">50.0dip</item>
+        <item name="android:layout_marginTop">8.0dip</item>
+    </style>
+
     <!-- Copied from https://developer.xamarin.com/recipes/android/resources/general/style_a_button/ -->
     <style name="button_text" >
         <item name="android:layout_width" >fill_parent</item>

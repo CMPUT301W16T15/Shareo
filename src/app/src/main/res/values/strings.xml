@@ -38,7 +38,7 @@
     <string name="buttonSaveEdits">Save Edits</string>
     <string name="buttonMiddle">Cancel</string>
     <string name="textViewAddGame">Add a Game</string>
-    <string name="textViewLogin">Account Setup</string>
+    <string name="textViewLogin">Shareo Account Setup</string>
     <string name="hintSearch">Search for a game</string>
     <string name="textViewSearchGame">Game Search</string>
     <string name="textViewCreateProfile">Create User Profile</string>

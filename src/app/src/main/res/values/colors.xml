@@ -3,4 +3,12 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="transparent_color">#00000000</color>
+    <color name="white">#ffffffff</color>
+    <color name="purple">#ffcc0066</color>
+    <color name="black">#ff000000</color>
+    <color name="red">#fc7f8e</color>
+    <color name="divider_color">#88ffffff</color>
+    <color name="prefs_bg">#ffeaeaea</color>
+    <color name="light_blue">#CFD9E8</color>
 </resources>
