@@ -1,6 +1,5 @@
 package cmput301w16t15.shareo;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -37,12 +36,6 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        /* There was a fragment over fragment bug from a transition of HomeFragment ->AddEditGame Fragment
-           It was fixed here http://stackoverflow.com/questions/18309815/fragments-displayed-over-each-other
-         */
-        if (container != null) {
-            container.removeAllViews();
-        }
         mSelectedMode = Selected.AVAILABLE;
 
         // Inflate the layout for this fragment

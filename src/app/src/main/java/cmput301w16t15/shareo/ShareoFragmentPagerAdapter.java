@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.widget.Toast;
 
 /**
  * Created by Andrew on 2016-02-27.
@@ -34,9 +35,10 @@ public class ShareoFragmentPagerAdapter extends FragmentPagerAdapter {
             return ProfileFragment.newInstance();
         } else if (position == 2) {
             return BidsFragment.newInstance();
-        } else {
+        } else if (position == 3) {
             return SearchFragment.newInstance();
         }
+        return null;
     }
 
     @Override
