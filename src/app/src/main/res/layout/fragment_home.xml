@@ -11,30 +11,37 @@
 
         <Button
             android:id="@+id/button_available"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="115dp"
+            android:layout_height="35dp"
             android:text="Available"
-            android:layout_margin="1dp"/>
+            android:background="@android:color/holo_blue_light"
+            android:textColor="@android:color/white"
+            android:layout_margin="5dp" />
 
         <Button
             android:id="@+id/button_iam_borrowing"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="115dp"
+            android:layout_height="35dp"
             android:text="Borrowing"
-            android:layout_margin="1dp"/>
+            android:background="@android:color/holo_blue_light"
+            android:textColor="@android:color/white"
+            android:layout_margin="5dp" />
 
         <Button
             android:id="@+id/button_others_borrowing"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="115dp"
+            android:layout_height="35dp"
             android:text="Lending"
-            android:layout_margin="1dp"/>
+            android:background="@android:color/holo_blue_light"
+            android:textColor="@android:color/white"
+            android:layout_margin="5dp"/>
     </LinearLayout>
 
     <ListView
         android:id="@+id/data_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="350dp"
+        android:layout_marginTop="45dp">
     </ListView>
 
 </FrameLayout>
