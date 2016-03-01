@@ -133,13 +133,13 @@ public class ShareoData extends MVCModel {
      * @see #updateUser(User)
      */
     public User getUser(String name) {
-        String query =
-                "{\"query\":{\"match\":{\"username\":\"" + name + "\"}}}";
+        String query = "{\"query\":{\"match\":{\"username\":\"" + name + "\"}}}";
         Search search = new Search.Builder(query).addIndex(ELASTIC_INDEX).addType(ELASTIC_USER_TYPE).build();
 
         try {
             SearchResult result = jestClient.execute(search);
             if (result.isSucceeded()) {
+                // TODO this seems to always have no results. Find out why.
                 List<User> results = result.getSourceAsObjectList(User.class);
                 if (results.size() == 1) {
                     return results.get(0);
