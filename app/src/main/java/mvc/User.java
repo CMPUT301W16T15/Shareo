@@ -3,10 +3,15 @@ package mvc;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.searchbox.annotations.JestId;
+
 /**
  * Created by A on 2016-02-10.
  */
 public class User {
+    @JestId
+    private String ID;
+
     private final String username;
 
     private List<Thing> owned;
@@ -87,4 +92,12 @@ public class User {
     }
 
     public void setReturned(Thing thing) {}
+
+    public void setID(String ID) {
+        this.ID = ID;
+    }
+
+    public String getID() {
+        return ID;
+    }
 }

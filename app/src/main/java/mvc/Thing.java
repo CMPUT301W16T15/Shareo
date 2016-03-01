@@ -3,11 +3,15 @@ package mvc;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.searchbox.annotations.JestId;
+
 /**
  * Created by A on 2016-02-10.
  */
 public abstract class Thing {
+    @JestId
     private String ID;
+
     private String description;
     private Status status;
 

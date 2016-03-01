@@ -1,10 +1,26 @@
 package mvc;
 
+import android.util.Log;
+
+import com.searchly.jestdroid.DroidClientConfig;
+import com.searchly.jestdroid.JestClientFactory;
+import com.searchly.jestdroid.JestDroidClient;
+
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+
+import io.searchbox.core.Delete;
+import io.searchbox.core.DocumentResult;
+import io.searchbox.core.Index;
+import io.searchbox.core.Search;
+import io.searchbox.core.SearchResult;
+import io.searchbox.core.Update;
+import io.searchbox.indices.template.PutTemplate;
 
 /**
  * <p>
@@ -26,6 +42,12 @@ public class ShareoData extends MVCModel {
     private Set<Thing> things;
     private Set<Bid> bids;
 
+    private static final String SERVER_URL = "http://cmput301.softwareprocess.es:8080";
+    private static final String ELASTIC_INDEX = "shareo";
+    private static final String ELASTIC_USER_TYPE = "user";
+    private static JestDroidClient jestClient;
+    static {createJestClient();}
+
     public ShareoData() {
         users = new HashMap<>();
         things = new HashSet<>();
@@ -46,12 +68,31 @@ public class ShareoData extends MVCModel {
      * @see #addBid(Bid)
      */
     public void addUser(User user) throws UsernameAlreadyExistsException {
-        // TODO this will add to the server instead.
+        if (getUser(user.getName()) != null) {
+            throw new UsernameAlreadyExistsException();
+        }
+
+        Index index = new Index.Builder(user).index(ELASTIC_INDEX).type(ELASTIC_USER_TYPE).build();
+
+        try {
+            DocumentResult result = jestClient.execute(index);
+            if (result.isSucceeded()) {
+                user.setID(result.getId());
+            } else {
+                // TODO what if we fail?
+                Log.e("TODO", "Unable to save user to server.");
+            }
+        } catch (IOException e) {
+            // TODO do something clever, like offline behavior.
+            e.printStackTrace();
+        }
+        /*
         if (users.containsKey(user.getName())) {
             users.put(user.getName(), user);
         } else {
             throw new UsernameAlreadyExistsException();
         }
+        */
     }
 
     /**
@@ -92,8 +133,29 @@ public class ShareoData extends MVCModel {
      * @see #updateUser(User)
      */
     public User getUser(String name) {
-        // TODO this will query the server instead.
-        return users.get(name);
+        String query =
+                "{\"query\":{\"match\":{\"username\":\"" + name + "\"}}}";
+        Search search = new Search.Builder(query).addIndex(ELASTIC_INDEX).addType(ELASTIC_USER_TYPE).build();
+
+        try {
+            SearchResult result = jestClient.execute(search);
+            if (result.isSucceeded()) {
+                List<User> results = result.getSourceAsObjectList(User.class);
+                if (results.size() == 1) {
+                    return results.get(0);
+                } else {
+                    return null;
+                }
+            } else {
+                // TODO what if we fail?
+                return null;
+            }
+        } catch (IOException e) {
+            // TODO what if we fail?
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     public Thing getThing(String ID) {
@@ -122,6 +184,21 @@ public class ShareoData extends MVCModel {
      */
     public void updateUser(User user) {
         //TODO the user will need to be updated on server.
+        Update update = new Update.Builder(user).index(ELASTIC_INDEX).type(ELASTIC_USER_TYPE).id(user.getID()).build();
+
+        // How to update, instead of add?
+        try {
+            DocumentResult result = jestClient.execute(update);
+            if (result.isSucceeded()) {
+
+            } else {
+                // TODO what if failed?
+                Log.e("TODO", "Failed to update user");
+            }
+        } catch (IOException e) {
+            // TODO what to do if failed?
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -150,12 +227,26 @@ public class ShareoData extends MVCModel {
      */
     public void removeUser(User user) {
         // TODO implement removal of user
+        Delete delete = new Delete.Builder(user.getID()).index(ELASTIC_INDEX).type(ELASTIC_USER_TYPE).build();
+
+        try {
+            DocumentResult result = jestClient.execute(delete);
+            if (result.isSucceeded()) {
+
+            } else {
+                // TODO what if failed?
+                Log.e("TODO", "Failed to delete user");
+            }
+        } catch (IOException e) {
+            // TODO what to do if failed?
+            e.printStackTrace();
+        }
     }
 
     /**
      * Remove an exising {@link Thing} from the database. This only removes a thing from the database,
      * meaning any owners and borrowers should also be removed, if desired. It would be
-     * quite undesireable to leave  {@link Bid}s with dangling references.
+     * quite undesireable to leave {@link Bid}s with dangling references.
      * @param thing Thing to remove from the database.
      * @see #addThing(Thing)
      * @see #updateThing(Thing))
@@ -178,5 +269,16 @@ public class ShareoData extends MVCModel {
      */
     public void removeBid(Bid bid) {
         //TODO implement removal of bid
+    }
+
+    private static void createJestClient() {
+        if (jestClient == null) {
+            DroidClientConfig.Builder builder = new DroidClientConfig.Builder("http://cmput301.softwareprocess.es:8080");
+            DroidClientConfig config = builder.build();
+
+            JestClientFactory factory = new JestClientFactory();
+            factory.setDroidClientConfig(config);
+            jestClient = (JestDroidClient) factory.getObject();
+        }
     }
 }
