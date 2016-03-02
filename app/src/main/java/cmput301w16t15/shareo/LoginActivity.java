@@ -13,6 +13,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import mvc.AppUserSingleton;
+import mvc.User;
+
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private String fullName;
@@ -112,20 +115,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     public void onClick(View v) {
         Intent mainIntent = new Intent(this, MainActivity.class);
+        //TODO actually login and signup users properly
         switch (v.getId()) {
             case R.id.buttonSignup:
                 Log.d(TAG, "Clicked Button Signup");
                 parseSignUp();
-                this.startActivity(mainIntent);
+                AppUserSingleton.getInstance().logIn(new User(userNameSignup));
                 break;
 
             case R.id.buttonLogin:
                 Log.d(TAG, "Clicked Button Login");
                 parseLogin();
-                this.startActivity(mainIntent);
+                AppUserSingleton.getInstance().logIn(new User(userNameLogin));
                 break;
-
         }
+        this.startActivity(mainIntent);
     }
 
     /**
@@ -138,7 +142,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         userNameSignup = editTextUserNameSignup.getText().toString();
         email = editTextEmail.getText().toString();
         motto = editTextMotto.getText().toString();
-
     }
 
     private void parseLogin() {

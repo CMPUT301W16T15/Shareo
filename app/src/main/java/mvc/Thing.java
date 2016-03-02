@@ -15,9 +15,9 @@ public abstract class Thing {
     private String description;
     private Status status;
 
-    private User owner;
-    private User borrower;
-    private List<User> bidders;
+    private String owner;
+    private String name;
+    private Bid acceptedBid;
     private List<Bid> bids;
 
     public String getID() {
@@ -27,102 +27,57 @@ public abstract class Thing {
 
     public enum Status {AVAILABLE, BIDDED, BORROWED}
 
-    public Thing(String description) {
-        this(description, Status.AVAILABLE);
+    public Thing(String description, String name) {
+        this(description, name, Status.AVAILABLE);
     }
 
-    public Thing(String description, Status status) {
+    public Thing(String description, String name, Status status) {
         this.status = status;
         this.description = description;
-
-        this.owner = null;
-        this.borrower = null;
-        this.bidders = new ArrayList<>();
+        this.owner = name;
         this.bids = new ArrayList<>();
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    /**
+     * Used to lend a thing. Pass in the username of the person who is borrowing the game.
+     * Clear any bids the game had on it.
+     * @param acceptedBid Winning bid that was accepted
+     */
+    public void borrow(Bid acceptedBid)
+    {
+        this.acceptedBid = acceptedBid;
+        this.bids = null;
+        this.status = Status.BORROWED;
     }
 
     /**
-     * Set the owner of the Thing, and modify the {@link User} that previously owned the thing.
-     * The new user will be modified to own this Thing, and this Thing will now know its new owner.
-     * @param user new owner.
+     * Used to return a thing.
      */
-    public void setOwner(User user) {
-        // remove from old owner, if not null
-        if (this.owner != null) {
-            owner.removeOwnedThingSimple(this);
-        }
-
-        // add to new owner, if not null
-        this.owner = user;
-        if (this.owner != null) {
-            owner.addOwnedThingSimple(this);
-        }
+    public void returnThing()
+    {
+        this.acceptedBid = null;
+        this.status = Status.AVAILABLE;
     }
 
-    /**
-     * Simply set the owner of the Thing. Nothing is done to change the state of the {@link User}
-     * that now claims to use this object. This is primarily intended for use with
-     * {@link User#addOwnedThing(Thing)}
-     * @param user new owner.
-     */
-    protected void setOwnerSimple(User user) {
-        this.owner = user;
-    }
-
-    /**
-     * Set the borrower of the Thing, and modify the {@link User} that previously was borrowing the
-     * thing. The new borrower will be modified to be borrowing this Thing, and this Thing will now
-     * know its new borrower.
-     * @param user new borrower.
-     */
-    public void setBorrower(User user) {
-        // remove old borrower, if not null
-        if (borrower != null) {
-            borrower.removeBorrowedThingSimple(this);
-        }
-
-        // add new borrower, if not null
-        borrower = user;
-        if (borrower != null) {
-            borrower.addBorrowedThingSimple(this);
-        }
-    }
-
-    /**
-     * Simply set the owner of the Thing. Nothing is done to change the state of the {@link User}
-     * that now claims to use this object. This is primarily intended for use with
-     * {@link User#addBorrowedThing(Thing)}
-     * @param user new owner.
-     */
-    protected void setBorrowerSimple(User user) {
-        this.borrower = user;
-    }
-
-    public User getOwner() { return owner; }
-    public User getBorrower() { return borrower; }
+    public String getOwner() { return owner; }
+    public Bid getAcceptedBid() { return acceptedBid; }
     public Status getStatus() { return status; }
-    public List<User> getBidders() { return bidders; }
     public List<Bid> getBids() { return bids; }
     public static List<Thing> getAllThings() { return null; }
     public static List<Thing> getAllUnborrowedThings(List <Thing> listToFilter) { return null; }
     public List<Thing> getAllBorrowedThings(List <Thing> listToFilter) { return null; }
 
     public void addBid(User bidder, int centsPerHour) throws ThingUnavailableException {
-        Bid bid = new Bid(bidder, this, centsPerHour);
+        Bid bid = new Bid(bidder.getName(), this.getID(), centsPerHour);
     }
 
-    public void addBid(Bid bid) throws BidNotMadeForThingException {
-        // make sure that the bid is for this thing
-        if (!bid.getThing().equals(this)) {
-            throw new BidNotMadeForThingException();
-        }
-
+    public void addBid(Bid bid) {
         // protect from duplicates
         if (!bids.contains(bid)) {
+            if (bids.size() == 0)
+            {
+                status = Status.BIDDED;
+            }
             bids.add(bid);
         }
     }

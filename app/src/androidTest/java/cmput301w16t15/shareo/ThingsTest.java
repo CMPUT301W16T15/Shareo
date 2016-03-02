@@ -2,6 +2,10 @@ package cmput301w16t15.shareo;
 
 import android.test.ActivityInstrumentationTestCase2;
 
+import mvc.Bid;
+import mvc.Game;
+import mvc.Thing;
+
 /**
  * Created by Larin on 2016/2/10.
  */
@@ -47,4 +51,32 @@ public class ThingsTest extends ActivityInstrumentationTestCase2{
 //        GameList.remove(G1);
 //        assertTrue(GameList.isEmpty());
 //    }
+
+    /**
+     * Using game as mock object to test borrowing of a thing
+     */
+    public void testBorrowThing() {
+        String borrower = "John";
+        Thing t = new Game("Great game", "Catan");
+        Bid winningBid = new Bid(borrower, t.getID(), 10);
+        t.borrow(winningBid);
+        assertEquals(t.getAcceptedBid(), winningBid);
+        assertEquals(t.getStatus(), Thing.Status.BORROWED);
+        assertNull(t.getBids());
+    }
+
+    /**
+     * Using game as mock object to test returning of a thing
+     */
+    public void testReturnThing()
+    {
+        String borrower = "John";
+        Thing t = new Game("Great game", "Catan");
+        Bid winningBid = new Bid(borrower, t.getID(), 10);
+        t.borrow(winningBid);
+        t.returnThing();
+        assertEquals(t.getStatus(), Thing.Status.AVAILABLE);
+        assertNull(t.getAcceptedBid());
+        assertNull(t.getBids());
+    }
 }

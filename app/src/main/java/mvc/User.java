@@ -33,22 +33,13 @@ public class User {
      * that the bid is made by this user.
      * @param bid
      */
-    public void addBid(Bid bid) throws BidNotMadeByUserException {
-        // make suer this user made the bid.
-        if (!bid.getUser().equals(this)) {
-            throw new BidNotMadeByUserException();
-        }
-
-        // make sure this bid is not already made by the user.
-        if (!bids.contains(bid)) {
-            bids.add(bid);
-        }
+    public void addBid(Bid bid) {
+        bids.add(bid);
     }
 
     public List<Bid> getBids() { return bids; }
 
     public void addOwnedThing(Thing thing) {
-        thing.setOwnerSimple(this);
         owned.add(thing);
     }
 
@@ -57,7 +48,6 @@ public class User {
     }
 
     public boolean removeOwnedThing(Thing thing) {
-        thing.setOwnerSimple(null);
         return owned.remove(thing);
     }
 
@@ -66,7 +56,6 @@ public class User {
     }
 
     public void addBorrowedThing(Thing thing){
-        thing.setBorrowerSimple(this);
         borrowed.add(thing);
     }
 
@@ -75,7 +64,6 @@ public class User {
     }
 
     public boolean removeBorrowedThing(Thing thing) {
-        thing.setBorrowerSimple(null);
         return borrowed.remove(thing);
     }
 

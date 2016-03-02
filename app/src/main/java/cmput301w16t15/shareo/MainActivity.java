@@ -17,6 +17,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "TAGMain";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -10,6 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
+import mvc.AppUserSingleton;
+import mvc.Game;
+
 /**
  * Created by Andrew on 2016-02-28.
  */
@@ -38,7 +41,8 @@ public class AddGameFragment extends DialogFragment {
         gameRate = editTextRate.getText().toString();
         numberPlayers = editTextNumberPlayers.getText().toString();
         category = editTextCategory.getText().toString();
-
+        Game game = new Game(gameName, gameDescription);
+        AppUserSingleton.getInstance().getUser().addOwnedThing(game);
     }
 
     @Override
@@ -54,7 +58,7 @@ public class AddGameFragment extends DialogFragment {
 
         // Build the dialog and set up the button click handlers
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage("Fuel Entry")
+        builder.setMessage("Game Entry")
                 .setView(v)
                 .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
