@@ -1,14 +1,16 @@
 package mvc;
 
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
 import io.searchbox.annotations.JestId;
 
 /**
  * Created by A on 2016-02-10.
  */
-public class User {
+public class User extends Observable {
     @JestId
     private String ID;
 
@@ -20,7 +22,6 @@ public class User {
 
     public User(String username) {
         this.username = username;
-
         this.owned = new ArrayList<>();
         this.bids = new ArrayList<>();
         this.borrowed = new ArrayList<>();
@@ -41,6 +42,8 @@ public class User {
 
     public void addOwnedThing(Thing thing) {
         owned.add(thing);
+        setChanged();
+        notifyObservers();
     }
 
     protected void addOwnedThingSimple(Thing thing) {

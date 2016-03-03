@@ -6,12 +6,12 @@ import java.util.ArrayList;
  * Created by A on 2016-02-10.
  */
 public class Game extends Thing {
-    public Game(String descrption, String name) {
-        super(descrption, name);
+    public Game(String gameName, String description, String owner) {
+        super(gameName, description, owner);
     }
 
-    public Game(String description, String name, Status status) {
-        super(description, name, status);
+    public Game(String gameName, String description, String owner, Status status) {
+        super(gameName, description, owner, status);
     }
 
     public void setKeywords() {

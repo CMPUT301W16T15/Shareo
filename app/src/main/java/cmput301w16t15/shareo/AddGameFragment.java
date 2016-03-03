@@ -12,6 +12,7 @@ import android.widget.EditText;
 
 import mvc.AppUserSingleton;
 import mvc.Game;
+import mvc.User;
 
 /**
  * Created by Andrew on 2016-02-28.
@@ -41,8 +42,9 @@ public class AddGameFragment extends DialogFragment {
         gameRate = editTextRate.getText().toString();
         numberPlayers = editTextNumberPlayers.getText().toString();
         category = editTextCategory.getText().toString();
-        Game game = new Game(gameName, gameDescription);
-        AppUserSingleton.getInstance().getUser().addOwnedThing(game);
+        User user = AppUserSingleton.getInstance().getUser();
+        Game game = new Game(gameName, gameDescription, user.getName());
+        user.addOwnedThing(game);
     }
 
     @Override

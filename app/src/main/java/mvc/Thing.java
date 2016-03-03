@@ -27,14 +27,15 @@ public abstract class Thing {
 
     public enum Status {AVAILABLE, BIDDED, BORROWED}
 
-    public Thing(String description, String name) {
-        this(description, name, Status.AVAILABLE);
+    public Thing(String gameName, String description, String owner) {
+        this(gameName, description, owner, Status.AVAILABLE);
     }
 
-    public Thing(String description, String name, Status status) {
+    public Thing(String gameName, String descrption, String owner, Status status) {
         this.status = status;
         this.description = description;
-        this.owner = name;
+        this.owner = owner;
+        this.name = gameName;
         this.bids = new ArrayList<>();
     }
 
@@ -66,6 +67,14 @@ public abstract class Thing {
     public static List<Thing> getAllThings() { return null; }
     public static List<Thing> getAllUnborrowedThings(List <Thing> listToFilter) { return null; }
     public List<Thing> getAllBorrowedThings(List <Thing> listToFilter) { return null; }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getName() {
+        return name;
+    }
 
     public void addBid(User bidder, int centsPerHour) throws ThingUnavailableException {
         Bid bid = new Bid(bidder.getName(), this.getID(), centsPerHour);

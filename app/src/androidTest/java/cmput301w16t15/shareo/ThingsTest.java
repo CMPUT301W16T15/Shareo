@@ -57,7 +57,7 @@ public class ThingsTest extends ActivityInstrumentationTestCase2{
      */
     public void testBorrowThing() {
         String borrower = "John";
-        Thing t = new Game("Great game", "Catan");
+        Thing t = new Game("Catan", "Great Game", "Bob");
         Bid winningBid = new Bid(borrower, t.getID(), 10);
         t.borrow(winningBid);
         assertEquals(t.getAcceptedBid(), winningBid);
@@ -71,7 +71,7 @@ public class ThingsTest extends ActivityInstrumentationTestCase2{
     public void testReturnThing()
     {
         String borrower = "John";
-        Thing t = new Game("Great game", "Catan");
+        Thing t = new Game("Catan", "Great Game", "Bob");
         Bid winningBid = new Bid(borrower, t.getID(), 10);
         t.borrow(winningBid);
         t.returnThing();
