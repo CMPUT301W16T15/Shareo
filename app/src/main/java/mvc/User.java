@@ -91,4 +91,12 @@ public class User extends Observable {
     public String getID() {
         return ID;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other instanceof User) {
+            return ((User) other).getID().equals(this.getID());
+        }
+        return false;
+    }
 }

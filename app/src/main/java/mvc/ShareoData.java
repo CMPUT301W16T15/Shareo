@@ -14,8 +14,10 @@ import java.util.Map;
 import java.util.Set;
 
 
+import io.searchbox.client.JestResult;
 import io.searchbox.core.Delete;
 import io.searchbox.core.DocumentResult;
+import io.searchbox.core.Get;
 import io.searchbox.core.Index;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
@@ -58,7 +60,7 @@ public class ShareoData extends MVCModel {
      * Add a new {@link User} to the database. If a user already exists with the same name,
      * the call will fail. This only adds a user to the database, meaning any things that are
      * owned by it must also be added, separately, using {@link #addThing(Thing)}. The same goes for
-     * any bids placed by the user, using {@link #addBid(Bid)}.
+     * any bids placed by the user, using {@link #addBid(Bid)}. The user's id will be its username.
      * @param user User to add to the database.
      * @throws UsernameAlreadyExistsException A user with the same name already exists.
      * @see #removeUser(User)
@@ -72,7 +74,7 @@ public class ShareoData extends MVCModel {
             throw new UsernameAlreadyExistsException();
         }
 
-        Index index = new Index.Builder(user).index(ELASTIC_INDEX).type(ELASTIC_USER_TYPE).build();
+        Index index = new Index.Builder(user).index(ELASTIC_INDEX).type(ELASTIC_USER_TYPE).id(user.getName()).build();
 
         try {
             DocumentResult result = jestClient.execute(index);
@@ -133,19 +135,15 @@ public class ShareoData extends MVCModel {
      * @see #updateUser(User)
      */
     public User getUser(String name) {
-        String query = "{\"query\":{\"match\":{\"username\":\"" + name + "\"}}}";
-        Search search = new Search.Builder(query).addIndex(ELASTIC_INDEX).addType(ELASTIC_USER_TYPE).build();
+        //String query = "{\"query\":{\"match\":{\"username\":\"" + name + "\"}}}";
+        //Search search = new Search.Builder(query).addIndex(ELASTIC_INDEX).addType(ELASTIC_USER_TYPE).build();
+        Get get = new Get.Builder(ELASTIC_INDEX, name).type(ELASTIC_USER_TYPE).build();
 
         try {
-            SearchResult result = jestClient.execute(search);
+            JestResult result = jestClient.execute(get);
             if (result.isSucceeded()) {
                 // TODO this seems to always have no results. Find out why.
-                List<User> results = result.getSourceAsObjectList(User.class);
-                if (results.size() == 1) {
-                    return results.get(0);
-                } else {
-                    return null;
-                }
+                return result.getSourceAsObject(User.class);
             } else {
                 // TODO what if we fail?
                 return null;

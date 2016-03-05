@@ -2,6 +2,7 @@ package cmput301w16t15.shareo;
 
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.InstrumentationTestCase;
+import android.util.Log;
 
 import io.searchbox.core.Index;
 import mvc.Bid;
@@ -30,15 +31,20 @@ public class ModelTest extends ActivityInstrumentationTestCase2 {
             data.addUser(u1);
         } catch (UsernameAlreadyExistsException e) {
             fail("Test username already in data");
-        }
+    }
         User u = data.getUser(username);
         assertTrue(u != null);
-        //assertTrue(u.equals(u1));
+        Log.println(Log.DEBUG, "ModelTest", "Username: " + u.getName());
+        Log.println(Log.DEBUG, "ModelTest", "ID: " + u.getID());
+        Log.println(Log.DEBUG, "ModelTest", "Username: " + u1.getName());
+        Log.println(Log.DEBUG, "ModelTest", "ID: " + u1.getID());
+        assertTrue(u.equals(u1));
 
         data.removeUser(u1);
         assertTrue(data.getUser(username) == null);
     }
 
+    /*
     public void testSetOwner() {
         ShareoData data = new ShareoData();
         User u1 = new User("Bob");
@@ -77,7 +83,9 @@ public class ModelTest extends ActivityInstrumentationTestCase2 {
         assertTrue(!u1.getOwnedThings().contains(t1));
         assertTrue(!u2.getOwnedThings().contains(t1));
     }
+    */
 
+    /*
     public void testSetBorrower() {
         User u1 = new User("Bob");
         User u2 = new User("Susan");
@@ -102,7 +110,9 @@ public class ModelTest extends ActivityInstrumentationTestCase2 {
         assertTrue(!u1.getBorrowedThings().contains(t1));
         assertTrue(!u2.getBorrowedThings().contains(t1));
     }
+    */
 
+    /*
     public void testAddBid() {
         User u1 = new User("Bob");
         User u2 = new User("Susan");
@@ -145,4 +155,5 @@ public class ModelTest extends ActivityInstrumentationTestCase2 {
         assertTrue(t1.getBidders().contains(u2));
 
     }
+    */
 }

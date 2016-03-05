@@ -32,6 +32,7 @@ public class SearchTest extends ActivityInstrumentationTestCase2 {
         super(MainActivity.class);
     }
 
+    /*
     public void initializeTestData() {
         borrower1 = new User("Jack");
         borrower2 = new User("John");
@@ -170,5 +171,6 @@ public class SearchTest extends ActivityInstrumentationTestCase2 {
             fail();
         }
     }
+    */
 
 }

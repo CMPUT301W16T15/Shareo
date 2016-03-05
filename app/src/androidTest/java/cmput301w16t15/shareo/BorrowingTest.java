@@ -26,6 +26,7 @@ public class BorrowingTest extends ActivityInstrumentationTestCase2 {
         super(MainActivity.class);
     }
 
+    /*
     public void initializeTestData() {
         borrower1 = new User("Jack");
         borrower2 = new User("John");
@@ -75,6 +76,7 @@ public class BorrowingTest extends ActivityInstrumentationTestCase2 {
         assertTrue(borrower1.getBorrowedThings().contains(t2));
         assertTrue(borrower2.getBorrowedThings().contains(t3));
     }
+    */
 
 
 
