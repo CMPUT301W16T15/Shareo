@@ -5,6 +5,7 @@ import android.test.ActivityInstrumentationTestCase2;
 import mvc.Bid;
 import mvc.Game;
 import mvc.Thing;
+import mvc.exceptions.NullIDException;
 
 /**
  * Created by Larin on 2016/2/10.
@@ -58,7 +59,12 @@ public class ThingsTest extends ActivityInstrumentationTestCase2{
     public void testBorrowThing() {
         String borrower = "John";
         Thing t = new Game("Catan", "Great Game", "Bob");
-        Bid winningBid = new Bid(borrower, t.getID(), 10);
+        Bid winningBid = null;
+        try {
+            winningBid = new Bid(borrower, t.getJestID(), 10);
+        } catch (NullIDException e) {
+            fail();
+        }
         t.borrow(winningBid);
         assertEquals(t.getAcceptedBid(), winningBid);
         assertEquals(t.getStatus(), Thing.Status.BORROWED);
@@ -72,7 +78,12 @@ public class ThingsTest extends ActivityInstrumentationTestCase2{
     {
         String borrower = "John";
         Thing t = new Game("Catan", "Great Game", "Bob");
-        Bid winningBid = new Bid(borrower, t.getID(), 10);
+        Bid winningBid = null;
+        try {
+            winningBid = new Bid(borrower, t.getJestID(), 10);
+        } catch (NullIDException e) {
+            fail();
+        }
         t.borrow(winningBid);
         t.returnThing();
         assertEquals(t.getStatus(), Thing.Status.AVAILABLE);
