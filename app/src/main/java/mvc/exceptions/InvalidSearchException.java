@@ -1,4 +1,4 @@
-package mvc;
+package mvc.exceptions;
 
 /**
  * Created by bpharris on 2/12/16.

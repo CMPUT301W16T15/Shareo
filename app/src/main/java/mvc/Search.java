@@ -2,6 +2,8 @@ package mvc;
 
 import java.util.List;
 
+import mvc.exceptions.InvalidSearchException;
+
 /**
  * Created by anonymous on 2/12/2016.
  */

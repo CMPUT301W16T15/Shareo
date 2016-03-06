@@ -1,11 +1,18 @@
 package mvc;
 
+import io.searchbox.annotations.JestId;
+
 /**
  * Created by A on 2016-02-10.
  */
-public class Bid {
-    private final String bidder;
-    private final String ThingID;
+public class Bid extends JestData<ShareoData> {
+
+    private final String bidderID;
+    transient private User bidder;
+
+    private final String thingID;
+    transient private Thing thing;
+
     private final int centsPerHour;
 
     /**
@@ -22,12 +29,22 @@ public class Bid {
      * @param centsPerHour The value of the bid, in cents per hour.
      */
     public Bid(String username, String thingID, int centsPerHour) {
-        this.bidder = username;
-        this.ThingID = thingID;
+        this.bidderID = username;
+        this.thingID = thingID;
         this.centsPerHour = centsPerHour;
     }
 
-    public String getThingID() { return ThingID; }
-    public String getBidder() { return bidder; }
+    public Thing getThing() {
+        if (thing == null) {
+            // TODO read thing from getDataSource().
+        }
+        return thing;
+    }
+    public User getBidder() {
+        if (bidder == null) {
+            // TODO read bidder from getDataSource().
+        }
+        return bidder;
+    }
     public int getBidAmount() { return centsPerHour; }
 }

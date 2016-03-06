@@ -3,26 +3,22 @@ package mvc;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.searchbox.annotations.JestId;
-
 /**
  * Created by A on 2016-02-10.
  */
-public abstract class Thing {
-    @JestId
-    private String ID;
+public abstract class Thing extends JestData<ShareoData> {
 
+    private String name;
     private String description;
     private Status status;
 
-    private String owner;
-    private String name;
-    private Bid acceptedBid;
-    private List<Bid> bids;
+    private String ownerID;
+    private transient User owner;
 
-    public String getID() {
-        return ID;
-    }
+    private List<String> bidIDs;
+    private transient List<Bid> bids;
+    private String acceptedBidID;
+    private transient Bid acceptedBid;
 
 
     public enum Status {AVAILABLE, BIDDED, BORROWED}
@@ -34,7 +30,7 @@ public abstract class Thing {
     public Thing(String gameName, String descrption, String owner, Status status) {
         this.status = status;
         this.description = description;
-        this.owner = owner;
+        this.ownerID = owner;
         this.name = gameName;
         this.bids = new ArrayList<>();
     }
@@ -60,13 +56,26 @@ public abstract class Thing {
         this.status = Status.AVAILABLE;
     }
 
-    public String getOwner() { return owner; }
-    public Bid getAcceptedBid() { return acceptedBid; }
+    public User getOwner() {
+        if (owner == null) {
+            // TODO load user from getDataSource().
+        }
+        return owner;
+    }
+
+    public Bid getAcceptedBid() {
+        if (acceptedBid == null) {
+            // TODO load bid from getDataSource().
+        }
+        return acceptedBid;
+    }
     public Status getStatus() { return status; }
-    public List<Bid> getBids() { return bids; }
-    public static List<Thing> getAllThings() { return null; }
-    public static List<Thing> getAllUnborrowedThings(List <Thing> listToFilter) { return null; }
-    public List<Thing> getAllBorrowedThings(List <Thing> listToFilter) { return null; }
+    public List<Bid> getBids() {
+        if (bids == null) {
+            // TODO load bids from getDataSource().
+        }
+        return bids;
+    }
 
     public String getDescription() {
         return description;
@@ -76,18 +85,11 @@ public abstract class Thing {
         return name;
     }
 
-    public void addBid(User bidder, int centsPerHour) throws ThingUnavailableException {
-        Bid bid = new Bid(bidder.getName(), this.getID(), centsPerHour);
-    }
-
     public void addBid(Bid bid) {
         // protect from duplicates
         if (!bids.contains(bid)) {
-            if (bids.size() == 0)
-            {
-                status = Status.BIDDED;
-            }
             bids.add(bid);
+            status = Status.BIDDED;
         }
     }
 }

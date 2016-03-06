@@ -1,24 +1,31 @@
 package mvc;
 
 
+import org.apache.commons.lang3.ObjectUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
 import io.searchbox.annotations.JestId;
+import mvc.exceptions.NullIDException;
+import mvc.exceptions.ThingUnavailableException;
 
 /**
  * Created by A on 2016-02-10.
  */
-public class User extends Observable {
-    @JestId
-    private String ID;
+public class User extends JestData<ShareoData> {
 
     private final String username;
 
-    private List<Thing> owned;
-    private List<Bid> bids;
-    private List<Thing> borrowed;
+    private List<String> ownedIDs;
+    transient private List<Thing> owned;
+
+    private List<String> bidIDs;
+    transient private List<Bid> bids;
+
+    private List<String> borrowedIDs;
+    transient private List<Thing> borrowed;
 
     public User(String username) {
         this.username = username;
@@ -31,22 +38,31 @@ public class User extends Observable {
 
     /**
      * Add the {@link Bid} to the user. This verifies that the bid is not already in the user, and
-     * that the bid is made by this user.
+     * that the bid is made by this user. The bids are transient; the only thing stored
+     * consistently is a list of the IDs of the bids. This means that the bids should be have an ID
+     * before adding this item to the user.
      * @param bid
+     * @throws NullIDException The bid has no ID.
      */
-    public void addBid(Bid bid) {
+    public void addBid(Bid bid) throws NullIDException {
+        bidIDs.add(bid.getJestID());
         bids.add(bid);
     }
 
-    public List<Bid> getBids() { return bids; }
-
-    public void addOwnedThing(Thing thing) {
-        owned.add(thing);
-        setChanged();
-        notifyObservers();
+    public List<Bid> getBids() {
+        if (bids.size() != bidIDs.size()) {
+            // TODO load bids from getDataSource().
+        }
+        return bids;
     }
 
-    protected void addOwnedThingSimple(Thing thing) {
+    public void addOwnedThing(Thing thing) throws NullIDException {
+        // TODO change thing owner to this user.
+        addOwnedThingSimple(thing);
+    }
+
+    protected void addOwnedThingSimple(Thing thing) throws NullIDException {
+        ownedIDs.add(thing.getJestID());
         owned.add(thing);
     }
 
@@ -83,20 +99,4 @@ public class User extends Observable {
     }
 
     public void setReturned(Thing thing) {}
-
-    public void setID(String ID) {
-        this.ID = ID;
-    }
-
-    public String getID() {
-        return ID;
-    }
-
-    @Override
-    public boolean equals(Object other) {
-        if (other instanceof User) {
-            return ((User) other).getID().equals(this.getID());
-        }
-        return false;
-    }
 }

@@ -1,16 +1,11 @@
 package cmput301w16t15.shareo;
 
 import android.test.ActivityInstrumentationTestCase2;
-import android.test.InstrumentationTestCase;
-import android.util.Log;
 
-import io.searchbox.core.Index;
-import mvc.Bid;
-import mvc.Game;
 import mvc.ShareoData;
-import mvc.Thing;
 import mvc.User;
-import mvc.UsernameAlreadyExistsException;
+import mvc.exceptions.NullIDException;
+import mvc.exceptions.UsernameAlreadyExistsException;
 
 /**
  * Created by A on 2016-02-24.
@@ -26,22 +21,29 @@ public class ModelTest extends ActivityInstrumentationTestCase2 {
         String username = "Test";
         User u1 = new User(username);
 
-        data.removeUser(u1);
+        try {
+            data.removeUser(u1);
+        } catch (NullIDException e) {
+            fail();
+        }
         try {
             data.addUser(u1);
         } catch (UsernameAlreadyExistsException e) {
             fail("Test username already in data");
-    }
+        }
         User u = data.getUser(username);
         assertTrue(u != null);
-        Log.println(Log.DEBUG, "ModelTest", "Username: " + u.getName());
-        Log.println(Log.DEBUG, "ModelTest", "ID: " + u.getID());
-        Log.println(Log.DEBUG, "ModelTest", "Username: " + u1.getName());
-        Log.println(Log.DEBUG, "ModelTest", "ID: " + u1.getID());
+//        Log.println(Log.DEBUG, "ModelTest", "Username: " + u.getName());
+//        Log.println(Log.DEBUG, "ModelTest", "ID: " + u.getID());
+//        Log.println(Log.DEBUG, "ModelTest", "Username: " + u1.getName());
+//        Log.println(Log.DEBUG, "ModelTest", "ID: " + u1.getID());
         assertTrue(u.equals(u1));
-
-        data.removeUser(u1);
-        assertTrue(data.getUser(username) == null);
+        try {
+            data.removeUser(u1);
+            assertTrue(data.getUser(username) == null);
+        } catch (NullIDException e) {
+            fail();
+        }
     }
 
     /*

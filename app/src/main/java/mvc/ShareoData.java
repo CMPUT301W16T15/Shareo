@@ -19,10 +19,9 @@ import io.searchbox.core.Delete;
 import io.searchbox.core.DocumentResult;
 import io.searchbox.core.Get;
 import io.searchbox.core.Index;
-import io.searchbox.core.Search;
-import io.searchbox.core.SearchResult;
 import io.searchbox.core.Update;
-import io.searchbox.indices.template.PutTemplate;
+import mvc.exceptions.NullIDException;
+import mvc.exceptions.UsernameAlreadyExistsException;
 
 /**
  * <p>
@@ -79,7 +78,7 @@ public class ShareoData extends MVCModel {
         try {
             DocumentResult result = jestClient.execute(index);
             if (result.isSucceeded()) {
-                user.setID(result.getId());
+                user.setJestID(result.getId());
             } else {
                 // TODO what if we fail?
                 Log.e("TODO", "Unable to save user to server.");
@@ -176,13 +175,14 @@ public class ShareoData extends MVCModel {
      * Update a user that is already in the database, by using an updated {@link User} object. The
      * user with a matching name will be updated.
      * @param user User, matching the name of the user to be updated.
+     * @throws NullIDException The user has no JestID.
      * @see #addUser(User)
      * @see #removeUser(User)
      * @see #getUser(String)
      */
-    public void updateUser(User user) {
+    public void updateUser(User user) throws NullIDException {
         //TODO the user will need to be updated on server.
-        Update update = new Update.Builder(user).index(ELASTIC_INDEX).type(ELASTIC_USER_TYPE).id(user.getID()).build();
+        Update update = new Update.Builder(user).index(ELASTIC_INDEX).type(ELASTIC_USER_TYPE).id(user.getJestID()).build();
 
         // How to update, instead of add?
         try {
@@ -217,15 +217,16 @@ public class ShareoData extends MVCModel {
      * meaning any things that are owned by it must also be removed, if desired. It would be
      * quite undesireable to leave {@link Thing}s and {@link Bid}s with dangling references.
      * @param user User to remove from the database.
+     * @throws NullIDException The user has no JestID
      * @see #addUser(User)
      * @see #updateUser(User)
      * @see #getUser(String)
      * @see #removeThing(Thing)
      * @see #removeBid(Bid)
      */
-    public void removeUser(User user) {
+    public void removeUser(User user) throws NullIDException {
         // TODO implement removal of user
-        Delete delete = new Delete.Builder(user.getID()).index(ELASTIC_INDEX).type(ELASTIC_USER_TYPE).build();
+        Delete delete = new Delete.Builder(user.getJestID()).index(ELASTIC_INDEX).type(ELASTIC_USER_TYPE).build();
 
         try {
             DocumentResult result = jestClient.execute(delete);

@@ -44,7 +44,11 @@ public class AddGameFragment extends DialogFragment {
         category = editTextCategory.getText().toString();
         User user = AppUserSingleton.getInstance().getUser();
         Game game = new Game(gameName, gameDescription, user.getName());
-        user.addOwnedThing(game);
+        try {
+            user.addOwnedThing(game);
+        } catch (mvc.exceptions.NullIDException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

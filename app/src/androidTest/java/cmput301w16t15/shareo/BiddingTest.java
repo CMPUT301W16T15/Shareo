@@ -2,13 +2,7 @@ package cmput301w16t15.shareo;
 
 import android.test.ActivityInstrumentationTestCase2;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import mvc.Bid;
-import mvc.Game;
 import mvc.Thing;
-import mvc.ThingUnavailableException;
 import mvc.User;
 
 /**
