@@ -162,7 +162,13 @@
             </EditText>
         </LinearLayout>
 
-
+        <ImageButton
+            android:id="@+id/gamePicture"
+            android:scaleType="center"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
 </RelativeLayout>

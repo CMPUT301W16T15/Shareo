@@ -11,6 +11,7 @@ public abstract class Thing extends JestData<ShareoData> {
     private String name;
     private String description;
     private Status status;
+    private PhotoModel photo;
 
     private String ownerID;
     private transient User owner;
@@ -91,5 +92,10 @@ public abstract class Thing extends JestData<ShareoData> {
             bids.add(bid);
             status = Status.BIDDED;
         }
+    }
+
+    public void setPhoto(PhotoModel p)
+    {
+        this.photo = p;
     }
 }
