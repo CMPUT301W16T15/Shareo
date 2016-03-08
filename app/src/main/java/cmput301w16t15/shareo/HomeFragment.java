@@ -25,8 +25,6 @@ import mvc.Thing;
 import mvc.User;
 
 public class HomeFragment extends Fragment implements Observer {
-    CharSequence[] options = new CharSequence[]{"Available", "Borrowing", "Lending"};
-
     private ImageView createGameView;
     private User mUser;
 
@@ -99,7 +97,7 @@ public class HomeFragment extends Fragment implements Observer {
         mEmptyMessage = (TextView) v.findViewById(R.id.empty_notice);
 
         MultiStateToggleButton button = (MultiStateToggleButton) v.findViewById(R.id.mstb_multi_id);
-        button.setElements(options);
+        button.setElements(R.array.home_choices, 0);
         button.setOnValueChangedListener(new ToggleButton.OnValueChangedListener() {
             @Override
             public void onValueChanged(int position) {

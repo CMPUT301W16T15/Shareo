@@ -43,8 +43,13 @@
     <string name="textViewSearchGame">Game Search</string>
     <string name="textViewCreateProfile">Create User Profile</string>
 
-    <string-array name="filler">
-        <item>Earth</item>
-        <item>Mars</item>
+    <string-array name="home_choices">
+        <item>Available</item>
+        <item>Borrowing</item>
+        <item>Lending</item>
+    </string-array>
+    <string-array name="bids_choices">
+        <item>Owned</item>
+        <item>My Bids</item>
     </string-array>
 </resources>

@@ -25,9 +25,6 @@ import mvc.User;
 
 
 public class BidsFragment extends Fragment implements Observer {
-
-    CharSequence[] options = new CharSequence[]{"Owned Items Bids", "My Bids On Others"};
-
     private User mUser;
 
     private ListView mList;
@@ -87,9 +84,9 @@ public class BidsFragment extends Fragment implements Observer {
         View v = inflater.inflate(R.layout.fragment_bids, container, false);
         mList = (ListView) v.findViewById(R.id.listview);
         mEmptyMessage = (TextView) v.findViewById(R.id.empty_notice);
-        MultiStateToggleButton button = (MultiStateToggleButton) v.findViewById(R.id.mstb_multi_id);
 
-        button.setElements(options);
+        MultiStateToggleButton button = (MultiStateToggleButton) v.findViewById(R.id.mstb_multi_id);
+        button.setElements(R.array.bids_choices, 0);
         button.setOnValueChangedListener(new ToggleButton.OnValueChangedListener() {
             @Override
             public void onValueChanged(int position) {
