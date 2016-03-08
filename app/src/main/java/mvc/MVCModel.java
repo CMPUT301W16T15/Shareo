@@ -1,10 +1,24 @@
 package mvc;
 
+import java.util.List;
+
 /**
  * Created by A on 2016-02-10.
  */
 public abstract class MVCModel {
-    public void addView(MVCView view) {}
-    public void removeView(MVCView view) {}
-    public void notifyViews() {}
+    List<MVCView> views;
+
+    public void addView(MVCView view) {
+        views.add(view);
+    }
+
+    public void removeView(MVCView view) {
+        views.remove(view);
+    }
+
+    public void notifyViews() {
+        for (MVCView view : views) {
+            view.updateView(this);
+        }
+    }
 }

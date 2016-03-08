@@ -54,7 +54,7 @@ public class ShareoData extends MVCModel {
     }
 
     protected ShareoData() {
-        // TODO make singleton
+
     }
 
     /**
@@ -147,6 +147,8 @@ public class ShareoData extends MVCModel {
      */
     public void updateUser(User user) throws NullIDException {
         updateByObject(ELASTIC_INDEX, ELASTIC_USER_TYPE, user);
+
+        notifyViews();
     }
 
     /**
@@ -160,10 +162,14 @@ public class ShareoData extends MVCModel {
      */
     public void updateGame(Game thing) throws NullIDException {
         updateByObject(ELASTIC_INDEX, ELASTIC_GAME_TYPE, thing);
+
+        notifyViews();
     }
 
     public void updateBid(Bid bid) throws NullIDException{
         updateByObject(ELASTIC_INDEX, ELASTIC_BID_TYPE, bid);
+
+        notifyViews();
     }
 
     /**
