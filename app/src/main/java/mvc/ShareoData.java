@@ -282,16 +282,17 @@ public class ShareoData extends MVCModel {
     }
 
     protected void updateByObject(String index, String type, JestData<ShareoData> o) throws NullIDException {
-        Update update = new Update.Builder(o).index(index).type(type).id(o.getJestID()).build();
+        Index put = new Index.Builder(o).index(index).type(type).id(o.getJestID()).build();
 
         try {
-            DocumentResult result = jestClient.execute(update);
+            DocumentResult result = jestClient.execute(put);
             if (result.isSucceeded()) {
 
             } else {
                 // TODO what if failed?
                 // TODO seems unable to update.
                 Log.e("TODO", "Failed to update " + o.getClass().getName()  + ". Response Code: " + result.getResponseCode());
+                Log.e("TODO", "Failed update: " + put.getURI());
             }
         } catch (IOException e) {
             // TODO what to do if failed?

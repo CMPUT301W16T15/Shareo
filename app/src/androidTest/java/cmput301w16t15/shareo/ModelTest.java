@@ -63,6 +63,16 @@ public class ModelTest extends ActivityInstrumentationTestCase2 {
             data.updateUser(joe);
             data.updateUser(sally);
             data.updateUser(fred);
+
+            data.updateGame(t1);
+            data.updateGame(t2);
+            data.updateGame(t3);
+            data.updateGame(t4);
+
+//            assertTrue(t1.getOwner().equals(joe));
+//            assertTrue(t2.getOwner().equals(joe));
+//            assertTrue(t3.getOwner().equals(sally));
+//            assertTrue(t4.getOwner().equals(fred));
         } catch (NullIDException e) {
             e.printStackTrace();
         }

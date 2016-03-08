@@ -64,7 +64,7 @@ public class User extends JestData<ShareoData> {
     }
 
     public void addOwnedThing(Thing thing) throws NullIDException {
-        // TODO change thing owner to this user.
+        thing.setOwnerSimple(this);
         addOwnedThingSimple(thing);
     }
 

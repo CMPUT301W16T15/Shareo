@@ -59,8 +59,28 @@ public abstract class Thing extends JestData<ShareoData> {
         this.status = Status.AVAILABLE;
     }
 
+    public void setOwner(User owner) throws NullIDException {
+        if (this.owner == null) {
+            getOwner();
+        }
+
+        if (this.owner != null) {
+            owner.removeOwnedThing(this);
+        }
+
+        if (owner != null) {
+            owner.addOwnedThingSimple(this);
+            setOwnerSimple(owner);
+        }
+    }
+
+    public void setOwnerSimple(User owner) {
+        this.ownerID = owner.getJestID();
+        this.owner = owner;
+    }
+
     public User getOwner() {
-        if (owner == null) {
+        if (owner == null && ownerID != null) {
             owner = getDataSource().getUser(ownerID);
         }
         return owner;

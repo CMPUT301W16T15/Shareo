@@ -12,16 +12,8 @@ public abstract class JestData<M extends MVCModel> extends Observable {
     @JestId
     private String JestID;
 
-    private M dataSource;
+    private transient M dataSource;
     private static MVCModel defaultDataSource = ShareoData.getInstance();
-
-    public JestData() {
-        try {
-            dataSource = (M)defaultDataSource;
-        } catch (ClassCastException e) {
-            dataSource = null;
-        }
-    }
 
     /**
      * Returns the JestID associated with this object. Never returns null, but will instead throw
@@ -41,6 +33,13 @@ public abstract class JestData<M extends MVCModel> extends Observable {
     }
 
     public M getDataSource() {
+        if (dataSource == null) {
+            try {
+                dataSource = (M) defaultDataSource;
+            } catch (ClassCastException e) {
+                dataSource = null;
+            }
+        }
         return dataSource;
     }
 
