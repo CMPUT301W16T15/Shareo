@@ -1,5 +1,6 @@
 package mvc;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -7,6 +8,10 @@ import java.util.List;
  */
 public abstract class MVCModel {
     List<MVCView> views;
+
+    public MVCModel() {
+        views = new ArrayList<>();
+    }
 
     public void addView(MVCView view) {
         views.add(view);
