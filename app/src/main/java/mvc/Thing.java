@@ -112,6 +112,9 @@ public abstract class Thing extends JestData<ShareoData> {
     }
 
     public void addBid(Bid bid) {
+        if (bids == null) {
+            bids = getBids();
+        }
         // protect from duplicates
         if (!bids.contains(bid)) {
             bids.add(bid);

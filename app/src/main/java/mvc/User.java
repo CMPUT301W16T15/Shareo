@@ -52,13 +52,21 @@ public class User extends JestData<ShareoData> {
      * @throws NullIDException The bid has no ID.
      */
     public void addBid(Bid bid) throws NullIDException {
-        bidIDs.add(bid.getJestID());
-        bids.add(bid);
+        if (!bidIDs.contains(bid.getJestID())) {
+            bidIDs.add(bid.getJestID());
+            if (bids == null) {
+                bids = getBids();
+            }
+            bids.add(bid);
+        }
     }
 
     public List<Bid> getBids() {
         if (bids == null) {
-            // TODO load bids from getDataSource().
+            bids = new ArrayList<>(bidIDs.size());
+            for (String ID : bidIDs) {
+                bids.add(getDataSource().getBid(ID));
+            }
         }
         return bids;
     }
@@ -77,8 +85,11 @@ public class User extends JestData<ShareoData> {
     }
 
     public boolean removeOwnedThing(Thing thing) {
-        // TODO remove owner from thing
-        return removeOwnedThingSimple(thing);
+        if (removeOwnedThingSimple(thing)) {
+            thing.setOwnerSimple(null);
+            return true;
+        }
+        return false;
     }
 
     protected boolean removeOwnedThingSimple(Thing thing) {
