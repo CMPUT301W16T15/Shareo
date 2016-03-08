@@ -7,11 +7,7 @@ import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 
 import io.searchbox.client.JestResult;
@@ -39,33 +35,39 @@ import mvc.exceptions.UsernameAlreadyExistsException;
  * </p>
  */
 public class ShareoData extends MVCModel {
-    private Map<String, User> users;
-    private Set<Thing> things;
-    private Set<Bid> bids;
 
     private static final String SERVER_URL = "http://cmput301.softwareprocess.es:8080";
     private static final String ELASTIC_INDEX = "shareo";
     private static final String ELASTIC_USER_TYPE = "user";
+    private static final String ELASTIC_GAME_TYPE = "game";
+    private static final String ELASTIC_BID_TYPE = "bid";
     private static JestDroidClient jestClient;
     static {createJestClient();}
 
-    public ShareoData() {
-        users = new HashMap<>();
-        things = new HashSet<>();
-        bids = new HashSet<>();
+    private static ShareoData instance;
+
+    public static ShareoData getInstance() {
+        if (instance == null) {
+            instance = new ShareoData();
+        }
+        return instance;
+    }
+
+    protected ShareoData() {
+        // TODO make singleton
     }
 
     /**
      * Add a new {@link User} to the database. If a user already exists with the same name,
      * the call will fail. This only adds a user to the database, meaning any things that are
-     * owned by it must also be added, separately, using {@link #addThing(Thing)}. The same goes for
+     * owned by it must also be added, separately, using {@link #addGame(Game)}. The same goes for
      * any bids placed by the user, using {@link #addBid(Bid)}. The user's id will be its username.
      * @param user User to add to the database.
      * @throws UsernameAlreadyExistsException A user with the same name already exists.
      * @see #removeUser(User)
      * @see #updateUser(User)
      * @see #getUser(String)
-     * @see #addThing(Thing)
+     * @see #addGame(Game)
      * @see #addBid(Bid)
      */
     public void addUser(User user) throws UsernameAlreadyExistsException {
@@ -73,43 +75,22 @@ public class ShareoData extends MVCModel {
             throw new UsernameAlreadyExistsException();
         }
 
-        Index index = new Index.Builder(user).index(ELASTIC_INDEX).type(ELASTIC_USER_TYPE).id(user.getName()).build();
-
-        try {
-            DocumentResult result = jestClient.execute(index);
-            if (result.isSucceeded()) {
-                user.setJestID(result.getId());
-            } else {
-                // TODO what if we fail?
-                Log.e("TODO", "Unable to save user to server.");
-            }
-        } catch (IOException e) {
-            // TODO do something clever, like offline behavior.
-            e.printStackTrace();
-        }
-        /*
-        if (users.containsKey(user.getName())) {
-            users.put(user.getName(), user);
-        } else {
-            throw new UsernameAlreadyExistsException();
-        }
-        */
+        addByObject(ELASTIC_INDEX, ELASTIC_USER_TYPE, user.getJestID(), user);
     }
 
     /**
      * Add a new {@link Thing} to the database. This only adds the thing to the database, meaning
      * that the owner, borrower, and bids must be added separately.
      * @param thing Thing to add to the database.
-     * @see #removeThing(Thing)
-     * @see #updateThing(Thing)
-     * @see #getThing(String)
-     * @see #getThingsByDescrption(String[])
+     * @see #removeGame(Game)
+     * @see #updateGame(Game)
+     * @see #getGame(String)
+     * @see #getGamesByDescrption(String[])
      * @see #addUser(User)
      * @see #addBid(Bid)
      */
-    public void addThing(Thing thing) {
-        // TODO this will add to server instead.
-        things.add(thing);
+    public void addGame(Game thing) {
+        addByObject(ELASTIC_INDEX, ELASTIC_GAME_TYPE, thing);
     }
 
     /**
@@ -118,11 +99,10 @@ public class ShareoData extends MVCModel {
      * @param bid Bid to add to the database.
      * @see #removeBid(Bid)
      * @see #addUser(User)
-     * @see #addThing(Thing)
+     * @see #addGame(Game)
      */
     public void addBid(Bid bid) {
-        // TODO this will add to server instead.
-        bids.add(bid);
+        addByObject(ELASTIC_INDEX, ELASTIC_BID_TYPE, bid);
     }
 
     /**
@@ -134,30 +114,15 @@ public class ShareoData extends MVCModel {
      * @see #updateUser(User)
      */
     public User getUser(String name) {
-        //String query = "{\"query\":{\"match\":{\"username\":\"" + name + "\"}}}";
-        //Search search = new Search.Builder(query).addIndex(ELASTIC_INDEX).addType(ELASTIC_USER_TYPE).build();
-        Get get = new Get.Builder(ELASTIC_INDEX, name).type(ELASTIC_USER_TYPE).build();
-
-        try {
-            JestResult result = jestClient.execute(get);
-            if (result.isSucceeded()) {
-                // TODO this seems to always have no results. Find out why.
-                return result.getSourceAsObject(User.class);
-            } else {
-                // TODO what if we fail?
-                return null;
-            }
-        } catch (IOException e) {
-            // TODO what if we fail?
-            e.printStackTrace();
-        }
-
-        return null;
+        return getByID(ELASTIC_INDEX, ELASTIC_USER_TYPE, name, User.class);
     }
 
-    public Thing getThing(String ID) {
-        // TODO this will query the server, and get a thing by its ID
-        return null;
+    public Game getGame(String ID) {
+        return getByID(ELASTIC_INDEX, ELASTIC_GAME_TYPE, ID, Game.class);
+    }
+
+    public Bid getBid(String ID) {
+        return getByID(ELASTIC_INDEX, ELASTIC_BID_TYPE, ID, Bid.class);
     }
 
     /**
@@ -166,7 +131,7 @@ public class ShareoData extends MVCModel {
      * @param keywords list of keywords to match.
      * @return A list of things that have matching words in their descrption.
      */
-    public List<Thing> getThingsByDescrption(String[] keywords) {
+    public List<Game> getGamesByDescrption(String[] keywords) {
         // TODO this will use elastic search on server.
         return null;
     }
@@ -181,35 +146,24 @@ public class ShareoData extends MVCModel {
      * @see #getUser(String)
      */
     public void updateUser(User user) throws NullIDException {
-        //TODO the user will need to be updated on server.
-        Update update = new Update.Builder(user).index(ELASTIC_INDEX).type(ELASTIC_USER_TYPE).id(user.getJestID()).build();
-
-        // How to update, instead of add?
-        try {
-            DocumentResult result = jestClient.execute(update);
-            if (result.isSucceeded()) {
-
-            } else {
-                // TODO what if failed?
-                Log.e("TODO", "Failed to update user");
-            }
-        } catch (IOException e) {
-            // TODO what to do if failed?
-            e.printStackTrace();
-        }
+        updateByObject(ELASTIC_INDEX, ELASTIC_USER_TYPE, user);
     }
 
     /**
      * Update a thing that is already in the database, by using an updated {@link Thing} object.
      * The thing with a matching id will be updated.
      * @param thing Thing, matching the id of the thing to be updated.
-     * @see #addThing(Thing)
-     * @see #removeThing(Thing)
-     * @see #getThing(String)
-     * @see #getThingsByDescrption(String[])
+     * @see #addGame(Game)
+     * @see #removeGame(Game)
+     * @see #getGame(String)
+     * @see #getGamesByDescrption(String[])
      */
-    public void updateThing(Thing thing) {
-        //TODO the thing will need to be updated on server.
+    public void updateGame(Game thing) throws NullIDException {
+        updateByObject(ELASTIC_INDEX, ELASTIC_GAME_TYPE, thing);
+    }
+
+    public void updateBid(Bid bid) throws NullIDException{
+        updateByObject(ELASTIC_INDEX, ELASTIC_BID_TYPE, bid);
     }
 
     /**
@@ -221,25 +175,11 @@ public class ShareoData extends MVCModel {
      * @see #addUser(User)
      * @see #updateUser(User)
      * @see #getUser(String)
-     * @see #removeThing(Thing)
+     * @see #removeGame(Game)
      * @see #removeBid(Bid)
      */
     public void removeUser(User user) throws NullIDException {
-        // TODO implement removal of user
-        Delete delete = new Delete.Builder(user.getJestID()).index(ELASTIC_INDEX).type(ELASTIC_USER_TYPE).build();
-
-        try {
-            DocumentResult result = jestClient.execute(delete);
-            if (result.isSucceeded()) {
-
-            } else {
-                // TODO what if failed?
-                Log.e("TODO", "Failed to delete user");
-            }
-        } catch (IOException e) {
-            // TODO what to do if failed?
-            e.printStackTrace();
-        }
+        removeByObject(ELASTIC_INDEX, ELASTIC_USER_TYPE, user);
     }
 
     /**
@@ -247,14 +187,14 @@ public class ShareoData extends MVCModel {
      * meaning any owners and borrowers should also be removed, if desired. It would be
      * quite undesireable to leave {@link Bid}s with dangling references.
      * @param thing Thing to remove from the database.
-     * @see #addThing(Thing)
-     * @see #updateThing(Thing))
-     * @see #getThingsByDescrption(String[])
+     * @see #addGame(Game)
+     * @see #updateGame(Game) )
+     * @see #getGamesByDescrption(String[])
      * @see #removeUser(User)
      * @see #removeBid(Bid)
      */
-    public void removeThing(Thing thing) {
-        // TODO implement removal of thing
+    public void removeGame(Game thing) throws NullIDException {
+        removeByObject(ELASTIC_INDEX, ELASTIC_GAME_TYPE, thing);
     }
 
     /**
@@ -262,22 +202,111 @@ public class ShareoData extends MVCModel {
      * meaning any owners and borrowers should also be removed, if desired.
      * @param bid Bid to remove from the database.
      * @see #addBid(Bid)
-     * @see #getThingsByDescrption(String[])
+     * @see #getGamesByDescrption(String[])
      * @see #removeUser(User)
-     * @see #removeThing(Thing)
+     * @see #removeGame(Game)
      */
-    public void removeBid(Bid bid) {
-        //TODO implement removal of bid
+    public void removeBid(Bid bid) throws NullIDException {
+        removeByObject(ELASTIC_INDEX, ELASTIC_BID_TYPE, bid);
     }
 
     private static void createJestClient() {
         if (jestClient == null) {
-            DroidClientConfig.Builder builder = new DroidClientConfig.Builder("http://cmput301.softwareprocess.es:8080");
+            DroidClientConfig.Builder builder = new DroidClientConfig.Builder(SERVER_URL);
             DroidClientConfig config = builder.build();
 
             JestClientFactory factory = new JestClientFactory();
             factory.setDroidClientConfig(config);
             jestClient = (JestDroidClient) factory.getObject();
+        }
+    }
+
+    protected void addByObject(String index, String type, JestData<ShareoData> o) {
+        Index post = new Index.Builder(o).index(index).type(type).build();
+
+        try {
+            DocumentResult result = jestClient.execute(post);
+            if (result.isSucceeded()) {
+                o.setJestID(result.getId());
+            } else {
+                // TODO what if we fail?
+                Log.e("TODO", "Unable to save " + o.getClass().getName() + " to server.");
+            }
+        } catch (IOException e) {
+            // TODO do something clever, like offline behavior.
+            e.printStackTrace();
+        }
+    }
+
+    protected void addByObject(String index, String type, String ID, JestData<ShareoData> o) {
+        Index post = new Index.Builder(o).index(index).type(type).id(ID).build();
+
+        try {
+            DocumentResult result = jestClient.execute(post);
+            if (result.isSucceeded()) {
+                o.setJestID(result.getId());
+            } else {
+                // TODO what if we fail?
+                Log.e("TODO", "Unable to save " + o.getClass().getName() + " to server.");
+            }
+        } catch (IOException e) {
+            // TODO do something clever, like offline behavior.
+            e.printStackTrace();
+        }
+    }
+
+    protected <T> T getByID(String index, String type, String ID, Class<T> classType) {
+        Get get = new Get.Builder(index, ID).type(type).build();
+
+        try {
+            JestResult result = jestClient.execute(get);
+            if (result.isSucceeded()) {
+                return result.getSourceAsObject(classType);
+            } else {
+                // TODO what if we fail?
+                Log.e("TODO", "Unable to get " + classType.getName() + " with ID=" + ID);
+                return null;
+            }
+        } catch (IOException e) {
+            // TODO what if we fail?
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    protected void updateByObject(String index, String type, JestData<ShareoData> o) throws NullIDException {
+        Update update = new Update.Builder(o).index(index).type(type).id(o.getJestID()).build();
+
+        try {
+            DocumentResult result = jestClient.execute(update);
+            if (result.isSucceeded()) {
+
+            } else {
+                // TODO what if failed?
+                // TODO seems unable to update.
+                Log.e("TODO", "Failed to update " + o.getClass().getName()  + ". Response Code: " + result.getResponseCode());
+            }
+        } catch (IOException e) {
+            // TODO what to do if failed?
+            e.printStackTrace();
+        }
+    }
+
+    protected void removeByObject(String index, String type, JestData<ShareoData> o) throws NullIDException {
+        Delete delete = new Delete.Builder(o.getJestID()).index(index).type(type).build();
+
+        try {
+            DocumentResult result = jestClient.execute(delete);
+            if (result.isSucceeded()) {
+
+            } else {
+                // TODO what if failed?
+                Log.e("TODO", "Failed to delete " + o.getClass().getName());
+            }
+        } catch (IOException e) {
+            // TODO what to do if failed?
+            e.printStackTrace();
         }
     }
 }

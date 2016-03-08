@@ -6,7 +6,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -21,6 +20,7 @@ import java.io.IOException;
 import mvc.AppUserSingleton;
 import mvc.Game;
 import mvc.PhotoModel;
+import mvc.ShareoData;
 import mvc.User;
 
 /**
@@ -55,11 +55,12 @@ public class AddGameFragment extends DialogFragment {
         numberPlayers = editTextNumberPlayers.getText().toString();
         category = editTextCategory.getText().toString();
         User user = AppUserSingleton.getInstance().getUser();
-        Game game = new Game(gameName, gameDescription, user.getName());
+        Game game = new Game(gameName, gameDescription);
         if (gamePhoto != null)
         {
             game.setPhoto(gamePhoto);
         }
+        ShareoData.getInstance().addGame(game);
         try {
             user.addOwnedThing(game);
         } catch (mvc.exceptions.NullIDException e) {

@@ -2,7 +2,11 @@ package cmput301w16t15.shareo;
 
 import android.test.ActivityInstrumentationTestCase2;
 
+import org.apache.commons.lang3.ObjectUtils;
+
+import mvc.Game;
 import mvc.ShareoData;
+import mvc.Thing;
 import mvc.User;
 import mvc.exceptions.NullIDException;
 import mvc.exceptions.UsernameAlreadyExistsException;
@@ -16,8 +20,82 @@ public class ModelTest extends ActivityInstrumentationTestCase2 {
         super(MainActivity.class);
     }
 
+    public static void populateData() {
+        ShareoData data = ShareoData.getInstance();
+
+        User joe = new User("joe");
+        User sally = new User("sally");
+        User fred = new User("fred");
+
+        try {
+            data.removeUser(joe);
+            data.removeUser(sally);
+            data.removeUser(fred);
+        } catch (NullIDException e) {
+            // should not be possible.
+            e.printStackTrace();
+        }
+
+        try {
+            data.addUser(joe);
+            data.addUser(sally);
+            data.addUser(fred);
+        } catch (UsernameAlreadyExistsException e) {
+            e.printStackTrace();
+        }
+
+        Game t1 = new Game("Game1", "One game to rule them all,");
+        Game t2 = new Game("Game2", "One game to find them,");
+        Game t3 = new Game("Game3", "One game to bring them all,");
+        Game t4 = new Game("Game4", "And in the darkness, bind them.");
+
+        data.addGame(t1);
+        data.addGame(t2);
+        data.addGame(t3);
+        data.addGame(t4);
+
+        try {
+            joe.addOwnedThing(t1);
+            joe.addOwnedThing(t2);
+            sally.addOwnedThing(t3);
+            fred.addOwnedThing(t4);
+
+            data.updateUser(joe);
+            data.updateUser(sally);
+            data.updateUser(fred);
+        } catch (NullIDException e) {
+            e.printStackTrace();
+        }
+
+        // TODO add some bids.
+    }
+
+    public static void testPopulate() {
+        populateData();
+
+        ShareoData data = ShareoData.getInstance();
+
+        User joe = data.getUser("joe");
+        User sally = data.getUser("sally");
+        User fred = data.getUser("fred");
+
+        assertNotNull(joe);
+        assertNotNull(sally);
+        assertNotNull(fred);
+
+        assertNotNull(joe.getOwnedThings());
+        assertNotNull(sally.getOwnedThings());
+        assertNotNull(fred.getOwnedThings());
+
+        assertTrue(joe.getOwnedThings().size() == 2);
+        assertTrue(sally.getOwnedThings().size() == 1);
+        assertTrue(fred.getOwnedThings().size() == 1);
+
+        // TODO assert that correct things are owned.
+    }
+
     public static void testAddRemoveUser() {
-        ShareoData data = new ShareoData();
+        ShareoData data = ShareoData.getInstance();
         String username = "Test";
         User u1 = new User(username);
 
@@ -33,10 +111,6 @@ public class ModelTest extends ActivityInstrumentationTestCase2 {
         }
         User u = data.getUser(username);
         assertTrue(u != null);
-//        Log.println(Log.DEBUG, "ModelTest", "Username: " + u.getName());
-//        Log.println(Log.DEBUG, "ModelTest", "ID: " + u.getID());
-//        Log.println(Log.DEBUG, "ModelTest", "Username: " + u1.getName());
-//        Log.println(Log.DEBUG, "ModelTest", "ID: " + u1.getID());
         assertTrue(u.equals(u1));
         try {
             data.removeUser(u1);

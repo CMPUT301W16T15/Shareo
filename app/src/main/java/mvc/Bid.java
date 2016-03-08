@@ -1,7 +1,5 @@
 package mvc;
 
-import io.searchbox.annotations.JestId;
-
 /**
  * Created by A on 2016-02-10.
  */
@@ -36,13 +34,13 @@ public class Bid extends JestData<ShareoData> {
 
     public Thing getThing() {
         if (thing == null) {
-            // TODO read thing from getDataSource().
+            thing = getDataSource().getGame(thingID);
         }
         return thing;
     }
     public User getBidder() {
         if (bidder == null) {
-            // TODO read bidder from getDataSource().
+            bidder = getDataSource().getUser(bidderID);
         }
         return bidder;
     }

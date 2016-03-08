@@ -1,15 +1,10 @@
 package mvc;
 
 
-import org.apache.commons.lang3.ObjectUtils;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 
-import io.searchbox.annotations.JestId;
 import mvc.exceptions.NullIDException;
-import mvc.exceptions.ThingUnavailableException;
 
 /**
  * Created by A on 2016-02-10.
@@ -18,20 +13,32 @@ public class User extends JestData<ShareoData> {
 
     private final String username;
 
-    private List<String> ownedIDs;
+    private ArrayList<String> ownedIDs;
     transient private List<Thing> owned;
 
-    private List<String> bidIDs;
+    private ArrayList<String> bidIDs;
     transient private List<Bid> bids;
 
-    private List<String> borrowedIDs;
+    private ArrayList<String> borrowedIDs;
     transient private List<Thing> borrowed;
 
     public User(String username) {
         this.username = username;
-        this.owned = new ArrayList<>();
-        this.bids = new ArrayList<>();
-        this.borrowed = new ArrayList<>();
+        this.setJestID(username);
+        this.ownedIDs = new ArrayList<>();
+        this.bidIDs = new ArrayList<>();
+        this.borrowedIDs = new ArrayList<>();
+    }
+
+    @Override
+    public String getJestID() {
+        try {
+            return super.getJestID();
+        } catch (NullIDException e) {
+            // This should be impossible, since the Jest ID is the username.
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public String getName() { return username; }
@@ -50,7 +57,7 @@ public class User extends JestData<ShareoData> {
     }
 
     public List<Bid> getBids() {
-        if (bids.size() != bidIDs.size()) {
+        if (bids == null) {
             // TODO load bids from getDataSource().
         }
         return bids;
@@ -63,40 +70,69 @@ public class User extends JestData<ShareoData> {
 
     protected void addOwnedThingSimple(Thing thing) throws NullIDException {
         ownedIDs.add(thing.getJestID());
+        if (owned == null) {
+            owned = getOwnedThings();
+        }
         owned.add(thing);
     }
 
     public boolean removeOwnedThing(Thing thing) {
-        return owned.remove(thing);
+        // TODO remove owner from thing
+        return removeOwnedThingSimple(thing);
     }
 
     protected boolean removeOwnedThingSimple(Thing thing) {
+        if (owned == null) {
+            owned = getOwnedThings();
+        }
         return owned.remove(thing);
     }
 
     public void addBorrowedThing(Thing thing){
-        borrowed.add(thing);
+        // TODO make thing know that it is borrowed.
+        addBorrowedThingSimple(thing);
     }
 
     protected void addBorrowedThingSimple(Thing thing) {
+        if (borrowed == null) {
+            borrowed = getBorrowedThings();
+        }
         borrowed.add(thing);
     }
 
     public boolean removeBorrowedThing(Thing thing) {
-        return borrowed.remove(thing);
+        // TODO make thing know that it is no longer borrowed.
+        return removeBorrowedThingSimple(thing);
     }
 
     protected boolean removeBorrowedThingSimple(Thing thing) {
+        if (borrowed == null) {
+            borrowed = getBorrowedThings();
+        }
         return borrowed.remove(thing);
     }
 
     public List<Thing> getBorrowedThings() {
+        if (borrowed == null) {
+            borrowed = new ArrayList<>(borrowedIDs.size());
+            for (String ID : borrowedIDs) {
+                borrowed.add(getDataSource().getGame(ID));
+            }
+        }
         return borrowed;
     }
 
     public List<Thing> getOwnedThings() {
+        if (owned == null) {
+            owned = new ArrayList<>(ownedIDs.size());
+            for (String ID : ownedIDs) {
+                owned.add(getDataSource().getGame(ID));
+            }
+        }
         return owned;
     }
 
-    public void setReturned(Thing thing) {}
+    public void setReturned(Thing thing) {
+        // TODO this may be unneccesary with removeBorrowedThing.
+    }
 }

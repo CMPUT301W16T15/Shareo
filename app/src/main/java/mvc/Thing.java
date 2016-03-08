@@ -1,7 +1,10 @@
 package mvc;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+
+import mvc.exceptions.NullIDException;
 
 /**
  * Created by A on 2016-02-10.
@@ -16,7 +19,7 @@ public abstract class Thing extends JestData<ShareoData> {
     private String ownerID;
     private transient User owner;
 
-    private List<String> bidIDs;
+    private ArrayList<String> bidIDs;
     private transient List<Bid> bids;
     private String acceptedBidID;
     private transient Bid acceptedBid;
@@ -24,14 +27,13 @@ public abstract class Thing extends JestData<ShareoData> {
 
     public enum Status {AVAILABLE, BIDDED, BORROWED}
 
-    public Thing(String gameName, String description, String owner) {
-        this(gameName, description, owner, Status.AVAILABLE);
+    public Thing(String gameName, String description) {
+        this(gameName, description, Status.AVAILABLE);
     }
 
-    public Thing(String gameName, String descrption, String owner, Status status) {
+    public Thing(String gameName, String description, Status status) {
         this.status = status;
         this.description = description;
-        this.ownerID = owner;
         this.name = gameName;
         this.bids = new ArrayList<>();
     }
@@ -59,21 +61,24 @@ public abstract class Thing extends JestData<ShareoData> {
 
     public User getOwner() {
         if (owner == null) {
-            // TODO load user from getDataSource().
+            owner = getDataSource().getUser(ownerID);
         }
         return owner;
     }
 
     public Bid getAcceptedBid() {
         if (acceptedBid == null) {
-            // TODO load bid from getDataSource().
+            acceptedBid = getDataSource().getBid(acceptedBidID);
         }
         return acceptedBid;
     }
     public Status getStatus() { return status; }
     public List<Bid> getBids() {
         if (bids == null) {
-            // TODO load bids from getDataSource().
+            bids = new ArrayList<>();
+            for (String ID : bidIDs) {
+                bids.add(getDataSource().getBid(ID));
+            }
         }
         return bids;
     }
