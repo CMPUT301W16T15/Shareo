@@ -2,6 +2,7 @@ package cmput301w16t15.shareo;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,7 +26,7 @@ import mvc.Thing;
 import mvc.User;
 
 public class HomeFragment extends Fragment implements Observer {
-    private ImageView createGameView;
+    private FloatingActionButton mFab;
     private User mUser;
 
     private ListView mList;
@@ -105,8 +106,8 @@ public class HomeFragment extends Fragment implements Observer {
             }
         });
 
-        createGameView = (ImageView) v.findViewById(R.id.createGameView);
-        createGameView.setOnClickListener(new View.OnClickListener() {
+        mFab = (FloatingActionButton) v.findViewById(R.id.fab);
+        mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AddGameFragment agf = new AddGameFragment();
