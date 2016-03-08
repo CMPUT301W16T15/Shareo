@@ -42,4 +42,9 @@
     <string name="hintSearch">Search for a game</string>
     <string name="textViewSearchGame">Game Search</string>
     <string name="textViewCreateProfile">Create User Profile</string>
+
+    <string-array name="filler">
+        <item>Earth</item>
+        <item>Mars</item>
+    </string-array>
 </resources>

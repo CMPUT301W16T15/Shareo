@@ -1,25 +1,39 @@
 package cmput301w16t15.shareo;
 
-import android.content.Intent;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import org.honorato.multistatetogglebutton.MultiStateToggleButton;
+import org.honorato.multistatetogglebutton.ToggleButton;
+import org.w3c.dom.Text;
+
+import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
+
+import mvc.AppUserSingleton;
+import mvc.Thing;
+import mvc.User;
 
 
-public class BidsFragment extends Fragment {
-    private static final String TAG = "TAGBidsFragment";
-    private Selected mSelectedMode;
+public class BidsFragment extends Fragment implements Observer {
 
-    private Button button_selling;
-    private Button button_bidding;
+    CharSequence[] options = new CharSequence[]{"Owned Items Bids", "My Bids On Others"};
 
-    public enum Selected {
-        STUFF_IAMBIDDING, OTHERS_BIDDING
-    }
+    private User mUser;
+
+    private ListView mList;
+    private BidsAdapter mListAdapter;
+    private TextView mEmptyMessage;
+
 
     public BidsFragment() {
         // Required empty public constructor
@@ -29,42 +43,87 @@ public class BidsFragment extends Fragment {
         return new BidsFragment();
     }
 
+    /*
+    * The listview renders either the items I am bidding on, or my items other's are bidding on
+    * Based on mSelectedMode this function renders the appropriate data in the listivew
+    * */
+    private void setAdapterBasedOnTab(int position) {
+        switch (position) {
+            case 0:
+                List<Thing> data = mUser.getOwnedBiddedThings();
+                mListAdapter = new BidsAdapter(getActivity(), R.layout.available_items, data);
+                mList.setAdapter(mListAdapter);
+
+                if (data.size() == 0) {
+                    mEmptyMessage.setVisibility(View.VISIBLE);
+                } else {
+                    mEmptyMessage.setVisibility(View.GONE);
+                }
+                break;
+            case 1:
+                // TODO: use different data source (will have to make getter in model class)
+                data = mUser.getOwnedBiddedThings();
+                mListAdapter = new BidsAdapter(getActivity(), R.layout.available_items, data);
+                mList.setAdapter(mListAdapter);
+
+                if (data.size() == 0) {
+                    mEmptyMessage.setVisibility(View.VISIBLE);
+                } else {
+                    mEmptyMessage.setVisibility(View.GONE);
+                }
+                break;
+        }
+    }
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // user singleton...used for getting data
+        mUser = AppUserSingleton.getInstance().getUser();
+        mUser.addObserver(this);
 
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_bids, container, false);
+        mList = (ListView) v.findViewById(R.id.listview);
+        mEmptyMessage = (TextView) v.findViewById(R.id.empty_notice);
+        MultiStateToggleButton button = (MultiStateToggleButton) v.findViewById(R.id.mstb_multi_id);
 
-        button_selling = (Button) v.findViewById(R.id.button_selling);
-        button_bidding= (Button) v.findViewById(R.id.button_bidding);
-
-        /**
-         * TODO: Probably change selling bids and mybidds to fragments.
-         * Do something with selected mode?
-         * This is just a starting point.
-         */
-        button_selling.setOnClickListener(new View.OnClickListener() {
+        button.setElements(options);
+        button.setOnValueChangedListener(new ToggleButton.OnValueChangedListener() {
             @Override
-            public void onClick(View v) {
-                Log.d(TAG, "Bids Selling Clicked on");
-                mSelectedMode = Selected.OTHERS_BIDDING;
-                Intent sellingIntent = new Intent(getActivity(), SellingBidsActivity.class);
-                BidsFragment.this.startActivity(sellingIntent);
-
+            public void onValueChanged(int position) {
+                setAdapterBasedOnTab(position);
             }
         });
 
-        button_bidding.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "Bids Buying Clicked on");
-                mSelectedMode = Selected.STUFF_IAMBIDDING;
-                Intent buyingIntent = new Intent(getActivity(), MyBidsActivity.class);
-                BidsFragment.this.startActivity(buyingIntent);
-            }
-        });
-        // Inflate the layout for this fragment
         return v;
+    }
+
+    @Override
+    public void update(Observable observable, Object data) {
+        mListAdapter.notifyDataSetChanged();
+    }
+
+    private class BidsAdapter extends ArrayAdapter<Thing> {
+
+        private final Context context;
+        private final List<Thing> things;
+
+        public BidsAdapter(Context context, int resource, List<Thing> objects) {
+            super(context, resource, objects);
+            this.context = context;
+            this.things = objects;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            LayoutInflater inflater = (LayoutInflater) context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View rowView = inflater.inflate(R.layout.available_items, parent, false);
+            TextView textView = (TextView) rowView.findViewById(R.id.available_game_name);
+            textView.setText(things.get(position).getName());
+            return rowView;
+        }
     }
 }

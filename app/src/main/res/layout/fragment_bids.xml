@@ -1,39 +1,31 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:mstb="http://schemas.android.com/apk/res-auto"
     tools:context="cmput301w16t15.shareo.BidsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <LinearLayout
-        android:layout_width="match_parent"
+    <org.honorato.multistatetogglebutton.MultiStateToggleButton
+        android:id="@+id/mstb_multi_id"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_marginTop="10dip"
+        mstb:values="@array/filler"
+        mstb:mstbPrimaryColor="@color/purple"
+        android:layout_gravity="center_horizontal"
+        mstb:mstbSecondaryColor="@color/white"/>
 
-        <Button
-            android:id="@+id/button_selling"
-            android:layout_width="180dp"
-            android:layout_height="35dp"
-            android:text="Selling"
-            android:background="@android:color/holo_blue_light"
-            android:textColor="@android:color/white"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="5dp" />
-
-        <Button
-            android:id="@+id/button_bidding"
-            android:layout_width="180dp"
-            android:layout_height="35dp"
-            android:text="Bidding"
-            android:background="@android:color/holo_blue_light"
-            android:textColor="@android:color/white"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="5dp" />
-
-    </LinearLayout>
+    <TextView
+        android:layout_marginTop="20dp"
+        android:id="@+id/empty_notice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="No Things"/>
 
     <ListView
-        android:id="@+id/listViewBid"
+        android:id="@+id/listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
@@ -42,4 +34,4 @@
         android:divider="#E6E6E6"
         android:layout_gravity="center" />
 
-</FrameLayout>
+</LinearLayout>
