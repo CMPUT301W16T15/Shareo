@@ -1,6 +1,5 @@
 package mvc;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +8,7 @@ import mvc.exceptions.NullIDException;
 /**
  * Created by A on 2016-02-10.
  */
-public abstract class Thing extends JestData<ShareoData> {
+public class Thing extends JestData<ShareoData> {
 
     private String name;
     private String description;
@@ -24,10 +23,56 @@ public abstract class Thing extends JestData<ShareoData> {
     private String acceptedBidID;
     private transient Bid acceptedBid;
 
+    public static class Builder {
+        private ShareoData data;
+        private String ownerName;
+        private String name;
+        private String description;
+        private PhotoModel p;
+
+        public Builder(ShareoData data, String ownerName, String name, String description) {
+            this.data = data;
+            this.ownerName = ownerName;
+            this.name = name;
+            this.description = description;
+
+            this.p = null;
+        }
+
+        public Builder setPhoto(PhotoModel p) {
+            this.p = p;
+            return this;
+        }
+
+        public Thing build() throws UserDoesNotExistException {
+            User u = data.getUser(ownerName);
+
+            if (u == null) {
+                throw new UserDoesNotExistException();
+            }
+
+            Thing t = new Thing(name, description);
+            t.ownerID = ownerName;
+            t.setDataSource(data);
+            t.setPhoto(p);
+
+            data.addGame(t);
+
+            try {
+                u.addOwnedThing(t);
+                data.updateUser(u);
+            } catch (NullIDException e) {
+                e.printStackTrace();
+            }
+
+            return t;
+        }
+    }
+
 
     public enum Status {AVAILABLE, BIDDED, BORROWED}
 
-    public Thing(String gameName, String description) {
+    protected Thing(String gameName, String description) {
         this(gameName, description, Status.AVAILABLE);
     }
 

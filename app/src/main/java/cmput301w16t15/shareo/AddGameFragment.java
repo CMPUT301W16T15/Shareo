@@ -18,10 +18,11 @@ import android.widget.ImageButton;
 import java.io.IOException;
 
 import mvc.AppUserSingleton;
-import mvc.Game;
+import mvc.Thing;
 import mvc.PhotoModel;
 import mvc.ShareoData;
 import mvc.User;
+import mvc.UserDoesNotExistException;
 
 /**
  * Created by Andrew on 2016-02-28.
@@ -55,17 +56,15 @@ public class AddGameFragment extends DialogFragment {
         numberPlayers = editTextNumberPlayers.getText().toString();
         category = editTextCategory.getText().toString();
         User user = AppUserSingleton.getInstance().getUser();
-        Game game = new Game(gameName, gameDescription);
-        if (gamePhoto != null)
-        {
-            game.setPhoto(gamePhoto);
-        }
-        ShareoData.getInstance().addGame(game);
+
         try {
-            user.addOwnedThing(game);
-        } catch (mvc.exceptions.NullIDException e) {
+            Thing thing = new Thing.Builder(ShareoData.getInstance(), user.getName(), gameName, gameDescription).setPhoto(gamePhoto).build();
+        } catch (UserDoesNotExistException e) {
+            // TODO catch error in a meaningful way.
             e.printStackTrace();
         }
+
+
     }
 
     @Override

@@ -2,12 +2,10 @@ package cmput301w16t15.shareo;
 
 import android.test.ActivityInstrumentationTestCase2;
 
-import org.apache.commons.lang3.ObjectUtils;
-
-import mvc.Game;
-import mvc.ShareoData;
 import mvc.Thing;
+import mvc.ShareoData;
 import mvc.User;
+import mvc.UserDoesNotExistException;
 import mvc.exceptions.NullIDException;
 import mvc.exceptions.UsernameAlreadyExistsException;
 
@@ -22,60 +20,41 @@ public class ModelTest extends ActivityInstrumentationTestCase2 {
 
     public static void populateData() {
         ShareoData data = ShareoData.getInstance();
+        User joe = null;
+        User sally = null;
+        User fred = null;
 
-        User joe = new User("joe");
-        User sally = new User("sally");
-        User fred = new User("fred");
-
-        try {
-            data.removeUser(joe);
-            data.removeUser(sally);
-            data.removeUser(fred);
-        } catch (NullIDException e) {
-            // should not be possible.
-            e.printStackTrace();
-        }
+        data.removeUser("joe");
+        data.removeUser("sally");
+        data.removeUser("fred");
 
         try {
-            data.addUser(joe);
-            data.addUser(sally);
-            data.addUser(fred);
+            joe = new User.Builder(data, "joe").build();
+            sally = new User.Builder(data, "sally").build();
+            fred = new User.Builder(data, "fred").build();
         } catch (UsernameAlreadyExistsException e) {
             e.printStackTrace();
+            fail();
         }
 
-        Game t1 = new Game("Game1", "One game to rule them all,");
-        Game t2 = new Game("Game2", "One game to find them,");
-        Game t3 = new Game("Game3", "One game to bring them all,");
-        Game t4 = new Game("Game4", "And in the darkness, bind them.");
-
-        data.addGame(t1);
-        data.addGame(t2);
-        data.addGame(t3);
-        data.addGame(t4);
-
+        Thing t1 = null;
+        Thing t2 = null;
+        Thing t3 = null;
+        Thing t4 = null;
         try {
-            joe.addOwnedThing(t1);
-            joe.addOwnedThing(t2);
-            sally.addOwnedThing(t3);
-            fred.addOwnedThing(t4);
-
-            data.updateUser(joe);
-            data.updateUser(sally);
-            data.updateUser(fred);
-
-            data.updateGame(t1);
-            data.updateGame(t2);
-            data.updateGame(t3);
-            data.updateGame(t4);
-
-            assertTrue(t1.getOwner().equals(joe));
-            assertTrue(t2.getOwner().equals(joe));
-            assertTrue(t3.getOwner().equals(sally));
-            assertTrue(t4.getOwner().equals(fred));
-        } catch (NullIDException e) {
+            t1 = new Thing.Builder(data, "joe", "Game1", "One game to rule them all,").build();
+            t2 = new Thing.Builder(data, "joe", "Game2", "One game to find them,").build();
+            t3 = new Thing.Builder(data, "sally", "Game3", "One game to bring them all,").build();
+            t4 = new Thing.Builder(data, "fred", "Game4", "And in the darkness, bind them.").build();
+        } catch (UserDoesNotExistException e) {
             e.printStackTrace();
+            fail();
         }
+
+        assertTrue(t1.getOwner().equals(joe));
+        assertTrue(t2.getOwner().equals(joe));
+        assertTrue(t3.getOwner().equals(sally));
+        assertTrue(t4.getOwner().equals(fred));
 
         // TODO add some bids.
     }
@@ -107,18 +86,17 @@ public class ModelTest extends ActivityInstrumentationTestCase2 {
     public static void testAddRemoveUser() {
         ShareoData data = ShareoData.getInstance();
         String username = "Test";
-        User u1 = new User(username);
+        User u1 = null;
+
+        data.removeUser(username);
 
         try {
-            data.removeUser(u1);
-        } catch (NullIDException e) {
+            u1 = new User.Builder(data, username).build();
+        } catch (UsernameAlreadyExistsException e) {
+            e.printStackTrace();
             fail();
         }
-        try {
-            data.addUser(u1);
-        } catch (UsernameAlreadyExistsException e) {
-            fail("Test username already in data");
-        }
+
         User u = data.getUser(username);
         assertTrue(u != null);
         assertTrue(u.equals(u1));

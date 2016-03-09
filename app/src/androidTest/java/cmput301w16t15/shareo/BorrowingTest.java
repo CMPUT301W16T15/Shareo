@@ -4,7 +4,6 @@ import android.test.ActivityInstrumentationTestCase2;
 
 import java.util.List;
 
-import mvc.Game;
 import mvc.Thing;
 import mvc.User;
 

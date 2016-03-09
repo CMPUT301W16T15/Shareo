@@ -15,7 +15,6 @@ import io.searchbox.core.Delete;
 import io.searchbox.core.DocumentResult;
 import io.searchbox.core.Get;
 import io.searchbox.core.Index;
-import io.searchbox.core.Update;
 import mvc.exceptions.NullIDException;
 import mvc.exceptions.UsernameAlreadyExistsException;
 
@@ -60,14 +59,14 @@ public class ShareoData extends MVCModel {
     /**
      * Add a new {@link User} to the database. If a user already exists with the same name,
      * the call will fail. This only adds a user to the database, meaning any things that are
-     * owned by it must also be added, separately, using {@link #addGame(Game)}. The same goes for
+     * owned by it must also be added, separately, using {@link #addGame(Thing)}. The same goes for
      * any bids placed by the user, using {@link #addBid(Bid)}. The user's id will be its username.
      * @param user User to add to the database.
      * @throws UsernameAlreadyExistsException A user with the same name already exists.
      * @see #removeUser(User)
      * @see #updateUser(User)
      * @see #getUser(String)
-     * @see #addGame(Game)
+     * @see #addGame(Thing)
      * @see #addBid(Bid)
      */
     public void addUser(User user) throws UsernameAlreadyExistsException {
@@ -82,14 +81,14 @@ public class ShareoData extends MVCModel {
      * Add a new {@link Thing} to the database. This only adds the thing to the database, meaning
      * that the owner, borrower, and bids must be added separately.
      * @param thing Thing to add to the database.
-     * @see #removeGame(Game)
-     * @see #updateGame(Game)
+     * @see #removeGame(Thing)
+     * @see #updateGame(Thing)
      * @see #getGame(String)
      * @see #getGamesByDescrption(String[])
      * @see #addUser(User)
      * @see #addBid(Bid)
      */
-    public void addGame(Game thing) {
+    public void addGame(Thing thing) {
         addByObject(ELASTIC_INDEX, ELASTIC_GAME_TYPE, thing);
     }
 
@@ -99,7 +98,7 @@ public class ShareoData extends MVCModel {
      * @param bid Bid to add to the database.
      * @see #removeBid(Bid)
      * @see #addUser(User)
-     * @see #addGame(Game)
+     * @see #addGame(Thing)
      */
     public void addBid(Bid bid) {
         addByObject(ELASTIC_INDEX, ELASTIC_BID_TYPE, bid);
@@ -117,8 +116,8 @@ public class ShareoData extends MVCModel {
         return getByID(ELASTIC_INDEX, ELASTIC_USER_TYPE, name, User.class);
     }
 
-    public Game getGame(String ID) {
-        return getByID(ELASTIC_INDEX, ELASTIC_GAME_TYPE, ID, Game.class);
+    public Thing getGame(String ID) {
+        return getByID(ELASTIC_INDEX, ELASTIC_GAME_TYPE, ID, Thing.class);
     }
 
     public Bid getBid(String ID) {
@@ -131,7 +130,7 @@ public class ShareoData extends MVCModel {
      * @param keywords list of keywords to match.
      * @return A list of things that have matching words in their descrption.
      */
-    public List<Game> getGamesByDescrption(String[] keywords) {
+    public List<Thing> getGamesByDescrption(String[] keywords) {
         // TODO this will use elastic search on server.
         return null;
     }
@@ -155,12 +154,12 @@ public class ShareoData extends MVCModel {
      * Update a thing that is already in the database, by using an updated {@link Thing} object.
      * The thing with a matching id will be updated.
      * @param thing Thing, matching the id of the thing to be updated.
-     * @see #addGame(Game)
-     * @see #removeGame(Game)
+     * @see #addGame(Thing)
+     * @see #removeGame(Thing)
      * @see #getGame(String)
      * @see #getGamesByDescrption(String[])
      */
-    public void updateGame(Game thing) throws NullIDException {
+    public void updateGame(Thing thing) throws NullIDException {
         updateByObject(ELASTIC_INDEX, ELASTIC_GAME_TYPE, thing);
 
         notifyViews();
@@ -181,11 +180,15 @@ public class ShareoData extends MVCModel {
      * @see #addUser(User)
      * @see #updateUser(User)
      * @see #getUser(String)
-     * @see #removeGame(Game)
+     * @see #removeGame(Thing)
      * @see #removeBid(Bid)
      */
     public void removeUser(User user) throws NullIDException {
         removeByObject(ELASTIC_INDEX, ELASTIC_USER_TYPE, user);
+    }
+
+    public void removeUser(String ID) {
+        removeByID(ELASTIC_INDEX, ELASTIC_USER_TYPE, ID);
     }
 
     /**
@@ -193,13 +196,13 @@ public class ShareoData extends MVCModel {
      * meaning any owners and borrowers should also be removed, if desired. It would be
      * quite undesireable to leave {@link Bid}s with dangling references.
      * @param thing Thing to remove from the database.
-     * @see #addGame(Game)
-     * @see #updateGame(Game) )
+     * @see #addGame(Thing)
+     * @see #updateGame(Thing) )
      * @see #getGamesByDescrption(String[])
      * @see #removeUser(User)
      * @see #removeBid(Bid)
      */
-    public void removeGame(Game thing) throws NullIDException {
+    public void removeGame(Thing thing) throws NullIDException {
         removeByObject(ELASTIC_INDEX, ELASTIC_GAME_TYPE, thing);
     }
 
@@ -210,7 +213,7 @@ public class ShareoData extends MVCModel {
      * @see #addBid(Bid)
      * @see #getGamesByDescrption(String[])
      * @see #removeUser(User)
-     * @see #removeGame(Game)
+     * @see #removeGame(Thing)
      */
     public void removeBid(Bid bid) throws NullIDException {
         removeByObject(ELASTIC_INDEX, ELASTIC_BID_TYPE, bid);
@@ -301,7 +304,11 @@ public class ShareoData extends MVCModel {
     }
 
     protected void removeByObject(String index, String type, JestData<ShareoData> o) throws NullIDException {
-        Delete delete = new Delete.Builder(o.getJestID()).index(index).type(type).build();
+        removeByID(index, type, o.getJestID());
+    }
+
+    protected void removeByID(String index, String type, String ID) {
+        Delete delete = new Delete.Builder(ID).index(index).type(type).build();
 
         try {
             DocumentResult result = jestClient.execute(delete);
@@ -309,7 +316,7 @@ public class ShareoData extends MVCModel {
 
             } else {
                 // TODO what if failed?
-                Log.e("TODO", "Failed to delete " + o.getClass().getName());
+                Log.e("TODO", "Failed to delete ID: " + ID);
             }
         } catch (IOException e) {
             // TODO what to do if failed?

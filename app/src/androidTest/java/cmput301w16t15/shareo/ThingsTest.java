@@ -3,7 +3,6 @@ package cmput301w16t15.shareo;
 import android.test.ActivityInstrumentationTestCase2;
 
 import mvc.Bid;
-import mvc.Game;
 import mvc.Thing;
 import mvc.exceptions.NullIDException;
 
@@ -58,7 +57,8 @@ public class ThingsTest extends ActivityInstrumentationTestCase2{
      */
     public void testBorrowThing() {
         String borrower = "John";
-        Thing t = new Game("Catan", "Great Game");
+        Thing t = null;//new Thing("Catan", "Great Game");
+        // TODO use Thing.Builder
         Bid winningBid = null;
         try {
             winningBid = new Bid(borrower, t.getJestID(), 10);
@@ -77,7 +77,8 @@ public class ThingsTest extends ActivityInstrumentationTestCase2{
     public void testReturnThing()
     {
         String borrower = "John";
-        Thing t = new Game("Catan", "Great Game");
+        Thing t = null;//new Thing("Catan", "Great Game");
+        // TODO use Thing.Builder
         Bid winningBid = null;
         try {
             winningBid = new Bid(borrower, t.getJestID(), 10);

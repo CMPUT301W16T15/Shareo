@@ -14,7 +14,9 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import mvc.AppUserSingleton;
+import mvc.ShareoData;
 import mvc.User;
+import mvc.exceptions.UsernameAlreadyExistsException;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -120,13 +122,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.buttonSignup:
                 Log.d(TAG, "Clicked Button Signup");
                 parseSignUp();
-                AppUserSingleton.getInstance().logIn(new User(userNameSignup));
+                try {
+                    User user = new User.Builder(ShareoData.getInstance(), userNameSignup).build();
+                    AppUserSingleton.getInstance().logIn(user);
+                } catch (UsernameAlreadyExistsException e) {
+                    // TODO notify user in some manner.
+                }
                 break;
 
             case R.id.buttonLogin:
                 Log.d(TAG, "Clicked Button Login");
                 parseLogin();
-                AppUserSingleton.getInstance().logIn(new User(userNameLogin));
+                User user = ShareoData.getInstance().getUser(userNameLogin);
+                if (user != null) {
+                    AppUserSingleton.getInstance().logIn(user);
+                } else {
+                    // TODO notify user that name does not exist.
+                    // TODO or not connected to server.
+                }
                 break;
         }
         this.startActivity(mainIntent);

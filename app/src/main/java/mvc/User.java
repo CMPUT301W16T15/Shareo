@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mvc.exceptions.NullIDException;
+import mvc.exceptions.UsernameAlreadyExistsException;
 
 /**
  * Created by A on 2016-02-10.
@@ -28,6 +29,22 @@ public class User extends JestData<ShareoData> {
         this.ownedIDs = new ArrayList<>();
         this.bidIDs = new ArrayList<>();
         this.borrowedIDs = new ArrayList<>();
+    }
+
+    public static class Builder {
+        private String username;
+        private ShareoData source;
+
+        public Builder(ShareoData dataSource, String username) {
+            this.username = username;
+            this.source = dataSource;
+        }
+
+        public User build() throws UsernameAlreadyExistsException{
+            User user = new User(username);
+            source.addUser(user);
+            return user;
+        }
     }
 
     @Override
