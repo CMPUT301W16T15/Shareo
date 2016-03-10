@@ -7,6 +7,8 @@ import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 
@@ -264,13 +266,15 @@ public class ShareoData extends MVCModel {
         }
     }
 
-    protected <T> T getByID(String index, String type, String ID, Class<T> classType) {
+    protected <T extends JestData> T getByID(String index, String type, String ID, Class<T> classType) {
         Get get = new Get.Builder(index, ID).type(type).build();
 
         try {
             JestResult result = jestClient.execute(get);
             if (result.isSucceeded()) {
-                return result.getSourceAsObject(classType);
+                T t = result.getSourceAsObject(classType);
+                t.setJestID(ID);
+                return t;
             } else {
                 // TODO what if we fail?
                 Log.e("TODO", "Unable to get " + classType.getName() + " with ID=" + ID);

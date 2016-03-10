@@ -1,5 +1,7 @@
 package mvc;
 
+import mvc.exceptions.NullIDException;
+
 /**
  * Created by A on 2016-02-10.
  */
@@ -22,14 +24,50 @@ public class Bid extends JestData<ShareoData> {
      * placed. When the bid is created, both objects are notified, and are changed accordingly.<br>
      * This means that the {@link User} will properly return this bid with {@link User#getBids()}.
      * </p>
-     * @param username The user who place a bid.
-     * @param thingID The thing being bid on.
+     * @param user The user who place a bid.
+     * @param thing The thing being bid on.
      * @param centsPerHour The value of the bid, in cents per hour.
      */
-    public Bid(String username, String thingID, int centsPerHour) {
-        this.bidderID = username;
-        this.thingID = thingID;
+    protected Bid(User user, Thing thing, int centsPerHour) throws NullIDException {
+        this.bidder = user;
+        this.bidderID = user.getJestID();
+        this.thing = thing;
+        this.thingID = thing.getJestID();
         this.centsPerHour = centsPerHour;
+    }
+
+    public static class Builder {
+        private ShareoData data;
+        private User user;
+        private Thing thing;
+        private int centsPerHour;
+
+        public Builder(ShareoData data, User bidder, Thing thing, int centsPerHour) {
+            this.user = bidder;
+            this.thing = thing;
+            this.centsPerHour = centsPerHour;
+            this.data = data;
+        }
+
+        public Bid build() throws NullIDException {
+
+            Bid bid = new Bid(user, thing, centsPerHour);
+            bid.setDataSource(data);
+
+            data.addBid(bid);
+
+            try {
+                user.addBid(bid);
+                thing.addBid(bid);
+
+                data.updateUser(user);
+                data.updateGame(thing);
+            } catch (NullIDException e) {
+                e.printStackTrace();
+            }
+
+            return bid;
+        }
     }
 
     public Thing getThing() {

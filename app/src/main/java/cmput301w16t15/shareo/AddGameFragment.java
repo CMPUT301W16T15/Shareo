@@ -58,7 +58,7 @@ public class AddGameFragment extends DialogFragment {
         User user = AppUserSingleton.getInstance().getUser();
 
         try {
-            Thing thing = new Thing.Builder(ShareoData.getInstance(), user.getName(), gameName, gameDescription).setPhoto(gamePhoto).build();
+            Thing thing = new Thing.Builder(ShareoData.getInstance(), user, gameName, gameDescription).setPhoto(gamePhoto).build();
         } catch (UserDoesNotExistException e) {
             // TODO catch error in a meaningful way.
             e.printStackTrace();

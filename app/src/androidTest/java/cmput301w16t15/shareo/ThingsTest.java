@@ -60,11 +60,12 @@ public class ThingsTest extends ActivityInstrumentationTestCase2{
         Thing t = null;//new Thing("Catan", "Great Game");
         // TODO use Thing.Builder
         Bid winningBid = null;
-        try {
-            winningBid = new Bid(borrower, t.getJestID(), 10);
-        } catch (NullIDException e) {
-            fail();
-        }
+        //try {
+            //winningBid = new Bid(borrower, t.getJestID(), 10);
+            // TODO use Bid.Builder
+        //} catch (NullIDException e) {
+        //    fail();
+        //}
         t.borrow(winningBid);
         assertEquals(t.getAcceptedBid(), winningBid);
         assertEquals(t.getStatus(), Thing.Status.BORROWED);
@@ -80,11 +81,12 @@ public class ThingsTest extends ActivityInstrumentationTestCase2{
         Thing t = null;//new Thing("Catan", "Great Game");
         // TODO use Thing.Builder
         Bid winningBid = null;
-        try {
-            winningBid = new Bid(borrower, t.getJestID(), 10);
-        } catch (NullIDException e) {
-            fail();
-        }
+//        try {
+//            winningBid = new Bid(borrower, t.getJestID(), 10);
+//            // TODO use Bid.Builder
+//        } catch (NullIDException e) {
+//            fail();
+//        }
         t.borrow(winningBid);
         t.returnThing();
         assertEquals(t.getStatus(), Thing.Status.AVAILABLE);

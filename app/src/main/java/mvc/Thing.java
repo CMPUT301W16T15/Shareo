@@ -25,14 +25,14 @@ public class Thing extends JestData<ShareoData> {
 
     public static class Builder {
         private ShareoData data;
-        private String ownerName;
+        private User owner;
         private String name;
         private String description;
         private PhotoModel p;
 
-        public Builder(ShareoData data, String ownerName, String name, String description) {
+        public Builder(ShareoData data, User owner, String name, String description) {
             this.data = data;
-            this.ownerName = ownerName;
+            this.owner = owner;
             this.name = name;
             this.description = description;
 
@@ -45,22 +45,17 @@ public class Thing extends JestData<ShareoData> {
         }
 
         public Thing build() throws UserDoesNotExistException {
-            User u = data.getUser(ownerName);
-
-            if (u == null) {
-                throw new UserDoesNotExistException();
-            }
 
             Thing t = new Thing(name, description);
-            t.ownerID = ownerName;
+            t.ownerID = owner.getJestID();
             t.setDataSource(data);
             t.setPhoto(p);
 
             data.addGame(t);
 
             try {
-                u.addOwnedThing(t);
-                data.updateUser(u);
+                owner.addOwnedThing(t);
+                data.updateUser(owner);
             } catch (NullIDException e) {
                 e.printStackTrace();
             }
@@ -80,7 +75,7 @@ public class Thing extends JestData<ShareoData> {
         this.status = status;
         this.description = description;
         this.name = gameName;
-        this.bids = new ArrayList<>();
+        this.bidIDs = new ArrayList<>();
     }
 
     /**

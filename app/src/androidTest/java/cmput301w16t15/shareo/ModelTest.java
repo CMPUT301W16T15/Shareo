@@ -2,8 +2,10 @@ package cmput301w16t15.shareo;
 
 import android.test.ActivityInstrumentationTestCase2;
 
+import mvc.Bid;
 import mvc.Thing;
 import mvc.ShareoData;
+import mvc.ThingDoesNotExistException;
 import mvc.User;
 import mvc.UserDoesNotExistException;
 import mvc.exceptions.NullIDException;
@@ -42,10 +44,10 @@ public class ModelTest extends ActivityInstrumentationTestCase2 {
         Thing t3 = null;
         Thing t4 = null;
         try {
-            t1 = new Thing.Builder(data, "joe", "Game1", "One game to rule them all,").build();
-            t2 = new Thing.Builder(data, "joe", "Game2", "One game to find them,").build();
-            t3 = new Thing.Builder(data, "sally", "Game3", "One game to bring them all,").build();
-            t4 = new Thing.Builder(data, "fred", "Game4", "And in the darkness, bind them.").build();
+            t1 = new Thing.Builder(data, joe, "Game1", "One game to rule them all,").build();
+            t2 = new Thing.Builder(data, joe, "Game2", "One game to find them,").build();
+            t3 = new Thing.Builder(data, sally, "Game3", "One game to bring them all,").build();
+            t4 = new Thing.Builder(data, fred, "Game4", "And in the darkness, bind them.").build();
         } catch (UserDoesNotExistException e) {
             e.printStackTrace();
             fail();
@@ -57,6 +59,45 @@ public class ModelTest extends ActivityInstrumentationTestCase2 {
         assertTrue(t4.getOwner().equals(fred));
 
         // TODO add some bids.
+        Bid b1 = null;
+        Bid b2 = null;
+        Bid b3 = null;
+        Bid b4 = null;
+        Bid b5 = null;
+        try {
+            b1 = new Bid.Builder(data, joe, t3, 100).build();
+            b2 = new Bid.Builder(data, sally, t1, 200).build();
+            b3 = new Bid.Builder(data, sally, t4, 300).build();
+            b4 = new Bid.Builder(data, fred, t1, 400).build();
+            b5 = new Bid.Builder(data, fred, t2, 500).build();
+        } catch (NullIDException e) {
+            e.printStackTrace();
+            fail();
+        }
+
+        assertTrue(b1.getBidder().equals(joe));
+        assertTrue(b2.getBidder().equals(sally));
+        assertTrue(b3.getBidder().equals(sally));
+        assertTrue(b4.getBidder().equals(fred));
+        assertTrue(b5.getBidder().equals(fred));
+
+        assertTrue(b1.getThing().equals(t3));
+        assertTrue(b2.getThing().equals(t1));
+        assertTrue(b3.getThing().equals(t4));
+        assertTrue(b4.getThing().equals(t1));
+        assertTrue(b5.getThing().equals(t2));
+
+        assertTrue(b1.getBidAmount() == 100);
+        assertTrue(b2.getBidAmount() == 200);
+        assertTrue(b3.getBidAmount() == 300);
+        assertTrue(b4.getBidAmount() == 400);
+        assertTrue(b5.getBidAmount() == 500);
+
+        assertTrue(joe.getBids().contains(b1));
+        assertTrue(sally.getBids().contains(b2));
+        assertTrue(sally.getBids().contains(b3));
+        assertTrue(fred.getBids().contains(b4));
+        assertTrue(fred.getBids().contains(b5));
     }
 
     public static void testPopulate() {
