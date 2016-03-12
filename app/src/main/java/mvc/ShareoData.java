@@ -133,8 +133,10 @@ public class ShareoData {
      * @param keywords list of keywords to match.
      * @return A list of things that have matching words in their descrption.
      */
+
     public List<Thing> getGamesByDescrption(String[] keywords) {
-        // TODO this will use elastic search on server.
+        SearchController mySearch = new SearchController(ELASTIC_GAME_TYPE, jestClient, keywords);
+
         return null;
     }
 
