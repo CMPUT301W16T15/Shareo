@@ -124,8 +124,8 @@ public class Thing extends JestData {
      * Used to push updates on a things data to the server
      */
     public void update() {
-        notifyViews();
         ShareoApplication.getInstance().getJobManager().addJobInBackground(new UpdateGameJob(this));
+        notifyViews();
     }
 
     /**

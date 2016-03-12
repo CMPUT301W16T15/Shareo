@@ -118,7 +118,12 @@ public class HomeFragment extends Fragment implements MVCView {
 
     @Override
     public void updateView(MVCModel model) {
-        mListAdapter.notifyDataSetChanged();
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mListAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     private class HomeAdapter extends ArrayAdapter<Thing> {
