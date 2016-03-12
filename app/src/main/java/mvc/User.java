@@ -4,13 +4,15 @@ package mvc;
 import java.util.ArrayList;
 import java.util.List;
 
+import cmput301w16t15.shareo.ShareoApplication;
+import mvc.Jobs.UpdateUserJob;
 import mvc.exceptions.NullIDException;
 import mvc.exceptions.UsernameAlreadyExistsException;
 
 /**
  * Created by A on 2016-02-10.
  */
-public class User extends JestData<ShareoData> {
+public class User extends JestData {
 
     private final String username;
 
@@ -125,6 +127,7 @@ public class User extends JestData<ShareoData> {
         if (borrowed == null) {
             borrowed = getBorrowedThings();
         }
+        notifyViews();
         borrowed.add(thing);
     }
 
@@ -151,7 +154,6 @@ public class User extends JestData<ShareoData> {
     }
 
     public List<Thing> getOwnedBiddedThings() {
-        //Make sure its loaded properly
         getOwnedThings();
         // only return those that have bids on them
         List<Thing> ownedWithBids = new ArrayList<>();
@@ -175,6 +177,30 @@ public class User extends JestData<ShareoData> {
             }
         }
         return owned;
+    }
+
+    /**
+     * Get all avaiable game (games that arnt being lent out)
+     */
+    public List<Thing> getAvailableThings()
+    {
+        getOwnedThings();
+        // only return those that have bids on them
+        List<Thing> available = new ArrayList<>();
+        for (Thing t : owned) {
+            if (t.getStatus() == Thing.Status.BIDDED || t.getStatus() == Thing.Status.AVAILABLE) {
+                available.add(t);
+            }
+        }
+        return available;
+    }
+
+    /**
+     *
+     */
+    public void update() {
+        notifyViews();
+        ShareoApplication.getInstance().getJobManager().addJobInBackground(new UpdateUserJob(this));
     }
 
     public void setReturned(Thing thing) {

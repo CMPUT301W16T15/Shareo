@@ -1,19 +1,22 @@
 package mvc;
 
+import com.path.android.jobqueue.JobManager;
+
 import java.util.Observable;
 
+import cmput301w16t15.shareo.ShareoApplication;
 import io.searchbox.annotations.JestId;
 import mvc.exceptions.NullIDException;
 
 /**
  * Created by A on 2016-03-05.
  */
-public abstract class JestData<M extends MVCModel> {
+public abstract class JestData extends MVCModel {
     @JestId
     private String JestID;
 
-    private transient M dataSource;
-    private static MVCModel defaultDataSource = ShareoData.getInstance();
+    private transient ShareoData dataSource;
+    private static ShareoData defaultDataSource = ShareoData.getInstance();
 
     /**
      * Returns the JestID associated with this object. Never returns null, but will instead throw
@@ -32,10 +35,10 @@ public abstract class JestData<M extends MVCModel> {
         JestID = ID;
     }
 
-    public M getDataSource() {
+    public ShareoData getDataSource() {
         if (dataSource == null) {
             try {
-                dataSource = (M) defaultDataSource;
+                dataSource = defaultDataSource;
             } catch (ClassCastException e) {
                 dataSource = null;
             }
@@ -43,7 +46,7 @@ public abstract class JestData<M extends MVCModel> {
         return dataSource;
     }
 
-    public void setDataSource(M model) {
+    public void setDataSource(ShareoData model) {
         dataSource = model;
     }
 

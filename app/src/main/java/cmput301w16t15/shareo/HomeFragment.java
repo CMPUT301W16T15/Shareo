@@ -19,10 +19,12 @@ import java.util.Observable;
 import java.util.Observer;
 
 import mvc.AppUserSingleton;
+import mvc.MVCModel;
+import mvc.MVCView;
 import mvc.Thing;
 import mvc.User;
 
-public class HomeFragment extends Fragment implements Observer {
+public class HomeFragment extends Fragment implements MVCView {
     private FloatingActionButton mFab;
     private User mUser;
 
@@ -42,7 +44,7 @@ public class HomeFragment extends Fragment implements Observer {
         switch (position) {
             case 0:
                 // TODO: avail games data source
-                List<Thing> data = mUser.getOwnedBiddedThings();
+                List<Thing> data = mUser.getAvailableThings();
                 mListAdapter = new HomeAdapter(getActivity(), R.layout.available_items, data);
                 mList.setAdapter(mListAdapter);
 
@@ -85,7 +87,7 @@ public class HomeFragment extends Fragment implements Observer {
 
         // user singleton...used for getting data
         mUser = AppUserSingleton.getInstance().getUser();
-
+        mUser.addView(this);
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_home, container, false);
         mList = (ListView) v.findViewById(R.id.listview);
@@ -115,7 +117,7 @@ public class HomeFragment extends Fragment implements Observer {
     }
 
     @Override
-    public void update(Observable observable, Object data) {
+    public void updateView(MVCModel model) {
         mListAdapter.notifyDataSetChanged();
     }
 

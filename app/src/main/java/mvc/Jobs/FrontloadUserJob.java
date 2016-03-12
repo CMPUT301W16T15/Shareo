@@ -44,7 +44,9 @@ public class FrontloadUserJob extends Job {
         List<Thing> things = user.getOwnedThings();
         for (Thing t : things) {
             t.getBids();
-            t.getAcceptedBid();
+            if (t.getStatus() == Thing.Status.BORROWED) {
+                t.getAcceptedBid();
+            }
         }
         AppUserSingleton.getInstance().setUser(user);
         callback.onSuccess();

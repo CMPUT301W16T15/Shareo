@@ -7,14 +7,14 @@ import java.util.List;
  * Created by A on 2016-02-10.
  */
 public abstract class MVCModel {
-    List<MVCView> views;
+    transient static List<MVCView> views = new ArrayList<>();
 
-    public MVCModel() {
-        views = new ArrayList<>();
-    }
+    public MVCModel() { }
 
     public void addView(MVCView view) {
-        views.add(view);
+        if (!views.contains(view)) {
+            views.add(view);
+        }
     }
 
     public void removeView(MVCView view) {

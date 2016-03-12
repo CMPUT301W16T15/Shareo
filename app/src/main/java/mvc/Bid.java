@@ -1,11 +1,14 @@
 package mvc;
 
+import cmput301w16t15.shareo.ShareoApplication;
+import mvc.Jobs.CallbackInterface;
+import mvc.Jobs.CreateBidJob;
 import mvc.exceptions.NullIDException;
 
 /**
  * Created by A on 2016-02-10.
  */
-public class Bid extends JestData<ShareoData> {
+public class Bid extends JestData {
 
     private final String bidderID;
     transient private User bidder;
@@ -51,21 +54,27 @@ public class Bid extends JestData<ShareoData> {
 
         public Bid build() throws NullIDException {
 
-            Bid bid = new Bid(user, thing, centsPerHour);
+            final Bid bid = new Bid(user, thing, centsPerHour);
             bid.setDataSource(data);
+            ShareoApplication.getInstance().getJobManager().addJobInBackground(new CreateBidJob(bid, new CallbackInterface() {
+                @Override
+                public void onSuccess() {
+                    try {
+                        user.addBid(bid);
+                        thing.addBid(bid);
 
-            data.addBid(bid);
+                        user.update();
+                        thing.update();
+                    } catch (NullIDException e) {
+                        e.printStackTrace();
+                    }
+                }
 
-            try {
-                user.addBid(bid);
-                thing.addBid(bid);
+                @Override
+                public void onFailure() {
 
-                data.updateUser(user);
-                data.updateGame(thing);
-            } catch (NullIDException e) {
-                e.printStackTrace();
-            }
-
+                }
+            }));
             return bid;
         }
     }

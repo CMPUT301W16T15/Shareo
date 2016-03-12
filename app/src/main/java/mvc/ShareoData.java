@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.concurrent.Semaphore;
 
 
 import io.searchbox.client.JestResult;
@@ -35,7 +36,7 @@ import mvc.exceptions.UsernameAlreadyExistsException;
  * One can also remove objects from the database, in a very similar manner to updating them.
  * </p>
  */
-public class ShareoData extends MVCModel {
+public class ShareoData {
 
     private static final String SERVER_URL = "http://cmput301.softwareprocess.es:8080";
     private static final String ELASTIC_INDEX = "shareo";
@@ -148,8 +149,6 @@ public class ShareoData extends MVCModel {
      */
     public void updateUser(User user) throws NullIDException {
         updateByObject(ELASTIC_INDEX, ELASTIC_USER_TYPE, user);
-
-        notifyViews();
     }
 
     /**
@@ -163,14 +162,10 @@ public class ShareoData extends MVCModel {
      */
     public void updateGame(Thing thing) throws NullIDException {
         updateByObject(ELASTIC_INDEX, ELASTIC_GAME_TYPE, thing);
-
-        notifyViews();
     }
 
     public void updateBid(Bid bid) throws NullIDException{
         updateByObject(ELASTIC_INDEX, ELASTIC_BID_TYPE, bid);
-
-        notifyViews();
     }
 
     /**
@@ -225,14 +220,13 @@ public class ShareoData extends MVCModel {
         if (jestClient == null) {
             DroidClientConfig.Builder builder = new DroidClientConfig.Builder(SERVER_URL);
             DroidClientConfig config = builder.build();
-
             JestClientFactory factory = new JestClientFactory();
             factory.setDroidClientConfig(config);
             jestClient = (JestDroidClient) factory.getObject();
         }
     }
 
-    protected void addByObject(String index, String type, JestData<ShareoData> o) {
+    protected void addByObject(String index, String type, JestData o) {
         Index post = new Index.Builder(o).index(index).type(type).build();
 
         try {
@@ -249,7 +243,7 @@ public class ShareoData extends MVCModel {
         }
     }
 
-    protected void addByObject(String index, String type, String ID, JestData<ShareoData> o) {
+    protected void addByObject(String index, String type, String ID, JestData o) {
         Index post = new Index.Builder(o).index(index).type(type).id(ID).build();
 
         try {
@@ -288,7 +282,7 @@ public class ShareoData extends MVCModel {
         return null;
     }
 
-    protected void updateByObject(String index, String type, JestData<ShareoData> o) throws NullIDException {
+    protected void updateByObject(String index, String type, JestData o) throws NullIDException {
         Index put = new Index.Builder(o).index(index).type(type).id(o.getJestID()).build();
 
         try {
@@ -307,7 +301,7 @@ public class ShareoData extends MVCModel {
         }
     }
 
-    protected void removeByObject(String index, String type, JestData<ShareoData> o) throws NullIDException {
+    protected void removeByObject(String index, String type, JestData o) throws NullIDException {
         removeByID(index, type, o.getJestID());
     }
 

@@ -1,14 +1,20 @@
 package mvc;
 
+import com.path.android.jobqueue.AsyncAddCallback;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import cmput301w16t15.shareo.ShareoApplication;
+import mvc.Jobs.CallbackInterface;
+import mvc.Jobs.CreateGameJob;
+import mvc.Jobs.UpdateGameJob;
 import mvc.exceptions.NullIDException;
 
 /**
  * Created by A on 2016-02-10.
  */
-public class Thing extends JestData<ShareoData> {
+public class Thing extends JestData {
 
     private String name;
     private String description;
@@ -46,20 +52,26 @@ public class Thing extends JestData<ShareoData> {
 
         public Thing build() throws UserDoesNotExistException {
 
-            Thing t = new Thing(name, description);
+            final Thing t = new Thing(name, description);
             t.ownerID = owner.getJestID();
             t.setDataSource(data);
             t.setPhoto(p);
+            ShareoApplication.getInstance().getJobManager().addJobInBackground(new CreateGameJob(t, new CallbackInterface() {
+                @Override
+                public void onSuccess() {
+                    try {
+                        owner.addOwnedThing(t);
+                        owner.update();
+                    } catch (NullIDException e) {
+                        e.printStackTrace();
+                    }
+                }
 
-            data.addGame(t);
+                @Override
+                public void onFailure() {
 
-            try {
-                owner.addOwnedThing(t);
-                data.updateUser(owner);
-            } catch (NullIDException e) {
-                e.printStackTrace();
-            }
-
+                }
+            }));
             return t;
         }
     }
@@ -88,6 +100,15 @@ public class Thing extends JestData<ShareoData> {
         this.acceptedBid = acceptedBid;
         this.bids = null;
         this.status = Status.BORROWED;
+    }
+
+
+    /**
+     * Used to push updates on a things data to the server
+     */
+    public void update() {
+        notifyViews();
+        ShareoApplication.getInstance().getJobManager().addJobInBackground(new UpdateGameJob(this));
     }
 
     /**
