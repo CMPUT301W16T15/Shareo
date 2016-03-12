@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -109,7 +110,21 @@ public class HomeFragment extends Fragment implements MVCView {
             @Override
             public void onClick(View v) {
                 AddGameFragment agf = new AddGameFragment();
+                Bundle bundle = new Bundle();
+                bundle.putInt("pos", -1);
+                agf.setArguments(bundle);
                 agf.show(getFragmentManager(), "new game");
+            }
+        });
+
+        mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                AddGameFragment agf = new AddGameFragment();
+                Bundle bundle = new Bundle();
+                bundle.putInt("pos", position);
+                agf.setArguments(bundle);
+                agf.show(getFragmentManager(), "edit");
             }
         });
 

@@ -76,6 +76,7 @@
             </EditText>
         </LinearLayout>
 
+        <!--
         <LinearLayout
             android:layout_marginLeft="10.0dip"
             android:layout_marginRight="10.0dip"
@@ -99,7 +100,7 @@
                 android:inputType="numberDecimal"
                 android:hint="@string/hintRate">
             </EditText>
-        </LinearLayout>
+        </LinearLayout> -->
 
         <LinearLayout
             android:layout_marginLeft="10.0dip"

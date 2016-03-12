@@ -62,7 +62,7 @@ public class ProfileFragment extends Fragment {
 
         setAttributes();
         setProfileText();
-        setHints();
+        setText();
         return v;
     }
 
@@ -80,12 +80,12 @@ public class ProfileFragment extends Fragment {
         mTextCreateProfile.setText(userName+"'s Profile");
     }
 
-    private void setHints()
+    private void setText()
     {
         //mEditTextUserName.setHint(userName);
-        mEditTextFullName.setHint(fullName);
-        mEditTextEmail.setHint(emailAddress);
-        mEditTextMotto.setHint(motto);
+        mEditTextFullName.setText(fullName);
+        mEditTextEmail.setText(emailAddress);
+        mEditTextMotto.setText(motto);
     }
 
     private void saveUserClassChanges()

@@ -10,12 +10,17 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
+import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import mvc.AppUserSingleton;
 import mvc.Thing;
@@ -28,37 +33,48 @@ import mvc.UserDoesNotExistException;
  * Created by Andrew on 2016-02-28.
  */
 public class AddGameFragment extends DialogFragment {
+    private Integer mPositionIndex;
+    private List<Thing> myGames;
 
     private final int CHOOSE_PICTURE = 1;
     private EditText editTextGameName;
     private EditText editTextDescription;
-    private EditText editTextRate;
+    //private EditText editTextRate;
     private EditText editTextNumberPlayers;
     private EditText editTextCategory;
+    private TextView mTextViewAddGame;
     private ImageButton gameImage;
 
     private PhotoModel gamePhoto;
-    private String gameName;
+    //private String gameName;
     private String gameDescription;
     private String gameRate;
     private String numberPlayers;
     private String category;
 
+    private User mUser;
+
+    String gameName;
+    String description;
+    Thing.Status status;
+
     public AddGameFragment() {
 
     }
+
 
     private void saveAllText()
     {
         gameName = editTextGameName.getText().toString();
         gameDescription = editTextDescription.getText().toString();
-        gameRate = editTextRate.getText().toString();
+        //gameRate = editTextRate.getText().toString();
         numberPlayers = editTextNumberPlayers.getText().toString();
+        //int numPlay = Integer.parseInt(numberPlayers);
         category = editTextCategory.getText().toString();
         User user = AppUserSingleton.getInstance().getUser();
 
         try {
-            Thing thing = new Thing.Builder(ShareoData.getInstance(), user, gameName, gameDescription).build();
+            Thing thing = new Thing.Builder(ShareoData.getInstance(), user, gameName, gameDescription, category, numberPlayers).build();
         } catch (UserDoesNotExistException e) {
             // TODO catch error in a meaningful way.
             e.printStackTrace();
@@ -72,9 +88,12 @@ public class AddGameFragment extends DialogFragment {
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.fragment_addeditgame, null);
 
+        mPositionIndex = getArguments().getInt("pos");
+
+        mTextViewAddGame = (TextView) v.findViewById(R.id.textViewAddGame);
         editTextGameName = (EditText) v.findViewById(R.id.editTextGameName);
         editTextDescription = (EditText) v.findViewById(R.id.editTextDescription);
-        editTextRate = (EditText) v.findViewById(R.id.editTextRate);
+        //editTextRate = (EditText) v.findViewById(R.id.editTextRate);
         editTextNumberPlayers = (EditText) v.findViewById(R.id.editTextNumberPlayers);
         editTextCategory = (EditText) v.findViewById(R.id.editTextCategory);
         gameImage = (ImageButton) v.findViewById(R.id.gamePicture);
@@ -85,6 +104,17 @@ public class AddGameFragment extends DialogFragment {
             }
         });
 
+        if (mPositionIndex != -1)
+        {
+            mUser = AppUserSingleton.getInstance().getUser();
+            //mUser.addView(this);
+            myGames = mUser.getAvailableThings();
+            populateFields(mPositionIndex);
+        }
+
+
+
+
         // Build the dialog and set up the button click handlers
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage("Game Entry")
@@ -92,7 +122,16 @@ public class AddGameFragment extends DialogFragment {
                 .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         saveAllText();
+                        //dismiss();
+
+                        /*
+                        mListener.onDialogPositiveClick(gameName,
+                                                        gameDescription,
+                                                        status,
+                                                        mPositionIndex)
+                                                        */
                         dismiss();
+
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -112,6 +151,13 @@ public class AddGameFragment extends DialogFragment {
                 "Choose Picture"), CHOOSE_PICTURE);
     }
 
+    @Override
+    public void onAttach(Activity a) {
+        super.onAttach(a);
+
+
+    }
+
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == CHOOSE_PICTURE) {
@@ -125,5 +171,14 @@ public class AddGameFragment extends DialogFragment {
                 }
             }
         }
+    }
+
+    private void populateFields(int mPositionIndex) {
+        mTextViewAddGame.setText("Edit a Game");
+        editTextGameName.setText(myGames.get(mPositionIndex).getName());
+        editTextDescription.setText(myGames.get(mPositionIndex).getDescription());
+        editTextCategory.setText(myGames.get(mPositionIndex).getCategory());
+        editTextNumberPlayers.setText(myGames.get(mPositionIndex).getNumberPlayers());
+
     }
 }

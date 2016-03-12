@@ -19,6 +19,8 @@ public class Thing extends JestData {
     private String name;
     private String description;
     private Status status;
+    private String category;
+    private String numberPlayers;
     private PhotoModel photo;
 
     private String ownerID;
@@ -34,13 +36,17 @@ public class Thing extends JestData {
         private User owner;
         private String name;
         private String description;
+        private String category;
+        private String numberPlayers;
         private PhotoModel p;
         private Boolean newThread;
 
-        public Builder(ShareoData data, User owner, String name, String description) {
+        public Builder(ShareoData data, User owner, String name, String description, String category, String numberPlayers) {
             this.data = data;
             this.owner = owner;
             this.name = name;
+            this.category = category;
+            this.numberPlayers = numberPlayers;
             this.description = description;
             newThread = true;
             this.p = null;
@@ -59,7 +65,7 @@ public class Thing extends JestData {
 
         public Thing build() throws UserDoesNotExistException {
 
-            final Thing t = new Thing(name, description);
+            final Thing t = new Thing(name, description, category, numberPlayers);
             t.ownerID = owner.getJestID();
             t.setDataSource(data);
             t.setPhoto(p);
@@ -96,16 +102,19 @@ public class Thing extends JestData {
 
     public enum Status {AVAILABLE, BIDDED, BORROWED}
 
-    protected Thing(String gameName, String description) {
-        this(gameName, description, Status.AVAILABLE);
+    protected Thing(String gameName, String description, String category, String numberPlayers) {
+        this(gameName, description, category, numberPlayers, Status.AVAILABLE);
     }
 
-    public Thing(String gameName, String description, Status status) {
+    public Thing(String gameName, String description, String category, String numberPlayers, Status status) {
         this.status = status;
         this.description = description;
+        this.category = category;
+        this.numberPlayers = numberPlayers;
         this.name = gameName;
         this.bidIDs = new ArrayList<>();
     }
+
 
     /**
      * Used to lend a thing. Pass in the username of the person who is borrowing the game.
@@ -184,7 +193,12 @@ public class Thing extends JestData {
     public String getDescription() {
         return description;
     }
-
+    public String getCategory() {
+        return category;
+    }
+    public String getNumberPlayers() {
+        return numberPlayers;
+    }
     public String getName() {
         return name;
     }
