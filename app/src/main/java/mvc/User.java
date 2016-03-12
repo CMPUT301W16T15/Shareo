@@ -63,11 +63,6 @@ public class User extends JestData {
             return user;
         }
 
-        public User edit() throws NullIDException {
-            User user = new User(username, fullName, emailAddress, motto);
-            source.updateUser(user);
-            return user;
-        }
     }
 
     @Override

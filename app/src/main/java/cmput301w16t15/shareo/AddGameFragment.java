@@ -86,13 +86,14 @@ public class AddGameFragment extends DialogFragment {
          */
 
         else {
-            try {
-                Thing thing = new Thing.Builder(ShareoData.getInstance(), user, gameName, gameDescription, category, numberPlayers).build();//edit();
-            } catch (UserDoesNotExistException e) { //(NullIDException e) {
-                // TODO catch error in a meaningful way.
-                e.printStackTrace();
-            }
+            myGames.get(mPositionIndex).setNumberPlayers(numberPlayers);
+            myGames.get(mPositionIndex).setDescription(gameDescription);
+            myGames.get(mPositionIndex).setName(gameName);
+            myGames.get(mPositionIndex).setCategory(category);
+
+            myGames.get(mPositionIndex).update();
         }
+
     }
 
     @Override

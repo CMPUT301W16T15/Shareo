@@ -95,12 +95,7 @@ public class ProfileFragment extends Fragment {
         myUser.setEmailAddress(emailAddress);
         myUser.setMotto(motto);
 
-        try {
-            User user = new User.Builder(ShareoData.getInstance(), userName, fullName, emailAddress, motto).edit();
-        } catch (NullIDException e) {
-            // TODO catch error in a meaningful way.
-            e.printStackTrace();
-        }
+        myUser.update();
     }
 
     private void saveAllText()

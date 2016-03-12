@@ -2,6 +2,8 @@ package mvc;
 
 import com.path.android.jobqueue.AsyncAddCallback;
 
+import org.apache.commons.lang3.ObjectUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,8 +59,7 @@ public class Thing extends JestData {
             return this;
         }
 
-        public Builder useMainThread()
-        {
+        public Builder useMainThread() {
             newThread = false;
             return this;
         }
@@ -97,7 +98,9 @@ public class Thing extends JestData {
             }
             return t;
         }
-    }
+
+        }
+
 
 
     public enum Status {AVAILABLE, BIDDED, BORROWED}
@@ -144,6 +147,26 @@ public class Thing extends JestData {
     {
         this.acceptedBid = null;
         this.status = Status.AVAILABLE;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setNumberPlayers(String numberPlayers) {
+        this.numberPlayers = numberPlayers;
     }
 
     public void setOwner(User owner) throws NullIDException {
