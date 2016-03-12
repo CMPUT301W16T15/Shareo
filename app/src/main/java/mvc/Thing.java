@@ -35,18 +35,25 @@ public class Thing extends JestData {
         private String name;
         private String description;
         private PhotoModel p;
+        private Boolean newThread;
 
         public Builder(ShareoData data, User owner, String name, String description) {
             this.data = data;
             this.owner = owner;
             this.name = name;
             this.description = description;
-
+            newThread = true;
             this.p = null;
         }
 
         public Builder setPhoto(PhotoModel p) {
             this.p = p;
+            return this;
+        }
+
+        public Builder useMainThread()
+        {
+            newThread = false;
             return this;
         }
 
@@ -56,22 +63,32 @@ public class Thing extends JestData {
             t.ownerID = owner.getJestID();
             t.setDataSource(data);
             t.setPhoto(p);
-            ShareoApplication.getInstance().getJobManager().addJobInBackground(new CreateGameJob(t, new CallbackInterface() {
-                @Override
-                public void onSuccess() {
-                    try {
-                        owner.addOwnedThing(t);
-                        owner.update();
-                    } catch (NullIDException e) {
-                        e.printStackTrace();
+            if (newThread) {
+                ShareoApplication.getInstance().getJobManager().addJobInBackground(new CreateGameJob(t, new CallbackInterface() {
+                    @Override
+                    public void onSuccess() {
+                        try {
+                            owner.addOwnedThing(t);
+                            owner.update();
+                        } catch (NullIDException e) {
+                            e.printStackTrace();
+                        }
                     }
-                }
 
-                @Override
-                public void onFailure() {
+                    @Override
+                    public void onFailure() {
 
+                    }
+                }));
+            } else {
+                data.addGame(t);
+                try {
+                    owner.addOwnedThing(t);
+                    data.updateUser(owner);
+                } catch (NullIDException e) {
+                    e.printStackTrace();
                 }
-            }));
+            }
             return t;
         }
     }

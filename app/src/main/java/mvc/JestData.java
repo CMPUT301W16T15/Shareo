@@ -26,7 +26,9 @@ public abstract class JestData extends MVCModel {
      */
     public String getJestID() throws NullIDException {
         if (JestID == null) {
-            throw new NullIDException();
+            if (JestID == null) {
+                throw new NullIDException();
+            }
         }
         return JestID;
     }

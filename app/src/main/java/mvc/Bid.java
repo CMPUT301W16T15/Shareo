@@ -44,6 +44,7 @@ public class Bid extends JestData {
         private User user;
         private Thing thing;
         private int centsPerHour;
+        private Boolean newThread;
 
         public Builder(ShareoData data, User bidder, Thing thing, int centsPerHour) {
             this.user = bidder;
@@ -52,29 +53,43 @@ public class Bid extends JestData {
             this.data = data;
         }
 
+        public Builder useMainThread()
+        {
+            newThread = false;
+            return this;
+        }
+
         public Bid build() throws NullIDException {
 
             final Bid bid = new Bid(user, thing, centsPerHour);
             bid.setDataSource(data);
-            ShareoApplication.getInstance().getJobManager().addJobInBackground(new CreateBidJob(bid, new CallbackInterface() {
-                @Override
-                public void onSuccess() {
-                    try {
-                        user.addBid(bid);
-                        thing.addBid(bid);
+            if (newThread) {
+                ShareoApplication.getInstance().getJobManager().addJobInBackground(new CreateBidJob(bid, new CallbackInterface() {
+                    @Override
+                    public void onSuccess() {
+                        try {
+                            user.addBid(bid);
+                            thing.addBid(bid);
 
-                        user.update();
-                        thing.update();
-                    } catch (NullIDException e) {
-                        e.printStackTrace();
+                            user.update();
+                            thing.update();
+                        } catch (NullIDException e) {
+                            e.printStackTrace();
+                        }
                     }
-                }
 
-                @Override
-                public void onFailure() {
+                    @Override
+                    public void onFailure() {
 
-                }
-            }));
+                    }
+                }));
+            } else {
+                ShareoData.getInstance().addBid(bid);
+                user.addBid(bid);
+                thing.addBid(bid);
+                data.updateUser(user);
+                data.updateGame(thing);
+            }
             return bid;
         }
     }

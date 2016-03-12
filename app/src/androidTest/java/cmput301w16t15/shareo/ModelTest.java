@@ -49,10 +49,10 @@ public class ModelTest extends ActivityInstrumentationTestCase2 {
         Thing t3 = null;
         Thing t4 = null;
         try {
-            t1 = new Thing.Builder(data, joe, "Game1", "One game to rule them all,").build();
-            t2 = new Thing.Builder(data, joe, "Game2", "One game to find them,").build();
-            t3 = new Thing.Builder(data, sally, "Game3", "One game to bring them all,").build();
-            t4 = new Thing.Builder(data, fred, "Game4", "And in the darkness, bind them.").build();
+            t1 = new Thing.Builder(data, joe, "Game1", "One game to rule them all,").useMainThread().build();
+            t2 = new Thing.Builder(data, joe, "Game2", "One game to find them,").useMainThread().build();
+            t3 = new Thing.Builder(data, sally, "Game3", "One game to bring them all,").useMainThread().build();
+            t4 = new Thing.Builder(data, fred, "Game4", "And in the darkness, bind them.").useMainThread().build();
         } catch (UserDoesNotExistException e) {
             e.printStackTrace();
             fail();
@@ -70,11 +70,11 @@ public class ModelTest extends ActivityInstrumentationTestCase2 {
         Bid b4 = null;
         Bid b5 = null;
         try {
-            b1 = new Bid.Builder(data, joe, t3, 100).build();
-            b2 = new Bid.Builder(data, sally, t1, 200).build();
-            b3 = new Bid.Builder(data, sally, t4, 300).build();
-            b4 = new Bid.Builder(data, fred, t1, 400).build();
-            b5 = new Bid.Builder(data, fred, t2, 500).build();
+            b1 = new Bid.Builder(data, joe, t3, 100).useMainThread().build();
+            b2 = new Bid.Builder(data, sally, t1, 200).useMainThread().build();
+            b3 = new Bid.Builder(data, sally, t4, 300).useMainThread().build();
+            b4 = new Bid.Builder(data, fred, t1, 400).useMainThread().build();
+            b5 = new Bid.Builder(data, fred, t2, 500).useMainThread().build();
         } catch (NullIDException e) {
             e.printStackTrace();
             fail();
