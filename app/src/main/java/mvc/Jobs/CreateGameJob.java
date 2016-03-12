@@ -23,7 +23,7 @@ public class CreateGameJob extends Job {
 
     @Override
     protected RetryConstraint shouldReRunOnThrowable(Throwable throwable, int runCount, int maxRunCount) {
-        return RetryConstraint.RETRY;
+        return RetryConstraint.CANCEL;
     }
 
     @Override
