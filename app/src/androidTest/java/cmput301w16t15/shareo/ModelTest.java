@@ -26,14 +26,19 @@ public class ModelTest extends ActivityInstrumentationTestCase2 {
         User sally = null;
         User fred = null;
 
+        String fullName = "my full name";
+        String emailAddress = "my email address";
+        String motto = "my motto";
+
+
         data.removeUser("joe");
         data.removeUser("sally");
         data.removeUser("fred");
 
         try {
-            joe = new User.Builder(data, "joe").build();
-            sally = new User.Builder(data, "sally").build();
-            fred = new User.Builder(data, "fred").build();
+            joe = new User.Builder(data, "joe", fullName, emailAddress, motto).build();
+            sally = new User.Builder(data, "sally", fullName, emailAddress, motto).build();
+            fred = new User.Builder(data, "fred", fullName, emailAddress, motto).build();
         } catch (UsernameAlreadyExistsException e) {
             e.printStackTrace();
             fail();
@@ -129,10 +134,14 @@ public class ModelTest extends ActivityInstrumentationTestCase2 {
         String username = "Test";
         User u1 = null;
 
+        String fullName = "my full name";
+        String emailAddress = "my email address";
+        String motto = "my motto";
+
         data.removeUser(username);
 
         try {
-            u1 = new User.Builder(data, username).build();
+            u1 = new User.Builder(data, username, fullName, emailAddress, motto).build();
         } catch (UsernameAlreadyExistsException e) {
             e.printStackTrace();
             fail();

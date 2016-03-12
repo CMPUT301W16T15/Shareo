@@ -15,11 +15,17 @@ public class CreateNewUserJob extends Job {
 
     static final int PRIORITY = 1;
     String username;
+    String emailAddress;
+    String motto;
+    String fullName;
     CallbackInterface callback;
 
-    public CreateNewUserJob(String username, CallbackInterface callback) {
+    public CreateNewUserJob(String username, String fullName, String emailAddress, String motto, CallbackInterface callback) {
         super(new Params(PRIORITY));
         this.username = username;
+        this.fullName = fullName;
+        this.emailAddress = emailAddress;
+        this.motto = motto;
         this.callback = callback;
     }
 
@@ -30,7 +36,7 @@ public class CreateNewUserJob extends Job {
 
     @Override
     public void onRun() throws Throwable {
-        User user = new User.Builder(ShareoData.getInstance(), username).build();
+        User user = new User.Builder(ShareoData.getInstance(), username, fullName, emailAddress, motto).build();
         AppUserSingleton.getInstance().setUser(user);
         callback.onSuccess();
     }

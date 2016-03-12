@@ -119,7 +119,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.buttonSignup:
                 Log.d(TAG, "Clicked Button Signup");
                 parseSignUp();
-                AppUserSingleton.getInstance().createUser(userNameSignup, new CallbackInterface() {
+                AppUserSingleton.getInstance().createUser(userNameSignup, fullName, email, motto, new CallbackInterface() {
                     @Override
                     public void onSuccess() {
                         startActivity(mainIntent);

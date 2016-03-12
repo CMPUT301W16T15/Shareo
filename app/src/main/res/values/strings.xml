@@ -41,7 +41,7 @@
     <string name="textViewLogin">Shareo Account Setup</string>
     <string name="hintSearch">Search for a thing</string>
     <string name="textViewSearchGame">Game Search</string>
-    <string name="textViewCreateProfile">Create User Profile</string>
+    <string name="textViewEditProfile">Edit User Profile</string>
 
     <string-array name="home_choices">
         <item>Available</item>

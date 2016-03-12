@@ -1,6 +1,8 @@
 package mvc;
 
 
+import org.apache.commons.lang3.ObjectUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +16,10 @@ import mvc.exceptions.UsernameAlreadyExistsException;
  */
 public class User extends JestData {
 
-    private final String username;
+    private String username;
+    private String fullName;
+    private String emailAddress;
+    private String motto;
 
     private ArrayList<String> ownedIDs;
     transient private List<Thing> owned;
@@ -25,8 +30,12 @@ public class User extends JestData {
     private ArrayList<String> borrowedIDs;
     transient private List<Thing> borrowed;
 
-    public User(String username) {
+    public User(String username, String fullName, String emailAddress, String motto) {
         this.username = username;
+        this.fullName = fullName;
+        this.emailAddress = emailAddress;
+        this.motto = motto;
+
         this.setJestID(username);
         this.ownedIDs = new ArrayList<>();
         this.bidIDs = new ArrayList<>();
@@ -35,16 +44,28 @@ public class User extends JestData {
 
     public static class Builder {
         private String username;
+        private String fullName;
+        private String emailAddress;
+        private String motto;
         private ShareoData source;
 
-        public Builder(ShareoData dataSource, String username) {
+        public Builder(ShareoData dataSource, String username, String fullName, String emailAddress, String motto) {
             this.username = username;
+            this.fullName = fullName;
+            this.emailAddress = emailAddress;
+            this.motto = motto;
             this.source = dataSource;
         }
 
         public User build() throws UsernameAlreadyExistsException{
-            User user = new User(username);
+            User user = new User(username, fullName, emailAddress, motto);
             source.addUser(user);
+            return user;
+        }
+
+        public User edit() throws NullIDException {
+            User user = new User(username, fullName, emailAddress, motto);
+            source.updateUser(user);
             return user;
         }
     }
@@ -61,6 +82,23 @@ public class User extends JestData {
     }
 
     public String getName() { return username; }
+    public String getFullName() { return fullName; }
+    public String getEmailAddress() { return emailAddress; }
+    public String getMotto() { return motto; }
+
+    public void setName(String username) { this.username = username;}
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+
+    public void setMotto(String motto) {
+        this.motto = motto;
+    }
+
 
     /**
      * Add the {@link Bid} to the user. This verifies that the bid is not already in the user, and
