@@ -28,6 +28,7 @@ import mvc.PhotoModel;
 import mvc.ShareoData;
 import mvc.User;
 import mvc.UserDoesNotExistException;
+import mvc.exceptions.NullIDException;
 
 /**
  * Created by Andrew on 2016-02-28.
@@ -46,17 +47,12 @@ public class AddGameFragment extends DialogFragment {
     private ImageButton gameImage;
 
     private PhotoModel gamePhoto;
-    //private String gameName;
+    private String gameName;
     private String gameDescription;
-    private String gameRate;
     private String numberPlayers;
     private String category;
-
     private User mUser;
 
-    String gameName;
-    String description;
-    Thing.Status status;
 
     public AddGameFragment() {
 
@@ -73,14 +69,30 @@ public class AddGameFragment extends DialogFragment {
         category = editTextCategory.getText().toString();
         User user = AppUserSingleton.getInstance().getUser();
 
-        try {
-            Thing thing = new Thing.Builder(ShareoData.getInstance(), user, gameName, gameDescription, category, numberPlayers).build();
-        } catch (UserDoesNotExistException e) {
-            // TODO catch error in a meaningful way.
-            e.printStackTrace();
+        /**
+         * If mPositionIndex == -1, then we are in Add Game mode, so call .build() in Thing.
+         */
+        if (mPositionIndex == -1) {
+            try {
+                Thing thing = new Thing.Builder(ShareoData.getInstance(), user, gameName, gameDescription, category, numberPlayers).build();
+            } catch (UserDoesNotExistException e) {
+                // TODO catch error in a meaningful way.
+                e.printStackTrace();
+            }
         }
 
+        /**
+         * We are in edit game mode so don't call the same method, call .edit() in Thing.
+         */
 
+        else {
+            try {
+                Thing thing = new Thing.Builder(ShareoData.getInstance(), user, gameName, gameDescription, category, numberPlayers).build();//edit();
+            } catch (UserDoesNotExistException e) { //(NullIDException e) {
+                // TODO catch error in a meaningful way.
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -109,7 +121,7 @@ public class AddGameFragment extends DialogFragment {
             mUser = AppUserSingleton.getInstance().getUser();
             //mUser.addView(this);
             myGames = mUser.getAvailableThings();
-            populateFields(mPositionIndex);
+            populateFields();
         }
 
 
@@ -122,14 +134,6 @@ public class AddGameFragment extends DialogFragment {
                 .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         saveAllText();
-                        //dismiss();
-
-                        /*
-                        mListener.onDialogPositiveClick(gameName,
-                                                        gameDescription,
-                                                        status,
-                                                        mPositionIndex)
-                                                        */
                         dismiss();
 
                     }
@@ -173,7 +177,7 @@ public class AddGameFragment extends DialogFragment {
         }
     }
 
-    private void populateFields(int mPositionIndex) {
+    private void populateFields() {
         mTextViewAddGame.setText("Edit a Game");
         editTextGameName.setText(myGames.get(mPositionIndex).getName());
         editTextDescription.setText(myGames.get(mPositionIndex).getDescription());

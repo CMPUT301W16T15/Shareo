@@ -49,10 +49,10 @@ public class ModelTest extends ActivityInstrumentationTestCase2 {
         Thing t3 = null;
         Thing t4 = null;
         try {
-            t1 = new Thing.Builder(data, joe, "Game1", "One game to rule them all,").useMainThread().build();
-            t2 = new Thing.Builder(data, joe, "Game2", "One game to find them,").useMainThread().build();
-            t3 = new Thing.Builder(data, sally, "Game3", "One game to bring them all,").useMainThread().build();
-            t4 = new Thing.Builder(data, fred, "Game4", "And in the darkness, bind them.").useMainThread().build();
+            t1 = new Thing.Builder(data, joe, "Game1", "One game to rule them all,","GameCategory","2").useMainThread().build();
+            t2 = new Thing.Builder(data, joe, "Game2", "One game to find them,","GameCategory","2").useMainThread().build();
+            t3 = new Thing.Builder(data, sally, "Game3", "One game to bring them all,","GameCategory","2").useMainThread().build();
+            t4 = new Thing.Builder(data, fred, "Game4", "And in the darkness, bind them.","GameCategory","2").useMainThread().build();
         } catch (UserDoesNotExistException e) {
             e.printStackTrace();
             fail();
