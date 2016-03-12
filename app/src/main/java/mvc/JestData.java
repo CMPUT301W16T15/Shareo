@@ -8,7 +8,7 @@ import mvc.exceptions.NullIDException;
 /**
  * Created by A on 2016-03-05.
  */
-public abstract class JestData<M extends MVCModel> extends Observable {
+public abstract class JestData<M extends MVCModel> {
     @JestId
     private String JestID;
 

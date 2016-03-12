@@ -151,12 +151,8 @@ public class User extends JestData<ShareoData> {
     }
 
     public List<Thing> getOwnedBiddedThings() {
-        if (owned == null) {
-            owned = new ArrayList<>(ownedIDs.size());
-            for (String ID : ownedIDs) {
-                owned.add(getDataSource().getGame(ID));
-            }
-        }
+        //Make sure its loaded properly
+        getOwnedThings();
         // only return those that have bids on them
         List<Thing> ownedWithBids = new ArrayList<>();
         for (Thing t : owned) {

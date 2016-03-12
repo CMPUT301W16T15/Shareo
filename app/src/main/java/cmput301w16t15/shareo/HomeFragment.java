@@ -85,7 +85,6 @@ public class HomeFragment extends Fragment implements Observer {
 
         // user singleton...used for getting data
         mUser = AppUserSingleton.getInstance().getUser();
-        mUser.addObserver(this);
 
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_home, container, false);

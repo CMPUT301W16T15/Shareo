@@ -1,11 +1,10 @@
 package cmput301w16t15.shareo;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,9 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import mvc.AppUserSingleton;
-import mvc.ShareoData;
-import mvc.User;
-import mvc.exceptions.UsernameAlreadyExistsException;
+import mvc.Jobs.CallbackInterface;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -116,33 +113,69 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public void onClick(View v) {
-        Intent mainIntent = new Intent(this, MainActivity.class);
+        final Intent mainIntent = new Intent(this, MainActivity.class);
         //TODO actually login and signup users properly
         switch (v.getId()) {
             case R.id.buttonSignup:
                 Log.d(TAG, "Clicked Button Signup");
                 parseSignUp();
-                try {
-                    User user = new User.Builder(ShareoData.getInstance(), userNameSignup).build();
-                    AppUserSingleton.getInstance().logIn(user);
-                } catch (UsernameAlreadyExistsException e) {
-                    // TODO notify user in some manner.
-                }
+                AppUserSingleton.getInstance().createUser(userNameSignup, new CallbackInterface() {
+                    @Override
+                    public void onSuccess() {
+                        startActivity(mainIntent);
+                    }
+
+                    @Override
+                    public void onFailure() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
+                                alertDialog.setTitle("User already exists.");
+                                alertDialog.setMessage("Please choose a different username.");
+                                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        });
+                                alertDialog.show();
+                            }
+                        });
+                    }
+                });
                 break;
 
             case R.id.buttonLogin:
                 Log.d(TAG, "Clicked Button Login");
                 parseLogin();
-                User user = ShareoData.getInstance().getUser(userNameLogin);
-                if (user != null) {
-                    AppUserSingleton.getInstance().logIn(user);
-                } else {
-                    // TODO notify user that name does not exist.
-                    // TODO or not connected to server.
-                }
+                AppUserSingleton.getInstance().logIn(userNameLogin, new CallbackInterface() {
+                    @Override
+                    public void onSuccess() {
+                        startActivity(mainIntent);
+                    }
+
+                    @Override
+                    public void onFailure() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
+                                alertDialog.setTitle("No user exists.");
+                                alertDialog.setMessage("Please check spelling and try again.");
+                                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        });
+                                alertDialog.show();
+                            }
+                        });
+                    }
+                });
                 break;
         }
-        this.startActivity(mainIntent);
     }
 
     /**
