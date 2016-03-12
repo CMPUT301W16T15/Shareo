@@ -13,6 +13,9 @@ import mvc.exceptions.UsernameAlreadyExistsException;
 public class User extends JestData<ShareoData> {
 
     private final String username;
+    private final String fullName;
+    private final String emailAddress;
+    private final String motto;
 
     private ArrayList<String> ownedIDs;
     transient private List<Thing> owned;
@@ -23,8 +26,12 @@ public class User extends JestData<ShareoData> {
     private ArrayList<String> borrowedIDs;
     transient private List<Thing> borrowed;
 
-    public User(String username) {
+    public User(String username, String fullName, String emailAddress, String motto) {
         this.username = username;
+        this.fullName = fullName;
+        this.emailAddress = emailAddress;
+        this.motto = motto;
+
         this.setJestID(username);
         this.ownedIDs = new ArrayList<>();
         this.bidIDs = new ArrayList<>();
@@ -33,15 +40,21 @@ public class User extends JestData<ShareoData> {
 
     public static class Builder {
         private String username;
+        private String fullName;
+        private String emailAddress;
+        private String motto;
         private ShareoData source;
 
-        public Builder(ShareoData dataSource, String username) {
+        public Builder(ShareoData dataSource, String username, String fullName, String emailAddress, String motto) {
             this.username = username;
+            this.fullName = fullName;
+            this.emailAddress = emailAddress;
+            this.motto = motto;
             this.source = dataSource;
         }
 
         public User build() throws UsernameAlreadyExistsException{
-            User user = new User(username);
+            User user = new User(username, fullName, emailAddress, motto);
             source.addUser(user);
             return user;
         }
@@ -59,6 +72,9 @@ public class User extends JestData<ShareoData> {
     }
 
     public String getName() { return username; }
+    public String getFullName() { return fullName; }
+    public String getEmailAddress() { return emailAddress; }
+    public String getMotto() { return motto; }
 
     /**
      * Add the {@link Bid} to the user. This verifies that the bid is not already in the user, and

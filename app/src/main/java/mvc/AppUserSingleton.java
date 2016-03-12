@@ -31,8 +31,8 @@ public class AppUserSingleton {
         jobManager.addJob(new FrontloadUserJob(username, callback));
     }
 
-    public void createUser(String username, CallbackInterface callback) {
-        jobManager.addJobInBackground(new CreateNewUserJob(username, callback));
+    public void createUser(String username, String fullName, String emailAddress, String motto, CallbackInterface callback) {
+        jobManager.addJobInBackground(new CreateNewUserJob(username, fullName, emailAddress, motto, callback));
     }
 
     public void setUser(User user)
