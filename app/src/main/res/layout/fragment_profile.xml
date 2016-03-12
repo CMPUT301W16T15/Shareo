@@ -55,7 +55,7 @@
             </EditText>
         </LinearLayout>
 
-        <LinearLayout
+        <!--         <LinearLayout
             android:layout_marginLeft="10.0dip"
             android:layout_marginRight="10.0dip"
             android:layout_width="fill_parent"
@@ -78,7 +78,7 @@
                 android:inputType="text"
                 android:hint="@string/hintUserName">
             </EditText>
-        </LinearLayout>
+        </LinearLayout> -->
 
         <LinearLayout
             android:layout_marginLeft="10.0dip"

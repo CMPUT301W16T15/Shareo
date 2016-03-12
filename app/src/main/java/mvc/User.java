@@ -1,6 +1,8 @@
 package mvc;
 
 
+import org.apache.commons.lang3.ObjectUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,10 +14,10 @@ import mvc.exceptions.UsernameAlreadyExistsException;
  */
 public class User extends JestData<ShareoData> {
 
-    private final String username;
-    private final String fullName;
-    private final String emailAddress;
-    private final String motto;
+    private String username;
+    private String fullName;
+    private String emailAddress;
+    private String motto;
 
     private ArrayList<String> ownedIDs;
     transient private List<Thing> owned;
@@ -58,6 +60,12 @@ public class User extends JestData<ShareoData> {
             source.addUser(user);
             return user;
         }
+
+        public User edit() throws NullIDException {
+            User user = new User(username, fullName, emailAddress, motto);
+            source.updateUser(user);
+            return user;
+        }
     }
 
     @Override
@@ -75,6 +83,20 @@ public class User extends JestData<ShareoData> {
     public String getFullName() { return fullName; }
     public String getEmailAddress() { return emailAddress; }
     public String getMotto() { return motto; }
+
+    public void setName(String username) { this.username = username;}
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+
+    public void setMotto(String motto) {
+        this.motto = motto;
+    }
+
 
     /**
      * Add the {@link Bid} to the user. This verifies that the bid is not already in the user, and
