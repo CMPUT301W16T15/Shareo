@@ -2,109 +2,124 @@ package cmput301w16t15.shareo;
 
 import android.test.ActivityInstrumentationTestCase2;
 
+import mvc.Bid;
 import mvc.Thing;
 import mvc.User;
+import mvc.exceptions.NullIDException;
 
 /**
  * Created by A on 2016-02-09.
  */
 public class BiddingTest extends ActivityInstrumentationTestCase2 {
+    Bid bid1;
+    Bid bid2;
     User bidder1;
     User bidder2;
     Thing t1;
     Thing t2;
     Thing t3;
 
+    String fullName = "my full name";
+    String emailAddress = "my email address";
+    String motto = "my motto";
+
     public BiddingTest() {
         super(MainActivity.class);
     }
+/*
+    public void initializeTestData() {
+        bidder1 = new User("Frank", fullName, emailAddress, motto);
+        bidder2 = new User("George", fullName, emailAddress, motto);
 
-//    public void initializeTestData() {
-//        bidder1 = new User("Frank");
-//        bidder2 = new User("George");
-//
-//        Thing t1 = new Game("Blank", Thing.Status.AVAILABLE);
-//        Thing t2 = new Game("Blank", Thing.Status.BIDDED);
-//        Thing t3 = new Game("Blank", Thing.Status.BORROWED);
-//    }
-//
-//    public void testBidOnThing() {
-//        initializeTestData();
-//
-//        try {
-//            t1.addBid(bidder1, 10);
-//            assertTrue(t1.getStatus() == Thing.Status.BIDDED);
-//            assertTrue(t1.getBidders().contains(bidder1));
-//        } catch (ThingUnavailableException e) {
-//            fail();
-//        }
-//        try {
-//            t2.addBid(bidder1, 20);
-//            assertTrue(t2.getStatus() == Thing.Status.BIDDED);
-//            assertTrue(t1.getBidders().contains(bidder1));
-//        } catch (ThingUnavailableException e) {
-//            fail();
-//        }
-//
-//        try {
-//            t1.addBid(bidder1, 10);
-//            fail();
-//        } catch (ThingUnavailableException e) {
-//            assertTrue(t1.getStatus() == Thing.Status.BORROWED);
-//            assertFalse(t1.getBidders().contains(bidder1));
-//        }
-//    }
-//
-//    public void testViewUserBids() {
-//        initializeTestData();
-//
-//        try {
-//            t1.addBid(bidder1, 10);
-//        } catch (ThingUnavailableException e) {
-//            fail();
-//        }
-//
-//        try {
-//            t2.addBid(bidder1, 20);
-//        } catch (ThingUnavailableException e) {
-//            fail();
-//        }
-//
-//        assertTrue(t1.getBidders().contains(bidder1));
-//        assertTrue(t2.getBidders().contains(bidder1));
-//        assertTrue(bidder1.getBids().contains(t1));
-//        assertTrue(bidder1.getBids().contains(t2));
-//    }
-//
-//    public void testViewMyThingBids() {
-//        initializeTestData();
-//
-//        try {
-//            t1.addBid(bidder1, 10);
-//        } catch (ThingUnavailableException e) {
-//            fail();
-//        }
-//
-//        try {
-//            t2.addBid(bidder1, 20);
-//            t2.addBid(bidder2, 30);
-//        } catch (ThingUnavailableException e) {
-//            fail();
-//        }
-//
-//        try {
-//            t3.addBid(bidder2, 20);
-//        } catch (ThingUnavailableException e) {
-//            fail();
-//        }
-//
-//        List<Thing> bidThings = new ArrayList<>();
-//        for (Bid bid : bidder1.getBids()) {
-//            bidThings.add(bid.getThing());
-//        }
-//
-//        assertTrue(bidThings.contains(t1));
-//        assertTrue(bidThings.contains(t2));
-//        assertFalse(bidThings.contains(t3));
-//    }
+        String description = "NODESC";
+
+        Thing t1 = new Thing("Blank", description, Thing.Status.AVAILABLE);
+        Thing t2 = new Thing("Blank", description, Thing.Status.BIDDED);
+        Thing t3 = new Thing("Blank", description, Thing.Status.BORROWED);
+
+        bid1 = new Bid(bidder1, t1, 20);
+
+
+    }
+
+    public void testBidOnThing() {
+        initializeTestData();
+
+        try {
+            t1.addBid(bidder1, 10);
+            assertTrue(t1.getStatus() == Thing.Status.BIDDED);
+            assertTrue(t1.getBidders().contains(bidder1));
+        } catch (ThingUnavailableException e) {
+            fail();
+        }
+        try {
+            t2.addBid(bidder1, 20);
+            assertTrue(t2.getStatus() == Thing.Status.BIDDED);
+            assertTrue(t1.getBidders().contains(bidder1));
+        } catch (ThingUnavailableException e) {
+            fail();
+        }
+
+        try {
+            t1.addBid(bidder1, 10);
+            fail();
+        } catch (ThingUnavailableException e) {
+            assertTrue(t1.getStatus() == Thing.Status.BORROWED);
+            assertFalse(t1.getBidders().contains(bidder1));
+        }
+    }
+
+    public void testViewUserBids() {
+        initializeTestData();
+
+        try {
+            t1.addBid(bidder1, 10);
+        } catch (ThingUnavailableException e) {
+            fail();
+        }
+
+        try {
+            t2.addBid(bidder1, 20);
+        } catch (ThingUnavailableException e) {
+            fail();
+        }
+
+        assertTrue(t1.getBidders().contains(bidder1));
+        assertTrue(t2.getBidders().contains(bidder1));
+        assertTrue(bidder1.getBids().contains(t1));
+        assertTrue(bidder1.getBids().contains(t2));
+    }
+
+    public void testViewMyThingBids() {
+        initializeTestData();
+
+        try {
+            t1.addBid(bidder1, 10);
+        } catch (ThingUnavailableException e) {
+            fail();
+        }
+
+        try {
+            t2.addBid(bidder1, 20);
+            t2.addBid(bidder2, 30);
+        } catch (ThingUnavailableException e) {
+            fail();
+        }
+
+        try {
+            t3.addBid(bidder2, 20);
+        } catch (ThingUnavailableException e) {
+            fail();
+        }
+
+        List<Thing> bidThings = new ArrayList<>();
+        for (Bid bid : bidder1.getBids()) {
+            bidThings.add(bid.getThing());
+        }
+
+        assertTrue(bidThings.contains(t1));
+        assertTrue(bidThings.contains(t2));
+        assertFalse(bidThings.contains(t3));
+    }
+    */
 }
