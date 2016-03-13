@@ -7,17 +7,17 @@ import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.concurrent.Semaphore;
-
 
 import io.searchbox.client.JestResult;
 import io.searchbox.core.Delete;
 import io.searchbox.core.DocumentResult;
 import io.searchbox.core.Get;
 import io.searchbox.core.Index;
+import io.searchbox.core.SearchResult;
 import mvc.exceptions.NullIDException;
 import mvc.exceptions.UsernameAlreadyExistsException;
 
@@ -87,7 +87,6 @@ public class ShareoData {
      * @see #removeGame(Thing)
      * @see #updateGame(Thing)
      * @see #getGame(String)
-     * @see #getGamesByDescrption(String[])
      * @see #addUser(User)
      * @see #addBid(Bid)
      */
@@ -129,15 +128,28 @@ public class ShareoData {
 
     /**
      * Get a list of things that match a set of keywords from the database.
-     * TODO expand on search specifics.
      * @param keywords list of keywords to match.
-     * @return A list of things that have matching words in their descrption.
+     * @return A list of things that have matching words in their description.
      */
 
-    public List<Thing> getGamesByDescrption(String[] keywords) {
-        SearchController mySearch = new SearchController(ELASTIC_GAME_TYPE, jestClient, keywords);
-
-        return null;
+    public List<Thing> getGamesByDescription(String keywords) {
+        ArrayList<Thing> games = new ArrayList<Thing>();
+        String search_string = String.format("{\"query\":{\"match\":{\"description\":\"%s\"}}}", keywords);
+        io.searchbox.core.Search search = new io.searchbox.core.Search.Builder(search_string)
+                .addIndex(ELASTIC_INDEX).addType(ELASTIC_GAME_TYPE).build();
+        try {
+            SearchResult execute = jestClient.execute(search);
+            if (execute.isSucceeded())
+            {
+                List<Thing> foundGames = execute.getSourceAsObjectList(Thing.class);
+                games.addAll(foundGames);
+            } else {
+                Log.i("TODO", "Search was unsuccessful");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return games;
     }
 
     /**
@@ -160,7 +172,6 @@ public class ShareoData {
      * @see #addGame(Thing)
      * @see #removeGame(Thing)
      * @see #getGame(String)
-     * @see #getGamesByDescrption(String[])
      */
     public void updateGame(Thing thing) throws NullIDException {
         updateByObject(ELASTIC_INDEX, ELASTIC_GAME_TYPE, thing);
@@ -197,7 +208,6 @@ public class ShareoData {
      * @param thing Thing to remove from the database.
      * @see #addGame(Thing)
      * @see #updateGame(Thing) )
-     * @see #getGamesByDescrption(String[])
      * @see #removeUser(User)
      * @see #removeBid(Bid)
      */
@@ -210,7 +220,6 @@ public class ShareoData {
      * meaning any owners and borrowers should also be removed, if desired.
      * @param bid Bid to remove from the database.
      * @see #addBid(Bid)
-     * @see #getGamesByDescrption(String[])
      * @see #removeUser(User)
      * @see #removeGame(Thing)
      */

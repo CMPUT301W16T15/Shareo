@@ -2,6 +2,8 @@ package cmput301w16t15.shareo;
 
 import android.test.ActivityInstrumentationTestCase2;
 
+import java.util.List;
+
 import mvc.Bid;
 import mvc.Thing;
 import mvc.ShareoData;
@@ -127,6 +129,16 @@ public class ModelTest extends ActivityInstrumentationTestCase2 {
         assertTrue(fred.getOwnedThings().size() == 1);
 
         // TODO assert that correct things are owned.
+    }
+
+    public static void testSearch() {
+        ShareoData data = ShareoData.getInstance();
+        List<Thing> results = data.getGamesByDescription("one game all");
+        for (Thing t : results) {
+            assertTrue(t.getDescription().toLowerCase().contains("one"));
+            assertTrue(t.getDescription().toLowerCase().contains("game"));
+            assertTrue(t.getDescription().toLowerCase().contains("all"));
+        }
     }
 
     public static void testAddRemoveUser() {
