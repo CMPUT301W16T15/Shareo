@@ -4,7 +4,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,14 +31,12 @@ public class SearchFragment extends Fragment {
         return new SearchFragment();
     }
 
-    // TODO: save search query and past results in localstorage
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_search, container, false);
 
         mListView = (ListView) v.findViewById(R.id.listview);
-        // empty results at first
         mListAdapter = new ThingAdapters.ThingWithStatusAdapter(this.getContext(), R.layout.detailed_thing_row, new ArrayList<Thing>());
         mListView.setAdapter(mListAdapter);
 
@@ -83,7 +80,6 @@ public class SearchFragment extends Fragment {
 
         @Override
         protected void onPostExecute(List<Thing> res) {
-            Log.v("TAG", "size: " + res.size());
             mListAdapter = new ThingAdapters.ThingWithStatusAdapter(getActivity(), R.layout.detailed_thing_row, res);
             mListView.setAdapter(mListAdapter);
             mListAdapter.notifyDataSetChanged();
