@@ -27,42 +27,6 @@
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ProfileActivity"
-            android:label="@string/title_activity_profile"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ProfileInfoActivity"
-            android:label="@string/title_activity_profile_info"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".MyOwnedThingsActivity"
-            android:label="@string/title_activity_my_owned_things"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".BorrowedThingsActivity"
-            android:label="@string/title_activity_my_borrowed_things"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".EditGameActivity"
-            android:label="@string/title_activity_edit_game"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".GameInformationActivity"
-            android:label="@string/title_activity_game_information"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".MyBidsActivity"
-            android:label="@string/title_activity_my_bids"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".SellingBidsActivity"
-            android:label="@string/title_activity_selling_bids"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".SearchActivity"
-            android:label="@string/title_activity_search"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
