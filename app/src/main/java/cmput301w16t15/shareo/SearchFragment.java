@@ -24,7 +24,6 @@ public class SearchFragment extends Fragment {
     private ListView mListView;
     private SearchView mSearchView;
     private SearchAdapter mListAdapter;
-    private List<Thing> mResults;
 
     private Handler mHandler;
     private Runnable mRunnable;
@@ -44,8 +43,7 @@ public class SearchFragment extends Fragment {
 
         mListView = (ListView) v.findViewById(R.id.listview);
         // empty results at first
-        mResults = new ArrayList<>();
-        mListAdapter = new SearchAdapter(this.getContext(), R.layout.available_items, mResults);
+        mListAdapter = new SearchAdapter(this.getContext(), R.layout.available_items, new ArrayList<Thing>());
         mListView.setAdapter(mListAdapter);
 
         mHandler = new Handler();
@@ -89,7 +87,8 @@ public class SearchFragment extends Fragment {
         @Override
         protected void onPostExecute(List<Thing> res) {
             Log.v("TAG", "size: " + res.size());
-            mResults = res;
+            mListAdapter = new SearchAdapter(getActivity(), R.layout.available_items, res);
+            mListView.setAdapter(mListAdapter);
             mListAdapter.notifyDataSetChanged();
         }
     }
