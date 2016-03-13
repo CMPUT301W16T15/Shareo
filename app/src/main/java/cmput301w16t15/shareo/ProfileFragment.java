@@ -2,12 +2,14 @@ package cmput301w16t15.shareo;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import mvc.AppUserSingleton;
 import mvc.Jobs.CallbackInterface;
@@ -18,6 +20,7 @@ import mvc.UserDoesNotExistException;
 import mvc.exceptions.NullIDException;
 
 public class ProfileFragment extends Fragment {
+    private static String TAG ="ProfileFragment";
     private Button mButtonSaveEdits;
     private EditText mEditTextFullName;
     private EditText mEditTextUserName;
@@ -105,7 +108,21 @@ public class ProfileFragment extends Fragment {
         emailAddress = mEditTextEmail.getText().toString();
         motto = mEditTextMotto.getText().toString();
 
-        saveUserClassChanges();
+        if (isValidEmail(emailAddress))
+        {
+            Log.d(TAG, "Save Changes to Profile");
+            Toast z = Toast.makeText(getActivity(), "Profile Saved Successfully", Toast.LENGTH_SHORT);
+            z.show();
+            saveUserClassChanges();
+        }
+
+        else
+        {
+            Log.d(TAG, "Invalid Email");
+            Toast z = Toast.makeText(getActivity(), "Invalid Email Inputted", Toast.LENGTH_SHORT);
+            z.show();
+        }
+
 
     }
     private void buttonClicked(View v)
@@ -113,6 +130,19 @@ public class ProfileFragment extends Fragment {
         saveAllText();
         setAttributes();
 
+    }
+
+    /***
+     * Taken from here:
+     * http://stackoverflow.com/questions/9355899/android-email-edittext-validation
+     * @param target
+     * @return
+     */
+    public final static boolean isValidEmail(CharSequence target) {
+        if (target == null)
+            return false;
+
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
     }
 }
 
