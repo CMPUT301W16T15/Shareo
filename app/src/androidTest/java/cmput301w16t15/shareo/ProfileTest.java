@@ -10,27 +10,30 @@ public class ProfileTest extends ActivityInstrumentationTestCase2{
         super(MainActivity.class);
     }
 
-    //TODO put these tests in line with actual model.
-//    public void TestCreateProfile() {
-//        ArrayList<ProfileSet> ProfileList = new ArrayList<>();
-//        ProfileSet User = new ProfileSet("JohnSnow","12345@ualberta.ca","7804561234");
-//        ProfileList.add(User);
-//        assertEquals("JohnSnow", User.getUserName());
-//        assertEquals("12345@ualberta.ca", User.getEmail());
-//        assertEquals("7804561234", User.getPhoneNumber());
-//    }
-//    public void TestEditProfile() {
-//        ArrayList<ProfileSet> ProfileList = new ArrayList<>();
-//        ProfileSet User = new ProfileSet("JohnSnow","12345@ualberta.ca","7804561234");
-//        ProfileList.add(User);
-//        User.setUserName("GentleMan");
-//        assertEquals("GentleMan", User.getUserName());
-//
-//    }
-//    public void TestShowContact() {
-//        /**
-//         * cannot be tested so far
-//         */
-//    }
+//03.02.01 As a user, I want to edit the contact information in my profile
+    public void testEditUser() {
+        User testUser = new User("Jack","Jack Snow","123@ualberta.ca","7807091234");
+
+        //Initialize user contact information
+        testUser.setName("Jack");
+        testUser.setFullName("Jack Snow");
+        testUser.setEmailAddress("123@ualberta.ca");
+        testUser.setMotto("7807091234");
+
+        //Check to see if that is set to the user
+        assertEquals(testUser.getName(), "Jack");
+        assertEquals(testUser.getFullName(), "Jack Snow");
+        assertEquals(testUser.getEmailAddress(), "123@ualberta.ca");
+        assertEquals(testUser.getMotto(), "7807091234");
+
+        //Edit the user information
+        testUser.setEmailAddress("shareo@ualberta.ca");
+        testUser.setMotto("7807094321");
+
+        //Check to see if the user information is updated
+        assertEquals(testUser.getEmailAddress(), "shareo@ualberta.ca");
+        assertEquals(testUser.getMotto(), "7807094321");
+
+    }
 
 }
