@@ -27,17 +27,37 @@ public class SearchController {
     private static final String ELASTIC_GAME_TYPE = "game";
     private String[] keywords;
 
+    /**
+     * searchController can be called from ShareoData to perform searches.
+     * For example, getGamesByDescription() in ShareoData
+     * can call searchController to get a search result.
+     *
+     * The jestClient, searchType, and keywords would all be passed into getGamesByDescription.
+     * @param searchType
+     * @param jestClient
+     * @param keywords
+     */
     public SearchController(String searchType, JestDroidClient jestClient, String[] keywords)
     {
         this.searchType = searchType;
         this.jestClient = jestClient;
         this.keywords = keywords;
 
-        if (searchType == ELASTIC_GAME_TYPE)
+        switch (searchType)
         {
-           AddGamesTask addGamesTask= new AddGamesTask();
-            //addGamesTask.execute("");
+            case ELASTIC_GAME_TYPE:
+                Log.d(TAG,"Passed in Elastic Game Type Search");
+                // AddGamesTask addGamesTask= new AddGamesTask();
+                break;
+            case ELASTIC_USER_TYPE:
+                Log.d(TAG,"Passed in Elastic User Type Search");
+                break;
+            default:
+                Log.d(TAG,"Other Search");
+                break;
+
         }
+
     }
     public static void verifyConfig() {
         if (jestClient == null) {

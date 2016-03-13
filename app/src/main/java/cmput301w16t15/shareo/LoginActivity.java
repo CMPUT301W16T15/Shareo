@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import mvc.AppUserSingleton;
 import mvc.Jobs.CallbackInterface;
@@ -119,31 +120,42 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.buttonSignup:
                 Log.d(TAG, "Clicked Button Signup");
                 parseSignUp();
-                AppUserSingleton.getInstance().createUser(userNameSignup, fullName, email, motto, new CallbackInterface() {
-                    @Override
-                    public void onSuccess() {
-                        startActivity(mainIntent);
-                    }
+                if (isValidEmail(email))
+                {
+                    AppUserSingleton.getInstance().createUser(userNameSignup, fullName, email, motto, new CallbackInterface() {
+                        @Override
+                        public void onSuccess() {
+                            startActivity(mainIntent);
+                        }
 
-                    @Override
-                    public void onFailure() {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
-                                alertDialog.setTitle("User already exists.");
-                                alertDialog.setMessage("Please choose a different username.");
-                                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                                        new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                dialog.dismiss();
-                                            }
-                                        });
-                                alertDialog.show();
-                            }
-                        });
-                    }
-                });
+                        @Override
+                        public void onFailure() {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
+                                    alertDialog.setTitle("User already exists.");
+                                    alertDialog.setMessage("Please choose a different username.");
+                                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                            new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    dialog.dismiss();
+                                                }
+                                            });
+                                    alertDialog.show();
+                                }
+                            });
+                        }
+                    });
+                }
+
+                else
+                {
+                    Log.d(TAG,"Invalid Email");
+                    Toast z = Toast.makeText(this, "Invalid Email Inputted", Toast.LENGTH_SHORT);
+                    z.show();
+                }
+
                 break;
 
             case R.id.buttonLogin:
@@ -192,6 +204,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void parseLogin() {
         userNameLogin = editTextUserNameLogin.getText().toString();
+    }
+
+    /***
+     * Taken from here:
+     * http://stackoverflow.com/questions/9355899/android-email-edittext-validation
+     * @param target
+     * @return
+     */
+    public final static boolean isValidEmail(CharSequence target) {
+        if (target == null)
+            return false;
+
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
     }
 
 }
