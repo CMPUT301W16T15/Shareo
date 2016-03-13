@@ -1,6 +1,5 @@
 package cmput301w16t15.shareo;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,10 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +20,7 @@ import mvc.Thing;
 public class SearchFragment extends Fragment {
     private ListView mListView;
     private SearchView mSearchView;
-    private SearchAdapter mListAdapter;
+    private ThingAdapters.ThingWithStatusAdapter mListAdapter;
 
     private Handler mHandler;
     private Runnable mRunnable;
@@ -43,7 +40,7 @@ public class SearchFragment extends Fragment {
 
         mListView = (ListView) v.findViewById(R.id.listview);
         // empty results at first
-        mListAdapter = new SearchAdapter(this.getContext(), R.layout.available_items, new ArrayList<Thing>());
+        mListAdapter = new ThingAdapters.ThingWithStatusAdapter(this.getContext(), R.layout.detailed_thing_row, new ArrayList<Thing>());
         mListView.setAdapter(mListAdapter);
 
         mHandler = new Handler();
@@ -87,31 +84,9 @@ public class SearchFragment extends Fragment {
         @Override
         protected void onPostExecute(List<Thing> res) {
             Log.v("TAG", "size: " + res.size());
-            mListAdapter = new SearchAdapter(getActivity(), R.layout.available_items, res);
+            mListAdapter = new ThingAdapters.ThingWithStatusAdapter(getActivity(), R.layout.detailed_thing_row, res);
             mListView.setAdapter(mListAdapter);
             mListAdapter.notifyDataSetChanged();
-        }
-    }
-
-    private class SearchAdapter extends ArrayAdapter<Thing> {
-
-        private final Context context;
-        private final List<Thing> things;
-
-        public SearchAdapter(Context context, int resource, List<Thing> objects) {
-            super(context, resource, objects);
-            this.context = context;
-            this.things = objects;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            LayoutInflater inflater = (LayoutInflater) context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View rowView = inflater.inflate(R.layout.available_items, parent, false);
-            TextView textView = (TextView) rowView.findViewById(R.id.available_game_name);
-            textView.setText(things.get(position).getName());
-            return rowView;
         }
     }
 }

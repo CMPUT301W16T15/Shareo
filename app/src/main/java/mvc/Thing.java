@@ -225,6 +225,9 @@ public class Thing extends JestData {
     public String getName() {
         return name;
     }
+    public String getOwnerID() {
+        return this.ownerID;
+    }
 
     public void addBid(Bid bid) {
         if (bids == null) {

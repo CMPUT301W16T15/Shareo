@@ -16,8 +16,6 @@ import org.honorato.multistatetogglebutton.MultiStateToggleButton;
 import org.honorato.multistatetogglebutton.ToggleButton;
 
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 
 import mvc.AppUserSingleton;
 import mvc.MVCModel;
@@ -31,7 +29,7 @@ public class HomeFragment extends Fragment implements MVCView {
     private int mPosition;
 
     private ListView mList;
-    private HomeAdapter mListAdapter;
+    private ThingAdapters.BasicThingAdapter mListAdapter;
     private TextView mEmptyMessage;
 
     public HomeFragment() {
@@ -47,7 +45,7 @@ public class HomeFragment extends Fragment implements MVCView {
             case 0:
                 // TODO: avail games data source
                 List<Thing> data = mUser.getAvailableThings();
-                mListAdapter = new HomeAdapter(getActivity(), R.layout.available_items, data);
+                mListAdapter = new ThingAdapters.BasicThingAdapter(getActivity(), R.layout.detailed_thing_row, data);
                 mList.setAdapter(mListAdapter);
 
                 if (data.size() == 0) {
@@ -59,7 +57,7 @@ public class HomeFragment extends Fragment implements MVCView {
             case 1:
                 // TODO: borrowing games data source
                 data = mUser.getOwnedBiddedThings();
-                mListAdapter = new HomeAdapter(getActivity(), R.layout.available_items, data);
+                mListAdapter = new ThingAdapters.BasicThingAdapter(getActivity(), R.layout.detailed_thing_row, data);
                 mList.setAdapter(mListAdapter);
 
                 if (data.size() == 0) {
@@ -71,7 +69,7 @@ public class HomeFragment extends Fragment implements MVCView {
             case 2:
                 // TODO: lending games data source
                 data = mUser.getOwnedBiddedThings();
-                mListAdapter = new HomeAdapter(getActivity(), R.layout.available_items, data);
+                mListAdapter = new ThingAdapters.BasicThingAdapter(getActivity(), R.layout.detailed_thing_row, data);
                 mList.setAdapter(mListAdapter);
 
                 if (data.size() == 0) {
@@ -93,7 +91,7 @@ public class HomeFragment extends Fragment implements MVCView {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_home, container, false);
         mList = (ListView) v.findViewById(R.id.listview);
-        mListAdapter = new HomeAdapter(this.getContext(), R.layout.available_items, mUser.getOwnedThings());
+        mListAdapter = new ThingAdapters.BasicThingAdapter(this.getContext(), R.layout.detailed_thing_row, mUser.getOwnedThings());
         mList.setAdapter(mListAdapter);
         mEmptyMessage = (TextView) v.findViewById(R.id.empty_notice);
 
@@ -142,27 +140,5 @@ public class HomeFragment extends Fragment implements MVCView {
                 mListAdapter.notifyDataSetChanged();
             }
         });
-    }
-
-    private class HomeAdapter extends ArrayAdapter<Thing> {
-
-        private final Context context;
-        private final List<Thing> things;
-
-        public HomeAdapter(Context context, int resource, List<Thing> objects) {
-            super(context, resource, objects);
-            this.context = context;
-            this.things = objects;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            LayoutInflater inflater = (LayoutInflater) context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View rowView = inflater.inflate(R.layout.available_items, parent, false);
-            TextView textView = (TextView) rowView.findViewById(R.id.available_game_name);
-            textView.setText(things.get(position).getName());
-            return rowView;
-        }
     }
 }

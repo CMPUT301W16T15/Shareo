@@ -26,7 +26,7 @@ public class BidsFragment extends Fragment implements Observer {
     private User mUser;
 
     private ListView mList;
-    private BidsAdapter mListAdapter;
+    private ThingAdapters.BasicThingAdapter mListAdapter;
     private TextView mEmptyMessage;
 
 
@@ -46,7 +46,7 @@ public class BidsFragment extends Fragment implements Observer {
         switch (position) {
             case 0:
                 List<Thing> data = mUser.getOwnedBiddedThings();
-                mListAdapter = new BidsAdapter(getActivity(), R.layout.available_items, data);
+                mListAdapter = new ThingAdapters.BasicThingAdapter(getActivity(), R.layout.detailed_thing_row, data);
                 mList.setAdapter(mListAdapter);
 
                 if (data.size() == 0) {
@@ -58,7 +58,7 @@ public class BidsFragment extends Fragment implements Observer {
             case 1:
                 // TODO: use different data source (will have to make getter in model class)
                 data = mUser.getOwnedBiddedThings();
-                mListAdapter = new BidsAdapter(getActivity(), R.layout.available_items, data);
+                mListAdapter = new ThingAdapters.BasicThingAdapter(getActivity(), R.layout.detailed_thing_row, data);
                 mList.setAdapter(mListAdapter);
 
                 if (data.size() == 0) {
@@ -100,25 +100,4 @@ public class BidsFragment extends Fragment implements Observer {
         mListAdapter.notifyDataSetChanged();
     }
 
-    private class BidsAdapter extends ArrayAdapter<Thing> {
-
-        private final Context context;
-        private final List<Thing> things;
-
-        public BidsAdapter(Context context, int resource, List<Thing> objects) {
-            super(context, resource, objects);
-            this.context = context;
-            this.things = objects;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            LayoutInflater inflater = (LayoutInflater) context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View rowView = inflater.inflate(R.layout.available_items, parent, false);
-            TextView textView = (TextView) rowView.findViewById(R.id.available_game_name);
-            textView.setText(things.get(position).getName());
-            return rowView;
-        }
-    }
 }
