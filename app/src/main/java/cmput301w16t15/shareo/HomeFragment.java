@@ -28,6 +28,7 @@ import mvc.User;
 public class HomeFragment extends Fragment implements MVCView {
     private FloatingActionButton mFab;
     private User mUser;
+    private int mPosition;
 
     private ListView mList;
     private HomeAdapter mListAdapter;
@@ -41,8 +42,8 @@ public class HomeFragment extends Fragment implements MVCView {
         return new HomeFragment();
     }
 
-    private void setAdapterBasedOnTab(int position) {
-        switch (position) {
+    private void setAdapterBasedOnTab() {
+        switch (mPosition) {
             case 0:
                 // TODO: avail games data source
                 List<Thing> data = mUser.getAvailableThings();
@@ -101,7 +102,8 @@ public class HomeFragment extends Fragment implements MVCView {
         button.setOnValueChangedListener(new ToggleButton.OnValueChangedListener() {
             @Override
             public void onValueChanged(int position) {
-                setAdapterBasedOnTab(position);
+                mPosition = position;
+                setAdapterBasedOnTab();
             }
         });
 
@@ -136,6 +138,7 @@ public class HomeFragment extends Fragment implements MVCView {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                setAdapterBasedOnTab();
                 mListAdapter.notifyDataSetChanged();
             }
         });
