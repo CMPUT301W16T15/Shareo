@@ -75,23 +75,32 @@ public class ProfileTest extends ActivityInstrumentationTestCase2{
     
      //03.03.01 As a user, I want to, when a username is presented for a thing, retrieve and show
     // its contact information
-    public void testViewRentersInfo () {
+    public static void testViewRentersInfo () {
         //Create User
-        User testUser = new User("Jack","Jack Snow","123@ualberta.ca","7807091234");
-        Thing testThings = new Thing("Killer"," Role playing game","Part Game","9-20", Thing.Status.AVAILABLE);
-        //not available at this moment, since we only due with the user who is on the server.
-        //testUser.addOwnedThing(testThings);
+        ShareoData data = ShareoData.getInstance();
+        User testUser = null;
+        String fullName = "Jack Snow";
+        String emailAddress = "123@ualberta.ca";
+        String motto = "7807091234";
+        data.removeUser("Jack");
+
+
+        try {
+            testUser = new User.Builder(data, "Jack", fullName, emailAddress, motto).build();
+        } catch (UsernameAlreadyExistsException e) {
+            e.printStackTrace();
+            fail();
+        }
+        Thing testThings = null;
+        try {
+            testThings = new Thing.Builder(data, testUser, "Killer", "Role playing game,","Part Game","9-20").useMainThread().build();
+        } catch (UserDoesNotExistException e) {
+            e.printStackTrace();
+            fail();
+        }
         testThings.setStatus(Thing.Status.BIDDED);
 
         //Simulate a click on an object where that user owns it
-        //fail if I add this command
-        //seems like that we cannot connect the relationship between adding things to user and bidding
-        //assertTrue(testUser.getOwnedBiddedThings().contains(testThings.getName()));
+        assertTrue(testThings.getOwner().equals(testUser));
 
-        assertEquals(testUser.getName(), "Jack");
-        assertEquals(testUser.getFullName(), "Jack Snow");
-        assertEquals(testUser.getEmailAddress(), "123@ualberta.ca");
-        assertEquals(testUser.getMotto(), "7807091234");
     }
-
-}
