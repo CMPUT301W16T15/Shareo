@@ -122,4 +122,174 @@ public class BiddingTest extends ActivityInstrumentationTestCase2 {
         assertFalse(bidThings.contains(t3));
     }
     */
+    
+    //05.01.01 As a borrower, I want to bid for an available thing, with a monetary rate
+    public void BiddingTest() {
+        //Create User
+        ShareoData data = ShareoData.getInstance();
+        User testUser1 = null;
+        User testUser2 = null;
+
+        try {
+            testUser1 = new User.Builder(data, "Jack", "Jack Snow", "123@ualberta.ca", "7807091234").build();
+            testUser2 = new User.Builder(data, "Rob", "Rob Snow", "321@ualberta.ca", "7807094321").build();
+        } catch (UsernameAlreadyExistsException e) {
+            e.printStackTrace();
+            fail();
+        }
+        Bid testBidder1 = null;
+        Thing testThings=null;
+        try {
+            testThings = new Thing.Builder(data, testUser1, "Killer", "Role playing game,", "Part Game", "9-20").useMainThread().build();
+        } catch (UserDoesNotExistException e) {
+            e.printStackTrace();
+            fail();
+        }
+        try {
+            testBidder1 = new Bid.Builder(data, testUser2, testThings, 20).useMainThread().build();
+        } catch (NullIDException e) {
+            e.printStackTrace();
+            fail();
+        }
+        testThings.setStatus(Thing.Status.BIDDED);
+        assertTrue(testBidder1.getBidder().equals(testUser2));
+        assertTrue(testBidder1.getThing().equals(testThings));
+        assertTrue(testBidder1.getBidAmount() == 20);
+        assertTrue(testUser1.getBids().contains(testBidder1));
+    }
+    //05.02.01 | I want to view a list of things I have bidded on that are pending, each thing with its description, owner username, and my bid.
+    public void ViewUserBidsTest() {
+        //Create User
+        ShareoData data = ShareoData.getInstance();
+        User testUser1 = null;
+        User testUser2 = null;
+        User testUser3 = null;
+
+        try {
+            testUser1 = new User.Builder(data, "Jack", "Jack Snow", "123@ualberta.ca", "7807091234").build();
+            testUser2 = new User.Builder(data, "Rob", "Rob Snow", "321@ualberta.ca", "7807094321").build();
+            testUser3 = new User.Builder(data, "Sarah", "Sarah Snow", "3214@ualberta.ca", "7807094322").build();
+        } catch (UsernameAlreadyExistsException e) {
+            e.printStackTrace();
+            fail();
+        }
+        Bid testBidder1 = null;
+        Bid testBidder2 = null;
+        Thing testThings1=null;
+        Thing testThings2=null;
+        try {
+            testThings1 = new Thing.Builder(data, testUser1, "Killer", "Role playing game,", "Part Game", "9-20").useMainThread().build();
+            testThings2 = new Thing.Builder(data, testUser1, "Killer2", "Role playing game2,", "Part Game2", "9-202").useMainThread().build();
+        } catch (UserDoesNotExistException e) {
+            e.printStackTrace();
+            fail();
+        }
+        try {
+            testBidder1 = new Bid.Builder(data, testUser2, testThings1, 20).useMainThread().build();
+            testBidder2 = new Bid.Builder(data, testUser3, testThings2, 50).useMainThread().build();
+        } catch (NullIDException e) {
+            e.printStackTrace();
+            fail();
+        }
+        testThings1.setStatus(Thing.Status.BIDDED);
+        testThings2.setStatus(Thing.Status.BIDDED);
+
+        assertTrue(testThings1.getStatus() == Thing.Status.BIDDED);
+        assertTrue(testThings2.getStatus() == Thing.Status.BIDDED);
+        assertEquals(testThings1.getDescription(), "Role playing game");
+        assertEquals(testThings2.getDescription(), "Role playing game2");
+        assertTrue(testBidder1.getBidAmount() == 20);
+        assertTrue(testBidder2.getBidAmount() == 50);
+        assertTrue(testBidder1.getBidder()==testUser2);
+        assertTrue(testBidder2.getBidder()==testUser2);
+    }
+
+    //05.04.01 As an owner, I want to view a list of my things with bids.
+    public void testViewUserBids() {
+        ShareoData data = ShareoData.getInstance();
+        User testUser1 = null;
+        User testUser2 = null;
+        User testUser3 = null;
+
+        try {
+            testUser1 = new User.Builder(data, "Jack", "Jack Snow", "123@ualberta.ca", "7807091234").build();
+            testUser2 = new User.Builder(data, "Rob", "Rob Snow", "321@ualberta.ca", "7807094321").build();
+            testUser3 = new User.Builder(data, "Sarah", "Sarah Snow", "3214@ualberta.ca", "7807094322").build();
+        } catch (UsernameAlreadyExistsException e) {
+            e.printStackTrace();
+            fail();
+        }
+        Bid testBidder1 = null;
+        Bid testBidder2 = null;
+        Thing testThings1=null;
+        Thing testThings2=null;
+        try {
+            testThings1 = new Thing.Builder(data, testUser1, "Killer", "Role playing game,", "Part Game", "9-20").useMainThread().build();
+            testThings2 = new Thing.Builder(data, testUser1, "Killer2", "Role playing game2,", "Part Game2", "9-202").useMainThread().build();
+        } catch (UserDoesNotExistException e) {
+            e.printStackTrace();
+            fail();
+        }
+        try {
+            testBidder1 = new Bid.Builder(data, testUser2, testThings1, 20).useMainThread().build();
+            testBidder2 = new Bid.Builder(data, testUser3, testThings2, 50).useMainThread().build();
+        } catch (NullIDException e) {
+            e.printStackTrace();
+            fail();
+        }
+        testThings1.setStatus(Thing.Status.BIDDED);
+        testThings2.setStatus(Thing.Status.BIDDED);
+
+        assertTrue(testThings1.getStatus() == Thing.Status.BIDDED);
+        assertTrue(testThings2.getStatus() == Thing.Status.BIDDED);
+        assertTrue(testBidder1.getBidAmount() == 20);
+        assertTrue(testBidder2.getBidAmount() == 50);
+        assertTrue(testBidder1.getBidder()==testUser2);
+        assertTrue(testBidder2.getBidder()==testUser3);
+
+        assertEquals(testBidder1.getBidder(), testUser2);
+        assertEquals(testBidder2.getBidder(), testUser3);
+        assertTrue(testThings1.getBids()== testBidder1);
+        assertTrue(testThings2.getBids() == testBidder2);
+    }
+    //05.05.01 As an owner, I want to view the bids on one of my things.
+   /* public void testViewMyThingBids() {
+        //Create User
+        ShareoData data = ShareoData.getInstance();
+        User testUser1 = null;
+        User testUser2 = null;
+        User testUser3 = null;
+
+        try {
+            testUser1 = new User.Builder(data, "Jack", "Jack Snow", "123@ualberta.ca", "7807091234").build();
+            testUser2 = new User.Builder(data, "Rob", "Rob Snow", "321@ualberta.ca", "7807094321").build();
+            testUser3 = new User.Builder(data, "Sarah", "Sarah Snow", "3214@ualberta.ca", "7807094322").build();
+        } catch (UsernameAlreadyExistsException e) {
+            e.printStackTrace();
+            fail();
+        }
+        Bid testBidder1 = null;
+        Bid testBidder2 = null;
+        Thing testThings1=null;
+        try {
+            testThings1 = new Thing.Builder(data, testUser1, "Killer", "Role playing game,", "Part Game", "9-20").useMainThread().build();
+        } catch (UserDoesNotExistException e) {
+            e.printStackTrace();
+            fail();
+        }
+        try {
+            testBidder1 = new Bid.Builder(data, testUser2, testThings1, 20).useMainThread().build();
+            testBidder2 = new Bid.Builder(data, testUser3, testThings1, 50).useMainThread().build();
+        } catch (NullIDException e) {
+            e.printStackTrace();
+            fail();
+        }
+
+        List<Thing> bidThings = new ArrayList<>();
+        for (Bid bid : testThings1.getBids()) {
+            bidThings.add(bid.getThing());
+        }
+
+        assertTrue(bidThings.contains(testThings1));
+    }*/
 }
