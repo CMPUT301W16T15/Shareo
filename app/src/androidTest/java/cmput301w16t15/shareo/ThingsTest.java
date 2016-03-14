@@ -3,8 +3,12 @@ package cmput301w16t15.shareo;
 import android.test.ActivityInstrumentationTestCase2;
 
 import mvc.Bid;
+import mvc.ShareoData;
 import mvc.Thing;
+import mvc.User;
+import mvc.UserDoesNotExistException;
 import mvc.exceptions.NullIDException;
+import mvc.exceptions.UsernameAlreadyExistsException;
 
 /**
  * Created by Larin on 2016/2/10.
