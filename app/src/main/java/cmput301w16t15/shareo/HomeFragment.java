@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,7 +85,6 @@ public class HomeFragment extends Fragment implements MVCView {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         // user singleton...used for getting data
         mUser = AppUserSingleton.getInstance().getUser();
         mUser.addView(this);
@@ -127,6 +127,8 @@ public class HomeFragment extends Fragment implements MVCView {
                 agf.show(getFragmentManager(), "edit");
             }
         });
+
+        setAdapterBasedOnTab();
 
         return v;
     }

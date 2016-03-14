@@ -74,7 +74,7 @@ public class AddGameFragment extends DialogFragment {
          */
         if (mPositionIndex == -1) {
             try {
-                Thing thing = new Thing.Builder(ShareoData.getInstance(), user, gameName, gameDescription, category, numberPlayers).build();
+                new Thing.Builder(ShareoData.getInstance(), user, gameName, gameDescription, category, numberPlayers).setPhoto(gamePhoto).build();
             } catch (UserDoesNotExistException e) {
                 // TODO catch error in a meaningful way.
                 e.printStackTrace();
@@ -124,9 +124,6 @@ public class AddGameFragment extends DialogFragment {
             myGames = mUser.getAvailableThings();
             populateFields();
         }
-
-
-
 
         // Build the dialog and set up the button click handlers
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -179,11 +176,17 @@ public class AddGameFragment extends DialogFragment {
     }
 
     private void populateFields() {
-        mTextViewAddGame.setText("Edit a Game");
-        editTextGameName.setText(myGames.get(mPositionIndex).getName());
-        editTextDescription.setText(myGames.get(mPositionIndex).getDescription());
-        editTextCategory.setText(myGames.get(mPositionIndex).getCategory());
-        editTextNumberPlayers.setText(myGames.get(mPositionIndex).getNumberPlayers());
+        Thing g = myGames.get(mPositionIndex);
 
+        mTextViewAddGame.setText("Edit a Game");
+        editTextGameName.setText(g.getName());
+        editTextDescription.setText(g.getDescription());
+        editTextCategory.setText(g.getCategory());
+        editTextNumberPlayers.setText(g.getNumberPlayers());
+
+        // photo is optional field
+        if (g.getPhoto() != null) {
+            gameImage.setImageBitmap(g.getPhoto().getPhoto());
+        }
     }
 }

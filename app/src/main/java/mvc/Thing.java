@@ -99,7 +99,7 @@ public class Thing extends JestData {
             return t;
         }
 
-        }
+    }
 
 
 
@@ -227,6 +227,9 @@ public class Thing extends JestData {
     }
     public String getOwnerID() {
         return this.ownerID;
+    }
+    public PhotoModel getPhoto() {
+        return this.photo;
     }
 
     public void addBid(Bid bid) {
