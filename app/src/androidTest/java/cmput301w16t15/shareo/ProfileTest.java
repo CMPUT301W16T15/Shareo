@@ -73,13 +73,14 @@ public class ProfileTest extends ActivityInstrumentationTestCase2{
         assertEquals(testUser.getMotto(), "7807091234");
     }
     
-    //03.03.01 As a user, I want to, when a username is presented for a thing, retrieve and show
+     //03.03.01 As a user, I want to, when a username is presented for a thing, retrieve and show
     // its contact information
     public void testViewRentersInfo () {
         //Create User
         User testUser = new User("Jack","Jack Snow","123@ualberta.ca","7807091234");
         Thing testThings = new Thing("Killer"," Role playing game","Part Game","9-20", Thing.Status.AVAILABLE);
-        testThings.setOwnerSimple(testUser);
+        //not available at this moment, since we only due with the user who is on the server.
+        //testUser.addOwnedThing(testThings);
         testThings.setStatus(Thing.Status.BIDDED);
 
         //Simulate a click on an object where that user owns it
