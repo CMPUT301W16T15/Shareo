@@ -2,6 +2,9 @@ package cmput301w16t15.shareo;
 
 import android.test.ActivityInstrumentationTestCase2;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import mvc.Bid;
 import mvc.Search;
 import mvc.Thing;

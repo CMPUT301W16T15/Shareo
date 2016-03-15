@@ -1,15 +1,12 @@
 package cmput301w16t15.shareo;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -19,12 +16,12 @@ import org.honorato.multistatetogglebutton.ToggleButton;
 import java.util.List;
 
 import mvc.AppUserSingleton;
-import mvc.MVCModel;
-import mvc.MVCView;
+import mvc.Observable;
+import mvc.Observer;
 import mvc.Thing;
 import mvc.User;
 
-public class HomeFragment extends Fragment implements MVCView {
+public class HomeFragment extends Fragment implements Observer {
     private FloatingActionButton mFab;
     private User mUser;
     private int mPosition;
@@ -134,7 +131,7 @@ public class HomeFragment extends Fragment implements MVCView {
     }
 
     @Override
-    public void updateView(MVCModel model) {
+    public void update(Observable model) {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {

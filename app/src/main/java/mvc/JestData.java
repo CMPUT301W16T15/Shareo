@@ -1,17 +1,12 @@
 package mvc;
 
-import com.path.android.jobqueue.JobManager;
-
-import java.util.Observable;
-
-import cmput301w16t15.shareo.ShareoApplication;
 import io.searchbox.annotations.JestId;
 import mvc.exceptions.NullIDException;
 
 /**
  * Created by A on 2016-03-05.
  */
-public abstract class JestData extends MVCModel {
+public abstract class JestData extends Observable {
     @JestId
     private String JestID;
 
