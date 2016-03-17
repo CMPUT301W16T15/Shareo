@@ -1,0 +1,45 @@
+bpharris:
+EditGame, EditProfile, UML 
+will work on:
+bids
+Javadocs
+
+abradsha:
+Middle layer in between internet requests and UI
+handled threading for asynchronous tasks
+updated UML diagram
+backend for search
+Javadocs
+
+will work on:
+bid stuff and improving stability
+
+aolin1:
+test cases for profile, things, bids
+
+will work on :
+more testing
+Javadocs
+
+sampley:
+Midterm + assignments
+
+Will work on:
+Work on updates and adding things in bulk operations
+Javadocs
+
+arhoskin:
+Search activity UI got it to work
+Added detailed information to list of games
+Multistate toggle button 
+Fixed bugs
+Added random backend stuff
+
+Will work on:
+Improving search
+Bids
+Javadocs
+
+
+
+
