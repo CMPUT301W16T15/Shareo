@@ -10,21 +10,33 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.apache.commons.lang3.ObjectUtils;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import mvc.AppUserSingleton;
+import mvc.Bid;
 import mvc.PhotoModel;
+import mvc.ShareoData;
 import mvc.Thing;
+import mvc.User;
+import mvc.exceptions.NullIDException;
 
 /**
  * Created by anonymous on 3/19/2016.
  */
 public class AddBidFragment extends DialogFragment {
+    private static String TAG ="AddBidFragment";
     private Thing mThing;
     private TextView mtextViewBidAmount;
     private TextView mtextViewCurrentTopBid;
@@ -34,7 +46,8 @@ public class AddBidFragment extends DialogFragment {
     private TextView mtextViewNumberPlayers;
     private TextView mtextViewCategory;
 
-    private EditText meditTextBidAmount;
+    private ThingAdapters.ThingWithStatusAdapter mListAdapter;
+    private EditText meditTextMakeOffer;
     private ListView mlistViewBid;
 
     public AddBidFragment() {
@@ -46,6 +59,7 @@ public class AddBidFragment extends DialogFragment {
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.activity_my_bids, null);
 
+        meditTextMakeOffer = (EditText) v.findViewById(R.id.editTextMakeOffer);
         mtextViewGameName =  (TextView) v.findViewById(R.id.textViewGameName);
         mtextViewDescription = (TextView) v.findViewById(R.id.textViewDescription);
         mtextViewNumberPlayers = (TextView) v.findViewById(R.id.textViewNumberPlayers);
@@ -56,6 +70,9 @@ public class AddBidFragment extends DialogFragment {
         //meditTextBidAmount = (EditText) v.findViewById(R.id.editTextBidAmount);
 
         mlistViewBid = (ListView) v.findViewById(R.id.listViewBid);
+        //mListAdapter = new ThingAdapters.ThingWithStatusAdapter(this, R.layout.detailed_thing_row, new ArrayList<Thing>());
+        //mlistViewBid.setAdapter(mListAdapter);
+
         mThing = (Thing) getArguments().getSerializable("myThing");
 
 
@@ -86,6 +103,29 @@ public class AddBidFragment extends DialogFragment {
     }
 
     private void saveBid() {
+        User user = AppUserSingleton.getInstance().getUser();
+        try
+        {
+            //Integer.parseInt(meditTextBidAmount.getText().toString()
+            new Bid.Builder(ShareoData.getInstance(), user, mThing, Integer.parseInt(meditTextMakeOffer.getText().toString())).build();
+            //new Bid.Builder(ShareoData.getInstance(), user, mThing, .build();
+        }
+        catch (NullIDException e)
+        {
+            Log.d(TAG, "Failed to build bid.");
+        }
+
+        /* This works as a test.
+        for (Bid b : mThing.getBids())
+        {
+            System.out.println(b.getBidder().getFullName());
+            Log.d(TAG, "Test stuff"+b.getBidder().getFullName());
+            Toast z = Toast.makeText(getActivity(), "My Bid"+b.getBidder().getFullName(), Toast.LENGTH_SHORT);
+            z.show();
+        }
+        */
+
+
 
     }
     private void setUpText() {

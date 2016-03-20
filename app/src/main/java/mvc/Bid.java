@@ -44,7 +44,7 @@ public class Bid extends JestData {
         private User user;
         private Thing thing;
         private int centsPerHour;
-        private Boolean newThread;
+        private Boolean newThread = true;
 
         public Builder(ShareoData data, User bidder, Thing thing, int centsPerHour) {
             this.user = bidder;
