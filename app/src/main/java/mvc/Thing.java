@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cmput301w16t15.shareo.ShareoApplication;
+import io.searchbox.annotations.JestId;
 import mvc.Jobs.CallbackInterface;
 import mvc.Jobs.CreateGameJob;
 import mvc.Jobs.UpdateGameJob;
@@ -17,7 +18,7 @@ import mvc.exceptions.NullIDException;
 /**
  * Created by A on 2016-02-10.
  */
-public class Thing extends JestData implements Serializable{
+public class Thing extends JestData {
 
     private String name;
     private String description;
@@ -25,6 +26,8 @@ public class Thing extends JestData implements Serializable{
     private String category;
     private String numberPlayers;
     private PhotoModel photo;
+    @JestId
+    private String JestID;
 
     private String ownerID;
     private transient User owner;
@@ -247,5 +250,24 @@ public class Thing extends JestData implements Serializable{
     public void setPhoto(PhotoModel p)
     {
         this.photo = p;
+    }
+
+    /**
+     * Returns the JestID associated with this object. Never returns null, but will instead throw
+     * an exception.
+     * @return The JestID.
+     * @throws NullIDException No JestID has been set, or it has been set to null.
+     */
+    @Override
+    public String getJestID() throws NullIDException {
+        if (JestID == null) {
+            throw new NullIDException();
+        }
+        return JestID;
+    }
+
+    @Override
+    public void setJestID(String ID) {
+        JestID = ID;
     }
 }

@@ -1,6 +1,7 @@
 package mvc;
 
 import cmput301w16t15.shareo.ShareoApplication;
+import io.searchbox.annotations.JestId;
 import mvc.Jobs.CallbackInterface;
 import mvc.Jobs.CreateBidJob;
 import mvc.exceptions.NullIDException;
@@ -12,6 +13,8 @@ public class Bid extends JestData {
 
     private final String bidderID;
     transient private User bidder;
+    @JestId
+    private String JestID;
 
     private final String thingID;
     transient private Thing thing;
@@ -107,4 +110,23 @@ public class Bid extends JestData {
         return bidder;
     }
     public int getBidAmount() { return centsPerHour; }
+
+    /**
+     * Returns the JestID associated with this object. Never returns null, but will instead throw
+     * an exception.
+     * @return The JestID.
+     * @throws NullIDException No JestID has been set, or it has been set to null.
+     */
+    @Override
+    public String getJestID() throws NullIDException {
+        if (JestID == null) {
+            throw new NullIDException();
+        }
+        return JestID;
+    }
+
+    @Override
+    public void setJestID(String ID) {
+        JestID = ID;
+    }
 }

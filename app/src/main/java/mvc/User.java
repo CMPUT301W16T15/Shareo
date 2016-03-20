@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cmput301w16t15.shareo.ShareoApplication;
+import io.searchbox.annotations.JestId;
 import mvc.Jobs.UpdateUserJob;
 import mvc.exceptions.NullIDException;
 import mvc.exceptions.UsernameAlreadyExistsException;
@@ -20,6 +21,8 @@ public class User extends JestData {
     private String fullName;
     private String emailAddress;
     private String motto;
+    @JestId
+    private String JestID;
 
     private ArrayList<String> ownedIDs;
     transient private List<Thing> owned;
@@ -63,17 +66,6 @@ public class User extends JestData {
             return user;
         }
 
-    }
-
-    @Override
-    public String getJestID() {
-        try {
-            return super.getJestID();
-        } catch (NullIDException e) {
-            // This should be impossible, since the Jest ID is the username.
-            e.printStackTrace();
-        }
-        return null;
     }
 
     public String getName() { return username; }
@@ -238,5 +230,25 @@ public class User extends JestData {
 
     public void setReturned(Thing thing) {
         // TODO this may be unneccesary with removeBorrowedThing.
+    }
+
+
+
+    /**
+     * Returns the JestID associated with this object. Never returns null, but will instead throw
+     * an exception.
+     * @return The JestID.
+     * @throws NullIDException No JestID has been set, or it has been set to null.
+     */
+    @Override
+    public String getJestID() {
+        if (JestID == null) {
+            return null;
+        }
+        return JestID;
+    }
+
+    public void setJestID(String ID) {
+        JestID = ID;
     }
 }

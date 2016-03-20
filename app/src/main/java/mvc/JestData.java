@@ -1,34 +1,23 @@
 package mvc;
 
+import org.apache.commons.lang3.ObjectUtils;
+
+import java.io.Serializable;
+
 import io.searchbox.annotations.JestId;
 import mvc.exceptions.NullIDException;
 
 /**
  * Created by A on 2016-03-05.
  */
-public abstract class JestData extends Observable {
-    @JestId
-    private String JestID;
+public abstract class JestData extends Observable implements Serializable {
 
     private transient ShareoData dataSource;
     private static ShareoData defaultDataSource = ShareoData.getInstance();
 
-    /**
-     * Returns the JestID associated with this object. Never returns null, but will instead throw
-     * an exception.
-     * @return The JestID.
-     * @throws NullIDException No JestID has been set, or it has been set to null.
-     */
-    public String getJestID() throws NullIDException {
-        if (JestID == null) {
-            throw new NullIDException();
-        }
-        return JestID;
-    }
+    public abstract String getJestID() throws NullIDException;
 
-    public void setJestID(String ID) {
-        JestID = ID;
-    }
+    public abstract void setJestID(String ID);
 
     public ShareoData getDataSource() {
         if (dataSource == null) {
