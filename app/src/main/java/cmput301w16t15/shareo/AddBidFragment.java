@@ -46,7 +46,7 @@ public class AddBidFragment extends DialogFragment {
     private TextView mtextViewNumberPlayers;
     private TextView mtextViewCategory;
 
-    private ThingAdapters.ThingWithStatusAdapter mListAdapter;
+    //private ThingAdapters.ThingWithStatusAdapter mListAdapter;
     private EditText meditTextMakeOffer;
     private ListView mlistViewBid;
 
@@ -70,9 +70,6 @@ public class AddBidFragment extends DialogFragment {
         //meditTextBidAmount = (EditText) v.findViewById(R.id.editTextBidAmount);
 
         mlistViewBid = (ListView) v.findViewById(R.id.listViewBid);
-        //mListAdapter = new ThingAdapters.ThingWithStatusAdapter(this, R.layout.detailed_thing_row, new ArrayList<Thing>());
-        //mlistViewBid.setAdapter(mListAdapter);
-
         mThing = (Thing) getArguments().getSerializable("myThing");
 
 
@@ -134,6 +131,22 @@ public class AddBidFragment extends DialogFragment {
         mtextViewDescription.setText(mtextViewDescription.getText() + ": " + mThing.getDescription());
         mtextViewNumberPlayers.setText(mtextViewNumberPlayers.getText() + ": " + mThing.getNumberPlayers());
         mtextViewCategory.setText(mtextViewCategory.getText() + ": " + mThing.getCategory());
+
+        Log.d(TAG, "Test stuff" + mThing.getBids().size());
+        Toast z = Toast.makeText(getActivity(), "Number of Bids is :"+mThing.getBids().size(), Toast.LENGTH_SHORT);
+        z.show();
+
+        int max = 0;
+        for (Bid b : mThing.getBids())
+        {
+
+            if (b.getBidAmount() > max)
+            {
+                max = b.getBidAmount();
+            }
+        }
+
+        mtextViewCurrentTopBid.setText(mtextViewCurrentTopBid.getText() +": "+String.valueOf(max));
     }
 
 }
