@@ -86,12 +86,12 @@ public class AddGameFragment extends DialogFragment {
          */
 
         else {
-            myGames.get(mPositionIndex).setNumberPlayers(numberPlayers);
-            myGames.get(mPositionIndex).setDescription(gameDescription);
-            myGames.get(mPositionIndex).setName(gameName);
-            myGames.get(mPositionIndex).setCategory(category);
+            mThing.setNumberPlayers(numberPlayers);
+            mThing.setDescription(gameDescription);
+            mThing.setName(gameName);
+            mThing.setCategory(category);
 
-            myGames.get(mPositionIndex).update();
+            mThing.update();
         }
 
     }
