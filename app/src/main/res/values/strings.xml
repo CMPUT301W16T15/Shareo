@@ -42,6 +42,13 @@
     <string name="hintSearch">family game, drinking, etc</string>
     <string name="textViewSearchGame">Search by Description</string>
     <string name="textViewEditProfile">Edit User Profile</string>
+    <string name="textViewGameOwner">Game Owner</string>
+    <string name="textViewCurrentTopBid">Current Top Bid</string>
+    <string name="textViewBidAmount">Bid Amount</string>
+    <string name="hintBidAmount">Bid on this Item</string>
+    <string name="textViewBidTitle">Bid on this Item</string>
+    <string name="buttonBid">Make Offer</string>
+    <string name="textViewMakeOffer">Make Offer</string>
 
     <string-array name="home_choices">
         <item>Available</item>

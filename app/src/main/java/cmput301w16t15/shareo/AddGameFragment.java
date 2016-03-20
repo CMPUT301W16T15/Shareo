@@ -51,7 +51,7 @@ public class AddGameFragment extends DialogFragment {
     private String gameDescription;
     private String numberPlayers;
     private String category;
-    private User mUser;
+    private Thing mThing;
 
 
     public AddGameFragment() {
@@ -119,9 +119,7 @@ public class AddGameFragment extends DialogFragment {
 
         if (mPositionIndex != -1)
         {
-            mUser = AppUserSingleton.getInstance().getUser();
-            //mUser.addView(this);
-            myGames = mUser.getAvailableThings();
+            mThing = (Thing) getArguments().getSerializable("myThing");
             populateFields();
         }
 
@@ -176,17 +174,15 @@ public class AddGameFragment extends DialogFragment {
     }
 
     private void populateFields() {
-        Thing g = myGames.get(mPositionIndex);
-
         mTextViewAddGame.setText("Edit a Game");
-        editTextGameName.setText(g.getName());
-        editTextDescription.setText(g.getDescription());
-        editTextCategory.setText(g.getCategory());
-        editTextNumberPlayers.setText(g.getNumberPlayers());
+        editTextGameName.setText(mThing.getName());
+        editTextDescription.setText(mThing.getDescription());
+        editTextCategory.setText(mThing.getCategory());
+        editTextNumberPlayers.setText(mThing.getNumberPlayers());
 
         // photo is optional field
-        if (g.getPhoto() != null) {
-            gameImage.setImageBitmap(g.getPhoto().getPhoto());
+        if (mThing.getPhoto() != null) {
+            gameImage.setImageBitmap(mThing.getPhoto().getPhoto());
         }
     }
 }

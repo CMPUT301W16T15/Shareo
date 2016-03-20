@@ -25,6 +25,7 @@ public class HomeFragment extends Fragment implements Observer {
     private FloatingActionButton mFab;
     private User mUser;
     private int mPosition;
+    private List<Thing> data;
 
     private ListView mList;
     private ThingAdapters.BasicThingAdapter mListAdapter;
@@ -42,7 +43,7 @@ public class HomeFragment extends Fragment implements Observer {
         switch (mPosition) {
             case 0:
                 // TODO: avail games data source
-                List<Thing> data = mUser.getAvailableThings();
+                data = mUser.getAvailableThings();
                 mListAdapter = new ThingAdapters.BasicThingAdapter(getActivity(), R.layout.detailed_thing_row, data);
                 mList.setAdapter(mListAdapter);
 
@@ -120,6 +121,7 @@ public class HomeFragment extends Fragment implements Observer {
                 AddGameFragment agf = new AddGameFragment();
                 Bundle bundle = new Bundle();
                 bundle.putInt("pos", position);
+                bundle.putSerializable("myThing",data.get(position));
                 agf.setArguments(bundle);
                 agf.show(getFragmentManager(), "edit");
             }

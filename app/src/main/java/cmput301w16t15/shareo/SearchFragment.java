@@ -4,19 +4,29 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Toast;
+
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import mvc.Jobs.CallbackInterface;
+import mvc.Jobs.CreateGameJob;
 import mvc.ShareoData;
 import mvc.Thing;
+import mvc.exceptions.NullIDException;
 
 public class SearchFragment extends Fragment {
+    private static String TAG ="SearchFragment";
+    private List<Thing> searchList;
     private ListView mListView;
     private SearchView mSearchView;
     private ThingAdapters.ThingWithStatusAdapter mListAdapter;
@@ -68,6 +78,20 @@ public class SearchFragment extends Fragment {
             }
         });
 
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                AddBidFragment abf = new AddBidFragment();
+                Bundle bundle = new Bundle();
+
+                bundle.putSerializable("myThing", searchList.get(position));
+                //bundle.putString("ownerName", searchList.get(position).getOwner().getFullName());
+                bundle.putInt("search", position);
+                abf.setArguments(bundle);
+                abf.show(getActivity().getFragmentManager(), "search");
+            }
+        });
+
         return v;
     }
 
@@ -83,6 +107,21 @@ public class SearchFragment extends Fragment {
             mListAdapter = new ThingAdapters.ThingWithStatusAdapter(getActivity(), R.layout.detailed_thing_row, res);
             mListView.setAdapter(mListAdapter);
             mListAdapter.notifyDataSetChanged();
+            searchList = res;
+
+
+        /*
+            for (Thing t : searchList) {
+                try
+                {
+                    Toast z = Toast.makeText(getActivity(), "The search is" +t.getJestID().toLowerCase(), Toast.LENGTH_SHORT);
+                    z.show();
+                }
+
+
+            }
+            */
+
         }
     }
 }

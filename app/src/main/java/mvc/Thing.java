@@ -4,6 +4,7 @@ import com.path.android.jobqueue.AsyncAddCallback;
 
 import org.apache.commons.lang3.ObjectUtils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,7 @@ import mvc.exceptions.NullIDException;
 /**
  * Created by A on 2016-02-10.
  */
-public class Thing extends JestData {
+public class Thing extends JestData implements Serializable{
 
     private String name;
     private String description;

@@ -1,157 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/mainlayout"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/AddEditGameFragment"
+    android:clickable="true">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginLeft="10.0dip"
+        android:layout_marginRight="10.0dip"
+        android:orientation="vertical">
+
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Item I am bidding on"
+        android:text="@string/textViewBidTitle"
         android:id="@+id/ItemBidding"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="5dp" />
 
-    <LinearLayout
-        android:layout_marginLeft="10.0dip"
-        android:layout_marginRight="10.0dip"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textViewGameOwner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="@string/textViewGameOwner"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_marginTop="10dip" />
 
         <TextView
             android:id="@+id/textViewGameName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:text="Name: "
+            android:text="@string/textViewGameName"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:layout_marginTop="0dp" />
-
-        <EditText
-            android:id="@+id/editTextGameName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:hint="Game Name"
-            android:layout_marginTop="0dp">
-        </EditText>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_marginLeft="10.0dip"
-        android:layout_marginRight="10.0dip"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+            android:layout_marginTop="10dip" />
 
         <TextView
             android:id="@+id/textViewDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Description: "
+            android:text="@string/textViewDescription"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:layout_marginTop="0dp" />
-
-        <EditText
-            android:id="@+id/editTextDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="text"
-            android:hint="Description"
-            android:layout_marginTop="0dp">
-        </EditText>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_marginLeft="10.0dip"
-        android:layout_marginRight="10.0dip"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+            android:layout_marginTop="10dip" />
 
         <TextView
             android:id="@+id/textViewCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Category: "
+            android:text="@string/textViewCategory"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:layout_marginTop="0dp" />
+            android:layout_marginTop="10dip" />
 
-        <EditText
-            android:id="@+id/editTextCategoryName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="text"
-            android:hint="Category Name"
-            android:layout_marginTop="0dp">
-        </EditText>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_marginLeft="10.0dip"
-        android:layout_marginRight="10.0dip"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/textViewRate"
+            android:id="@+id/textViewNumberPlayers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Rate: "
+            android:text="@string/textViewNumberPlayers"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:layout_marginTop="0dp" />
+            android:layout_marginTop="10dip" />
 
-        <EditText
-            android:id="@+id/editTextRatePaying"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="text"
-            android:hint="Rate Paying"
-            android:layout_marginTop="0dp">
-        </EditText>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_marginLeft="10.0dip"
-        android:layout_marginRight="10.0dip"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/textViewNumPlayier"
+            android:id="@+id/textViewCurrentTopBid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Number of Player: "
+            android:text="@string/textViewCurrentTopBid"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:layout_marginTop="0dp" />
+            android:layout_marginTop="10.0dip"/>
 
-        <EditText
-            android:id="@+id/editTextNumPlayer"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="number"
-            android:hint="Number of Player"
-            android:layout_marginTop="0dp">
-        </EditText>
-    </LinearLayout>
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
+            <TextView
+                android:id="@+id/textViewMakeOffer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/textViewMakeOffer"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <EditText
+                android:id="@+id/editTextMakeOffer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="numberDecimal"
+                android:hint="@string/hintBidAmount">
+            </EditText>
+        </LinearLayout>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Offers"
         android:id="@+id/textViewOffer"
         android:layout_gravity="center_horizontal" />
@@ -162,31 +111,18 @@
         android:id="@+id/listViewBid"
         android:layout_gravity="center_horizontal" />
 
-    <LinearLayout
-        android:layout_marginLeft="10.0dip"
-        android:layout_marginRight="10.0dip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <EditText
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_marginLeft="10.0dip"
+            android:layout_marginRight="10.0dip"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/OfferAmount"
-            android:hint="Offer Amount"
-            android:layout_marginLeft="20dp" />
-
-        <Button
-            android:layout_width="120dp"
-            android:layout_height="35dp"
-            android:text="Make Offer"
-            android:id="@+id/MakeOffer"
-            android:layout_gravity="right"
-            android:background="@android:color/holo_green_dark"
-            android:textColor="@android:color/white"
-            android:layout_marginLeft="80dp" />
-    </LinearLayout>
-
-
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+        </LinearLayout>
 </LinearLayout>
+
+</RelativeLayout>
+
+
+
+
