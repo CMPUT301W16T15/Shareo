@@ -134,6 +134,8 @@ public class HomeFragment extends Fragment implements Observer {
 
     @Override
     public void update(Observable model) {
+        if (getActivity() == null)
+            return;
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
