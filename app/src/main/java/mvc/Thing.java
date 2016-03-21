@@ -237,13 +237,16 @@ public class Thing extends JestData {
     }
 
     public void addBid(Bid bid) {
-        if (bids == null) {
-            bids = getBids();
-        }
-        // protect from duplicates
-        if (!bids.contains(bid)) {
-            bids.add(bid);
-            status = Status.BIDDED;
+        try {
+            if (!bidIDs.contains(bid.getJestID())) {
+                bidIDs.add(bid.getJestID());
+                if (bids == null) {
+                    bids = getBids();
+                }
+                bids.add(bid);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
