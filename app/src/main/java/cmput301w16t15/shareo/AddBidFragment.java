@@ -132,21 +132,14 @@ public class AddBidFragment extends DialogFragment {
         mtextViewNumberPlayers.setText(mtextViewNumberPlayers.getText() + ": " + mThing.getNumberPlayers());
         mtextViewCategory.setText(mtextViewCategory.getText() + ": " + mThing.getCategory());
 
+        /*
         Log.d(TAG, "Test stuff" + mThing.getBids().size());
         Toast z = Toast.makeText(getActivity(), "Number of Bids is :"+mThing.getBids().size(), Toast.LENGTH_SHORT);
         z.show();
+        */
 
-        int max = 0;
-        for (Bid b : mThing.getBids())
-        {
 
-            if (b.getBidAmount() > max)
-            {
-                max = b.getBidAmount();
-            }
-        }
-
-        mtextViewCurrentTopBid.setText(mtextViewCurrentTopBid.getText() +": "+String.valueOf(max));
+        mtextViewCurrentTopBid.setText(mtextViewCurrentTopBid.getText() +": "+String.valueOf(mThing.getTopBidAmount()));
     }
 
 }

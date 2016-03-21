@@ -21,6 +21,7 @@ import mvc.exceptions.NullIDException;
  */
 public class Thing extends JestData {
 
+    private int topBidAmount = 0;
     private String name;
     private String description;
     private Status status;
@@ -300,6 +301,10 @@ public class Thing extends JestData {
                     bids = getBids();
                 }
                 bids.add(bid);
+                if (bid.getBidAmount() > topBidAmount)
+                {
+                    topBidAmount = bid.getBidAmount();
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -328,5 +333,13 @@ public class Thing extends JestData {
     @Override
     public void setJestID(String ID) {
         JestID = ID;
+    }
+
+    public int getTopBidAmount() {
+        return topBidAmount;
+    }
+
+    public void setTopBidAmount(int topBidAmount) {
+        this.topBidAmount = topBidAmount;
     }
 }
