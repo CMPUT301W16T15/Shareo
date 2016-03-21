@@ -24,18 +24,27 @@ public class ModelTest extends ActivityInstrumentationTestCase2 {
 
     public static void populateData() {
         ShareoData data = ShareoData.getInstance();
-        User joe = null;
-        User sally = null;
-        User fred = null;
+        User joe = data.getUser("joe");
+        User sally = data.getUser("sally");
+        User fred = data.getUser("fred");
+
+        if (joe != null) joe.new Deleter().delete();
+        if (sally != null) sally.new Deleter().delete();
+        if (fred != null) fred.new Deleter().delete();
+
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        joe = null;
+        sally = null;
+        fred = null;
 
         String fullName = "my full name";
         String emailAddress = "my email address";
         String motto = "my motto";
-
-
-        data.removeUser("joe");
-        data.removeUser("sally");
-        data.removeUser("fred");
 
         try {
             joe = new User.Builder(data, "joe", fullName, emailAddress, motto).build();
@@ -105,6 +114,26 @@ public class ModelTest extends ActivityInstrumentationTestCase2 {
         assertTrue(sally.getBids().contains(b3));
         assertTrue(fred.getBids().contains(b4));
         assertTrue(fred.getBids().contains(b5));
+
+        try {
+            b1.new Deleter().delete();
+
+            assertFalse(joe.getBids().contains(b1));
+            assertNull(data.getBid(b1.getJestID()));
+        } catch (NullIDException e) {
+            fail();
+        }
+
+        sally.new Deleter().delete();
+
+        try {
+            assertNull(data.getUser(sally.getName()));
+            assertNull(data.getGame(t3.getJestID()));
+            assertNull(data.getBid(b2.getJestID()));
+            assertNull(data.getBid(b3.getJestID()));
+        } catch (NullIDException e) {
+            fail();
+        }
     }
 
     public static void testPopulate() {

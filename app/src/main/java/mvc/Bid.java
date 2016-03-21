@@ -4,6 +4,7 @@ import cmput301w16t15.shareo.ShareoApplication;
 import io.searchbox.annotations.JestId;
 import mvc.Jobs.CallbackInterface;
 import mvc.Jobs.CreateBidJob;
+import mvc.Jobs.DeleteBidJob;
 import mvc.exceptions.NullIDException;
 
 /**
@@ -94,6 +95,27 @@ public class Bid extends JestData {
                 data.updateGame(thing);
             }
             return bid;
+        }
+    }
+
+    public class Deleter {
+        public void delete() throws NullIDException {
+
+            ShareoApplication.getInstance().getJobManager().addJobInBackground(new DeleteBidJob(Bid.this, new CallbackInterface() {
+                @Override
+                public void onSuccess() {
+                    bidder.removeBid(Bid.this);
+                    thing.removeBid(Bid.this);
+
+                    bidder.update();
+                    thing.update();
+                }
+
+                @Override
+                public void onFailure() {
+
+                }
+            }));
         }
     }
 

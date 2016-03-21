@@ -12,6 +12,7 @@ import cmput301w16t15.shareo.ShareoApplication;
 import io.searchbox.annotations.JestId;
 import mvc.Jobs.CallbackInterface;
 import mvc.Jobs.CreateGameJob;
+import mvc.Jobs.DeleteGameJob;
 import mvc.Jobs.UpdateGameJob;
 import mvc.exceptions.NullIDException;
 
@@ -36,6 +37,26 @@ public class Thing extends JestData {
     private transient List<Bid> bids;
     private String acceptedBidID;
     private transient Bid acceptedBid;
+
+    public boolean removeBid(Bid bid) {
+        //TODO notify bid that it is removed.
+        return removeBidSimple(bid);
+    }
+
+    protected boolean removeBidSimple(Bid bid) {
+        boolean retVal = false;
+
+        try {
+            retVal = bidIDs.remove(bid.getJestID());
+            if (bids != null) {
+                bids.remove(bid);
+            }
+        } catch (NullIDException e) {
+            e.printStackTrace();
+        }
+
+        return retVal;
+    }
 
     public static class Builder {
         private ShareoData data;
@@ -103,6 +124,41 @@ public class Thing extends JestData {
             return t;
         }
 
+    }
+
+    public class Deleter {
+        public void delete() throws NullIDException {
+
+            ShareoApplication.getInstance().getJobManager().addJobInBackground(new DeleteGameJob(Thing.this, new CallbackInterface() {
+                @Override
+                public void onSuccess() {
+                    owner.removeOwnedThing(Thing.this);
+                    if (bids == null) {
+                        Thing.this.getBids();
+                    }
+
+                    // Delete all bids
+                    for (Bid bid : bids) {
+                        try {
+                            bid.new Deleter().delete();
+                        } catch (NullIDException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    try {
+                        acceptedBid.new Deleter().delete();
+                    } catch (NullIDException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure() {
+
+                }
+            }));
+        }
     }
 
 

@@ -1,6 +1,8 @@
 package mvc;
 
 
+import android.util.Log;
+
 import org.apache.commons.lang3.ObjectUtils;
 
 import java.util.ArrayList;
@@ -8,6 +10,8 @@ import java.util.List;
 
 import cmput301w16t15.shareo.ShareoApplication;
 import io.searchbox.annotations.JestId;
+import mvc.Jobs.CallbackInterface;
+import mvc.Jobs.DeleteUserJob;
 import mvc.Jobs.UpdateUserJob;
 import mvc.exceptions.NullIDException;
 import mvc.exceptions.UsernameAlreadyExistsException;
@@ -45,6 +49,27 @@ public class User extends JestData {
         this.borrowedIDs = new ArrayList<>();
     }
 
+    public boolean removeBid(Bid bid) {
+        // TODO notify bid that it is removed.
+        return removeBidSimple(bid);
+    }
+
+    protected boolean removeBidSimple(Bid bid) {
+        boolean retVal = false;
+        try {
+            retVal = bidIDs.remove(bid.getJestID());
+            if (bids != null) {
+                bids.remove(bid);
+            }
+        } catch (NullIDException e) {
+            e.printStackTrace();
+        }
+
+        notifyViews();
+
+        return retVal;
+    }
+
     public static class Builder {
         private String username;
         private String fullName;
@@ -68,22 +93,71 @@ public class User extends JestData {
 
     }
 
+    public class Deleter {
+        public void delete() {
+
+            ShareoApplication.getInstance().getJobManager().addJobInBackground(new DeleteUserJob(User.this, new CallbackInterface() {
+                @Override
+                public void onSuccess() {
+                    // Deleted all owned things
+                    if (owned == null) {
+                        User.this.getOwnedThings();
+                    }
+
+                    for (Thing game : owned) {
+                        try {
+                            game.new Deleter().delete();
+                        } catch (NullIDException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    // Delete all bids
+                    if (bids == null) {
+                        User.this.getBids();
+                    }
+
+                    for (Bid bid : bids) {
+                        try {
+                            bid.new Deleter().delete();
+                        } catch (NullIDException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure() {
+
+                }
+            }));
+
+
+        }
+    }
+
     public String getName() { return username; }
     public String getFullName() { return fullName; }
     public String getEmailAddress() { return emailAddress; }
     public String getMotto() { return motto; }
 
-    public void setName(String username) { this.username = username;}
+    public void setName(String username) {
+        this.username = username;
+        notifyViews();
+    }
     public void setFullName(String fullName) {
         this.fullName = fullName;
+        notifyViews();
     }
 
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
+        notifyViews();
     }
 
     public void setMotto(String motto) {
         this.motto = motto;
+        notifyViews();
     }
 
 
@@ -103,6 +177,7 @@ public class User extends JestData {
             }
             bids.add(bid);
         }
+        notifyViews();
     }
 
     public List<Bid> getBids() {
@@ -126,6 +201,7 @@ public class User extends JestData {
             owned = getOwnedThings();
         }
         owned.add(thing);
+        notifyViews();
     }
 
     public boolean removeOwnedThing(Thing thing) {
@@ -137,10 +213,19 @@ public class User extends JestData {
     }
 
     protected boolean removeOwnedThingSimple(Thing thing) {
-        if (owned == null) {
-            owned = getOwnedThings();
+        boolean retVal = false;
+
+        try {
+            retVal = ownedIDs.remove(thing.getJestID());
+            if (owned != null) {
+                owned.remove(thing);
+            }
+        } catch (NullIDException e) {
+            e.printStackTrace();
         }
-        return owned.remove(thing);
+
+        notifyViews();
+        return retVal;
     }
 
     public void addBorrowedThing(Thing thing){
@@ -149,11 +234,15 @@ public class User extends JestData {
     }
 
     protected void addBorrowedThingSimple(Thing thing) {
-        if (borrowed == null) {
-            borrowed = getBorrowedThings();
+        try {
+            borrowedIDs.add(thing.getJestID());
+            if (borrowed != null) {
+                borrowed.add(thing);
+            }
+            notifyViews();
+        } catch (NullIDException e) {
+            e.printStackTrace();
         }
-        notifyViews();
-        borrowed.add(thing);
     }
 
     public boolean removeBorrowedThing(Thing thing) {
@@ -162,10 +251,20 @@ public class User extends JestData {
     }
 
     protected boolean removeBorrowedThingSimple(Thing thing) {
-        if (borrowed == null) {
-            borrowed = getBorrowedThings();
+        boolean retVal = false;
+
+        try {
+            retVal = borrowedIDs.remove(thing.getJestID());
+            if (borrowed != null) {
+                borrowed.remove(thing);
+            }
+        } catch (NullIDException e) {
+            e.printStackTrace();
         }
-        return borrowed.remove(thing);
+
+        notifyViews();
+
+        return retVal;
     }
 
     public List<Thing> getBorrowedThings() {
@@ -243,12 +342,15 @@ public class User extends JestData {
     @Override
     public String getJestID() {
         if (JestID == null) {
+            Log.e("Impossible?", "This should be impossible");
             return null;
         }
         return JestID;
     }
 
     public void setJestID(String ID) {
-        JestID = ID;
+        if (ID != null) {
+            JestID = ID;
+        }
     }
 }
