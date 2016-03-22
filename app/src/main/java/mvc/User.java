@@ -126,7 +126,7 @@ public class User extends JestData {
 
         public void delete() {
 
-            //if (newThread) {
+            if (newThread) {
                 ShareoApplication.getInstance().getJobManager().addJobInBackground(new DeleteUserJob(User.this, new CallbackInterface() {
                     @Override
                     public void onSuccess() {
@@ -138,14 +138,14 @@ public class User extends JestData {
 
                     }
                 }));
-//            } else {
-//                try {
-//                    getDataSource().removeUser(User.this);
-//                    deleteDependants();
-//                } catch (NullIDException e) {
-//                    e.printStackTrace();
-//                }
-//            }
+            } else {
+                try {
+                    getDataSource().removeUser(User.this);
+                    deleteDependants();
+                } catch (NullIDException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         public Deleter useMainThread() {

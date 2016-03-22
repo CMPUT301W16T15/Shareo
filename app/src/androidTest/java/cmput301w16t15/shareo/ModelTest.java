@@ -32,9 +32,13 @@ public class ModelTest extends ActivityInstrumentationTestCase2 {
         if (sally != null) sally.new Deleter().useMainThread().delete();
         if (fred != null) fred.new Deleter().useMainThread().delete();
 
-        joe = null;
-        sally = null;
-        fred = null;
+        joe = data.getUser("joe");
+        sally = data.getUser("sally");
+        fred = data.getUser("fred");
+
+        assertNull(joe);
+        assertNull(sally);
+        assertNull(fred);
 
         String fullName = "my full name";
         String emailAddress = "my email address";
