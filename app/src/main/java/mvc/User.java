@@ -93,46 +93,64 @@ public class User extends JestData {
 
     }
 
+    private void deleteDependants() {
+        // Deleted all owned things
+        if (owned == null) {
+            User.this.getOwnedThings();
+        }
+
+        for (Thing game : owned) {
+            try {
+                game.new Deleter().delete();
+            } catch (NullIDException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // Delete all bids
+        if (bids == null) {
+            User.this.getBids();
+        }
+
+        for (Bid bid : bids) {
+            try {
+                bid.new Deleter().delete();
+            } catch (NullIDException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public class Deleter {
+        private boolean newThread = true;
+
         public void delete() {
 
-            ShareoApplication.getInstance().getJobManager().addJobInBackground(new DeleteUserJob(User.this, new CallbackInterface() {
-                @Override
-                public void onSuccess() {
-                    // Deleted all owned things
-                    if (owned == null) {
-                        User.this.getOwnedThings();
+            //if (newThread) {
+                ShareoApplication.getInstance().getJobManager().addJobInBackground(new DeleteUserJob(User.this, new CallbackInterface() {
+                    @Override
+                    public void onSuccess() {
+                        deleteDependants();
                     }
 
-                    for (Thing game : owned) {
-                        try {
-                            game.new Deleter().delete();
-                        } catch (NullIDException e) {
-                            e.printStackTrace();
-                        }
+                    @Override
+                    public void onFailure() {
+
                     }
+                }));
+//            } else {
+//                try {
+//                    getDataSource().removeUser(User.this);
+//                    deleteDependants();
+//                } catch (NullIDException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+        }
 
-                    // Delete all bids
-                    if (bids == null) {
-                        User.this.getBids();
-                    }
-
-                    for (Bid bid : bids) {
-                        try {
-                            bid.new Deleter().delete();
-                        } catch (NullIDException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailure() {
-
-                }
-            }));
-
-
+        public Deleter useMainThread() {
+            newThread = false;
+            return this;
         }
     }
 

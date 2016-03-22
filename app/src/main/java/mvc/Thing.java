@@ -116,8 +116,8 @@ public class Thing extends JestData {
             } else {
                 data.addGame(t);
                 try {
-                    owner.addOwnedThing(t);
-                    data.updateUser(owner);
+                    owner.addOwnedThingSimple(t);
+                    owner.update();
                 } catch (NullIDException e) {
                     e.printStackTrace();
                 }

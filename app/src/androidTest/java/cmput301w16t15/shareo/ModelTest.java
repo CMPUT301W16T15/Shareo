@@ -28,15 +28,9 @@ public class ModelTest extends ActivityInstrumentationTestCase2 {
         User sally = data.getUser("sally");
         User fred = data.getUser("fred");
 
-        if (joe != null) joe.new Deleter().delete();
-        if (sally != null) sally.new Deleter().delete();
-        if (fred != null) fred.new Deleter().delete();
-
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        if (joe != null) joe.new Deleter().useMainThread().delete();
+        if (sally != null) sally.new Deleter().useMainThread().delete();
+        if (fred != null) fred.new Deleter().useMainThread().delete();
 
         joe = null;
         sally = null;

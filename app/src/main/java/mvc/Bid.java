@@ -99,23 +99,40 @@ public class Bid extends JestData {
     }
 
     public class Deleter {
+        public boolean newThread = true;
+
         public void delete() throws NullIDException {
 
-            ShareoApplication.getInstance().getJobManager().addJobInBackground(new DeleteBidJob(Bid.this, new CallbackInterface() {
-                @Override
-                public void onSuccess() {
-                    bidder.removeBid(Bid.this);
-                    thing.removeBid(Bid.this);
+            if (newThread) {
+                ShareoApplication.getInstance().getJobManager().addJobInBackground(new DeleteBidJob(Bid.this, new CallbackInterface() {
+                    @Override
+                    public void onSuccess() {
+                        bidder.removeBid(Bid.this);
+                        thing.removeBid(Bid.this);
 
-                    bidder.update();
-                    thing.update();
-                }
+                        bidder.update();
+                        thing.update();
+                    }
 
-                @Override
-                public void onFailure() {
+                    @Override
+                    public void onFailure() {
 
-                }
-            }));
+                    }
+                }));
+            } else {
+                ShareoData.getInstance().removeBid(Bid.this);
+
+                bidder.removeBid(Bid.this);
+                thing.removeBid(Bid.this);
+
+                bidder.update();
+                thing.update();
+            }
+        }
+
+        public Deleter useMainThread() {
+            newThread = false;
+            return this;
         }
     }
 

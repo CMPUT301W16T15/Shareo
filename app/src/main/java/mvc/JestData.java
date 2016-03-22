@@ -21,11 +21,7 @@ public abstract class JestData extends Observable implements Serializable {
 
     public ShareoData getDataSource() {
         if (dataSource == null) {
-            try {
-                dataSource = defaultDataSource;
-            } catch (ClassCastException e) {
-                dataSource = null;
-            }
+            dataSource = defaultDataSource;
         }
         return dataSource;
     }
