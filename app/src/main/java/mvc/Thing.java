@@ -139,7 +139,11 @@ public class Thing extends JestData {
         // Delete all bids
         for (Bid bid : bids) {
             try {
-                bid.new Deleter().useMainThread().delete();
+                if (newThread) {
+                    bid.new Deleter().delete();
+                } else {
+                    bid.new Deleter().useMainThread().delete();
+                }
             } catch (NullIDException e) {
                 e.printStackTrace();
             }
@@ -151,7 +155,11 @@ public class Thing extends JestData {
 
         if (acceptedBid != null) {
             try {
-                acceptedBid.new Deleter().useMainThread().delete();
+                if (newThread) {
+                    acceptedBid.new Deleter().delete();
+                } else {
+                    acceptedBid.new Deleter().useMainThread().delete();
+                }
             } catch (NullIDException e) {
                 e.printStackTrace();
             }

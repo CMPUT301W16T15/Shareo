@@ -114,7 +114,7 @@ public class ModelTest extends ActivityInstrumentationTestCase2 {
         assertTrue(fred.getBids().contains(b5));
 
         try {
-            b1.new Deleter().delete();
+            b1.new Deleter().useMainThread().delete();
 
             assertFalse(joe.getBids().contains(b1));
             assertNull(data.getBid(b1.getJestID()));
@@ -122,7 +122,7 @@ public class ModelTest extends ActivityInstrumentationTestCase2 {
             fail();
         }
 
-        sally.new Deleter().delete();
+        sally.new Deleter().useMainThread().delete();
 
         try {
             assertNull(data.getUser(sally.getName()));

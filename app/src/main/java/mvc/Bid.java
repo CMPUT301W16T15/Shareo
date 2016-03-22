@@ -107,11 +107,22 @@ public class Bid extends JestData {
                 ShareoApplication.getInstance().getJobManager().addJobInBackground(new DeleteBidJob(Bid.this, new CallbackInterface() {
                     @Override
                     public void onSuccess() {
-                        bidder.removeBid(Bid.this);
-                        thing.removeBid(Bid.this);
+                        if (bidder == null && bidderID != null) {
+                            Bid.this.getBidder();
+                        }
+                        if (thing == null && thingID != null) {
+                            Bid.this.getBidder();
+                        }
 
-                        bidder.update();
-                        thing.update();
+                        if (bidder != null) {
+                            bidder.removeBidSimple(Bid.this);
+                            bidder.update();
+                        }
+                        if (thing != null) {
+                            thing.removeBidSimple(Bid.this);
+                            thing.update();
+                        }
+
                     }
 
                     @Override
@@ -122,11 +133,21 @@ public class Bid extends JestData {
             } else {
                 ShareoData.getInstance().removeBid(Bid.this);
 
-                bidder.removeBid(Bid.this);
-                thing.removeBid(Bid.this);
+                if (bidder == null && bidderID != null) {
+                    Bid.this.getBidder();
+                }
+                if (thing == null && thingID != null) {
+                    Bid.this.getBidder();
+                }
 
-                bidder.update();
-                thing.update();
+                if (bidder != null) {
+                    bidder.removeBidSimple(Bid.this);
+                    bidder.update();
+                }
+                if (thing != null) {
+                    thing.removeBidSimple(Bid.this);
+                    thing.update();
+                }
             }
         }
 
