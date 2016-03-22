@@ -93,7 +93,7 @@ public class User extends JestData {
 
     }
 
-    private void deleteDependants() {
+    private void deleteDependants(boolean newThread) {
         // Deleted all owned things
         if (owned == null) {
             User.this.getOwnedThings();
@@ -101,7 +101,11 @@ public class User extends JestData {
 
         for (Thing game : owned) {
             try {
-                game.new Deleter().delete();
+                if (newThread) {
+                    game.new Deleter().delete();
+                } else {
+                    game.new Deleter().useMainThread().delete();
+                }
             } catch (NullIDException e) {
                 e.printStackTrace();
             }
@@ -114,11 +118,19 @@ public class User extends JestData {
 
         for (Bid bid : bids) {
             try {
-                bid.new Deleter().delete();
+                if (newThread) {
+                    bid.new Deleter().delete();
+                } else {
+                    bid.new Deleter().useMainThread().delete();
+                }
             } catch (NullIDException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void deleteDependants() {
+        deleteDependants(true);
     }
 
     public class Deleter {
@@ -141,7 +153,7 @@ public class User extends JestData {
             } else {
                 try {
                     getDataSource().removeUser(User.this);
-                    deleteDependants();
+                    deleteDependants(false);
                 } catch (NullIDException e) {
                     e.printStackTrace();
                 }

@@ -127,38 +127,80 @@ public class Thing extends JestData {
 
     }
 
+    private void deleteDependants() {
+        deleteDependants(true);
+    }
+
+    private void deleteDependants(boolean newThread) {
+        if (bids == null) {
+            Thing.this.getBids();
+        }
+
+        // Delete all bids
+        for (Bid bid : bids) {
+            try {
+                bid.new Deleter().useMainThread().delete();
+            } catch (NullIDException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (acceptedBid == null && acceptedBidID != null) {
+            Thing.this.getAcceptedBid();
+        }
+
+        if (acceptedBid != null) {
+            try {
+                acceptedBid.new Deleter().useMainThread().delete();
+            } catch (NullIDException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public class Deleter {
+        private boolean newThread = true;
+
         public void delete() throws NullIDException {
 
-            ShareoApplication.getInstance().getJobManager().addJobInBackground(new DeleteGameJob(Thing.this, new CallbackInterface() {
-                @Override
-                public void onSuccess() {
-                    owner.removeOwnedThing(Thing.this);
-                    if (bids == null) {
-                        Thing.this.getBids();
-                    }
-
-                    // Delete all bids
-                    for (Bid bid : bids) {
-                        try {
-                            bid.new Deleter().delete();
-                        } catch (NullIDException e) {
-                            e.printStackTrace();
+            if (newThread) {
+                ShareoApplication.getInstance().getJobManager().addJobInBackground(new DeleteGameJob(Thing.this, new CallbackInterface() {
+                    @Override
+                    public void onSuccess() {
+                        if (owner == null && ownerID != null) {
+                            Thing.this.getOwner();
                         }
+
+                        if (owner != null) {
+                            owner.removeOwnedThingSimple(Thing.this);
+                        }
+
+                        deleteDependants();
                     }
 
-                    try {
-                        acceptedBid.new Deleter().delete();
-                    } catch (NullIDException e) {
-                        e.printStackTrace();
+                    @Override
+                    public void onFailure() {
+
                     }
+                }));
+            } else {
+                getDataSource().removeGame(Thing.this);
+
+                if (owner == null && ownerID != null) {
+                    Thing.this.getOwner();
                 }
 
-                @Override
-                public void onFailure() {
-
+                if (owner != null) {
+                    owner.removeOwnedThingSimple(Thing.this);
                 }
-            }));
+
+                deleteDependants(false);
+            }
+        }
+
+        public Deleter useMainThread() {
+            newThread = false;
+            return this;
         }
     }
 
