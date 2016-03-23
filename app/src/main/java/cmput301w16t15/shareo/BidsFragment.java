@@ -1,6 +1,6 @@
 package cmput301w16t15.shareo;
 
-import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -18,6 +18,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import mvc.AppUserSingleton;
+import mvc.Bid;
 import mvc.Thing;
 import mvc.User;
 
@@ -26,8 +27,9 @@ public class BidsFragment extends Fragment implements Observer {
     private User mUser;
 
     private ListView mList;
-    private ThingAdapters.BasicThingAdapter mListAdapter;
+    private ArrayAdapter mListAdapter;
     private TextView mEmptyMessage;
+    private int mPosition = 0;
 
 
     public BidsFragment() {
@@ -42,34 +44,16 @@ public class BidsFragment extends Fragment implements Observer {
     * The listview renders either the items I am bidding on, or my items other's are bidding on
     * Based on mSelectedMode this function renders the appropriate data in the listivew
     * */
-    private void setAdapterBasedOnTab(int position) {
-        switch (position) {
+    private void setAdapterBasedOnTab() {
+        switch (mPosition) {
             case 0:
-                List<Thing> data = mUser.getOwnedBiddedThings();
-                mListAdapter = new ThingAdapters.BasicThingAdapter(getActivity(), R.layout.detailed_thing_row, data);
-                mList.setAdapter(mListAdapter);
-
-                if (data.size() == 0) {
-                    mEmptyMessage.setVisibility(View.VISIBLE);
-                } else {
-                    mEmptyMessage.setVisibility(View.GONE);
-                }
+                new GetOffersTask().execute();
                 break;
             case 1:
-                // TODO: use different data source (will have to make getter in model class)
-                data = mUser.getOwnedBiddedThings();
-                mListAdapter = new ThingAdapters.BasicThingAdapter(getActivity(), R.layout.detailed_thing_row, data);
-                mList.setAdapter(mListAdapter);
-
-                if (data.size() == 0) {
-                    mEmptyMessage.setVisibility(View.VISIBLE);
-                } else {
-                    mEmptyMessage.setVisibility(View.GONE);
-                }
+                new GetBidsTask().execute();
                 break;
         }
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -88,9 +72,12 @@ public class BidsFragment extends Fragment implements Observer {
         button.setOnValueChangedListener(new ToggleButton.OnValueChangedListener() {
             @Override
             public void onValueChanged(int position) {
-                setAdapterBasedOnTab(position);
+                mPosition = position;
+                setAdapterBasedOnTab();
             }
         });
+
+        setAdapterBasedOnTab();
 
         return v;
     }
@@ -98,6 +85,46 @@ public class BidsFragment extends Fragment implements Observer {
     @Override
     public void update(Observable observable, Object data) {
         mListAdapter.notifyDataSetChanged();
+    }
+
+    class GetBidsTask extends AsyncTask<String, Void, List<Bid>> {
+
+        @Override
+        protected List<Bid> doInBackground(String... params) {
+            return mUser.getBids();
+        }
+
+        @Override
+        protected void onPostExecute(List<Bid> d) {
+            mListAdapter = new CustomAdapters.BasicBidAdapter(getActivity(), R.layout.minimal_thing_row, d);
+            mList.setAdapter(mListAdapter);
+
+            if (d.size() == 0) {
+                mEmptyMessage.setVisibility(View.VISIBLE);
+            } else {
+                mEmptyMessage.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    class GetOffersTask extends AsyncTask<String, Void, List<Thing>> {
+
+        @Override
+        protected List<Thing> doInBackground(String... params) {
+            return mUser.getOffers();
+        }
+
+        @Override
+        protected void onPostExecute(List<Thing> d) {
+            mListAdapter = new CustomAdapters.BasicThingAdapter(getActivity(), R.layout.minimal_thing_row, d);
+            mList.setAdapter(mListAdapter);
+
+            if (d.size() == 0) {
+                mEmptyMessage.setVisibility(View.VISIBLE);
+            } else {
+                mEmptyMessage.setVisibility(View.GONE);
+            }
+        }
     }
 
 }

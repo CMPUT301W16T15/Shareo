@@ -24,11 +24,11 @@ import mvc.User;
 public class HomeFragment extends Fragment implements Observer {
     private FloatingActionButton mFab;
     private User mUser;
-    private int mPosition;
+    private int mPosition = 0;
     private List<Thing> data;
 
     private ListView mList;
-    private ThingAdapters.BasicThingAdapter mListAdapter;
+    private CustomAdapters.BasicThingAdapter mListAdapter;
     private TextView mEmptyMessage;
 
     public HomeFragment() {
@@ -44,7 +44,7 @@ public class HomeFragment extends Fragment implements Observer {
             case 0:
                 // TODO: avail games data source
                 data = mUser.getAvailableThings();
-                mListAdapter = new ThingAdapters.BasicThingAdapter(getActivity(), R.layout.detailed_thing_row, data);
+                mListAdapter = new CustomAdapters.BasicThingAdapter(getActivity(), R.layout.minimal_thing_row, data);
                 mList.setAdapter(mListAdapter);
 
                 if (data.size() == 0) {
@@ -55,8 +55,8 @@ public class HomeFragment extends Fragment implements Observer {
                 break;
             case 1:
                 // TODO: borrowing games data source
-                data = mUser.getOwnedBiddedThings();
-                mListAdapter = new ThingAdapters.BasicThingAdapter(getActivity(), R.layout.detailed_thing_row, data);
+                data = mUser.getOffers();
+                mListAdapter = new CustomAdapters.BasicThingAdapter(getActivity(), R.layout.minimal_thing_row, data);
                 mList.setAdapter(mListAdapter);
 
                 if (data.size() == 0) {
@@ -67,8 +67,8 @@ public class HomeFragment extends Fragment implements Observer {
                 break;
             case 2:
                 // TODO: lending games data source
-                data = mUser.getOwnedBiddedThings();
-                mListAdapter = new ThingAdapters.BasicThingAdapter(getActivity(), R.layout.detailed_thing_row, data);
+                data = mUser.getOffers();
+                mListAdapter = new CustomAdapters.BasicThingAdapter(getActivity(), R.layout.minimal_thing_row, data);
                 mList.setAdapter(mListAdapter);
 
                 if (data.size() == 0) {
@@ -89,7 +89,7 @@ public class HomeFragment extends Fragment implements Observer {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_home, container, false);
         mList = (ListView) v.findViewById(R.id.listview);
-        mListAdapter = new ThingAdapters.BasicThingAdapter(this.getContext(), R.layout.detailed_thing_row, mUser.getOwnedThings());
+        mListAdapter = new CustomAdapters.BasicThingAdapter(this.getContext(), R.layout.minimal_thing_row, mUser.getOwnedThings());
         mList.setAdapter(mListAdapter);
         mEmptyMessage = (TextView) v.findViewById(R.id.empty_notice);
 

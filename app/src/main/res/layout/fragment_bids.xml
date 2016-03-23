@@ -27,11 +27,6 @@
     <ListView
         android:id="@+id/listview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:dividerHeight="5dp"
-        android:divider="#E6E6E6"
-        android:layout_gravity="center" />
+        android:layout_height="match_parent" />
 
 </LinearLayout>

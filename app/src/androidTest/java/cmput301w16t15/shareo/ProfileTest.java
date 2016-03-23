@@ -72,7 +72,7 @@ public class ProfileTest extends ActivityInstrumentationTestCase2 {
         //Simulate a click on an object where that user owns it
         //fail if I add this command
         //seems like that we cannot connect the relationship between adding things to user and bidding
-        //assertTrue(testUser.getOwnedBiddedThings().contains(testThings.getName()));
+        //assertTrue(testUser.getOffers().contains(testThings.getName()));
 
         assertEquals(testUser.getName(), "Jack");
         assertEquals(testUser.getFullName(), "Jack Snow");

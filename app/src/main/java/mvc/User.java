@@ -214,7 +214,9 @@ public class User extends JestData {
         if (bids == null) {
             bids = new ArrayList<>(bidIDs.size());
             for (String ID : bidIDs) {
-                bids.add(getDataSource().getBid(ID));
+                Bid b = getDataSource().getBid(ID);
+                b.getThing(); // must preload the thing, kind of sketch code, what at this point we'll go with it
+                bids.add(b);
             }
         }
         return bids;
@@ -307,7 +309,7 @@ public class User extends JestData {
         return borrowed;
     }
 
-    public List<Thing> getOwnedBiddedThings() {
+    public List<Thing> getOffers() {
         getOwnedThings();
         // only return those that have bids on them
         List<Thing> ownedWithBids = new ArrayList<>();

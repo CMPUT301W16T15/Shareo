@@ -46,7 +46,7 @@ public class AddBidFragment extends DialogFragment {
     private TextView mtextViewNumberPlayers;
     private TextView mtextViewCategory;
 
-    //private ThingAdapters.ThingWithStatusAdapter mListAdapter;
+    //private CustomAdapters.ThingWithStatusAdapter mListAdapter;
     private EditText meditTextMakeOffer;
     private ListView mlistViewBid;
 
