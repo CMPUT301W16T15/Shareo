@@ -14,6 +14,7 @@ import android.widget.SearchView;
 import java.util.ArrayList;
 import java.util.List;
 
+import mvc.AppUserSingleton;
 import mvc.ShareoData;
 import mvc.Thing;
 
@@ -93,13 +94,19 @@ public class SearchFragment extends Fragment {
 
         @Override
         protected List<Thing> doInBackground(String... params) {
-            return ShareoData.getInstance().getGamesByDescription(params[0]);
+            List<Thing> res = ShareoData.getInstance().getGamesByDescription(params[0]);
+            List<Thing> filtered = new ArrayList<>();
+            for (Thing t : res) {
+                if (t.getOwner().getJestID().equals(AppUserSingleton.getInstance().getUser().getJestID())) {
+                    continue;
+                }
+                filtered.add(t);
+            }
+            return filtered;
         }
 
         @Override
         protected void onPostExecute(List<Thing> res) {
-            // TODO: first filter result not showing games owner by current user
-
             mListAdapter = new CustomAdapters.ThingWithStatusAdapter(getActivity(), R.layout.detailed_thing_row, res);
             mListView.setAdapter(mListAdapter);
             mListAdapter.notifyDataSetChanged();
