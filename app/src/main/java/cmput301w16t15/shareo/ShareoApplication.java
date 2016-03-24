@@ -12,7 +12,6 @@ import com.path.android.jobqueue.config.Configuration;
  */
 public class ShareoApplication extends Application {
 
-    final String JOB_ID = "1";
     private static ShareoApplication instance;
     private JobManager jobManager;
 
@@ -29,7 +28,8 @@ public class ShareoApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        jobManager = new JobManager(this, JOB_ID);
+        Configuration config = new Configuration.Builder(this).maxConsumerCount(1).build();
+        jobManager = new JobManager(this, config);
     }
 
     public JobManager getJobManager() {
