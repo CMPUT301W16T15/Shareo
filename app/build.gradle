@@ -5,6 +5,7 @@ android {
     buildToolsVersion "22.0.1"
 
     defaultConfig {
+        multiDexEnabled true
         applicationId "cmput301w16t15.shareo"
         minSdkVersion 18
         targetSdkVersion 23
