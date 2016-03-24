@@ -67,7 +67,7 @@ public class Thing extends JestData {
 
     private void recalculateMaxBidAmount()
     {
-        int topBidAmount = 0;
+        topBidAmount = 0;
         for (Bid b : getBids()) {
             if (b.getBidAmount() > topBidAmount)
             {
