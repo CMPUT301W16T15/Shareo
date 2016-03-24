@@ -238,6 +238,9 @@ public class Thing extends JestData {
     public void borrow(Bid acceptedBid)
     {
         this.acceptedBid = acceptedBid;
+
+        // TODO delete all old bids
+
         this.bids = null;
         this.status = Status.BORROWED;
     }

@@ -3,9 +3,11 @@ package cmput301w16t15.shareo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -65,6 +67,31 @@ public class BidsFragment extends Fragment implements Observer {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_bids, container, false);
         mList = (ListView) v.findViewById(R.id.listview);
+
+        mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                ViewGameFragment vgf = new ViewGameFragment();
+                final Bundle bundle = new Bundle();
+
+                // start new thread to avoid network on main thread.
+                try {
+                    Thread t = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            bundle.putSerializable("myThing", ((Bid) mList.getItemAtPosition(position)).getThing());
+                        }
+                    });
+                    t.start();
+                    t.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                vgf.setArguments(bundle);
+                vgf.show(getFragmentManager(), "viewGame");
+            }
+        });
+
         mEmptyMessage = (TextView) v.findViewById(R.id.empty_notice);
 
         MultiStateToggleButton button = (MultiStateToggleButton) v.findViewById(R.id.mstb_multi_id);

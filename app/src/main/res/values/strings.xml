@@ -59,4 +59,8 @@
         <item>Offers</item>
         <item>Bids</item>
     </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="textViewGameTitle">Game Information</string>
 </resources>

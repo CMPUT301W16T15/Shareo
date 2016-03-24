@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/textViewBidTitle"
-        android:id="@+id/ItemBidding"
+        android:id="@+id/textViewGameTitle"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="5dp" />
 

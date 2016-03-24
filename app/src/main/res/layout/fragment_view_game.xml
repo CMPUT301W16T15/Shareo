@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/ViewGameFragment"
+    android:clickable="true">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginLeft="10.0dip"
+        android:layout_marginRight="10.0dip"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/textViewGameTitle"
+            android:id="@+id/textViewGameTitle"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp" />
+
+
+        <TextView
+            android:id="@+id/textViewGameOwner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="@string/textViewGameOwner"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_marginTop="10dip" />
+
+        <TextView
+            android:id="@+id/textViewGameName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="@string/textViewGameName"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_marginTop="10dip" />
+
+        <TextView
+            android:id="@+id/textViewDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/textViewDescription"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_marginTop="10dip" />
+
+        <TextView
+            android:id="@+id/textViewCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/textViewCategory"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_marginTop="10dip" />
+
+
+        <TextView
+            android:id="@+id/textViewNumberPlayers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/textViewNumberPlayers"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_marginTop="10dip" />
+
+        <ImageView
+            android:id="@+id/gamePicture"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_add"
+            android:layout_weight="1"
+            android:layout_width="200dp"
+            android:layout_height="200dp" />
+
+    </LinearLayout>
+
+</RelativeLayout>
+
+
+
+
