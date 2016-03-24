@@ -59,6 +59,7 @@ public class SearchFragment extends Fragment {
                 if (mRunnable != null) {
                     mHandler.removeCallbacks(mRunnable);
                 }
+                // TODO: don't show items from current user
                 mRunnable = new Runnable() {
                     @Override
                     public void run() {
@@ -97,6 +98,8 @@ public class SearchFragment extends Fragment {
 
         @Override
         protected void onPostExecute(List<Thing> res) {
+            // TODO: first filter result not showing games owner by current user
+
             mListAdapter = new CustomAdapters.ThingWithStatusAdapter(getActivity(), R.layout.detailed_thing_row, res);
             mListView.setAdapter(mListAdapter);
             mListAdapter.notifyDataSetChanged();

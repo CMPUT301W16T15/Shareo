@@ -10,6 +10,7 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -38,6 +39,7 @@ public class ViewBidFragment extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Toast.makeText(getActivity(), "create", Toast.LENGTH_SHORT).show();
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.fragment_view_bid, null);
 
@@ -63,26 +65,8 @@ public class ViewBidFragment extends DialogFragment {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-        // find the highest bid
-        try {
-            Thread t = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    mBids = mThing.getBids();
-                }
-            });
-            t.start();
-            t.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        int max = mBids.get(0).getBidAmount();
-        for (Bid b : mBids) {
-            max = Math.max(max, b.getBidAmount());
-        }
-
-        mMaxBid.setText(mMaxBid.getText() + ": " + max);
+        // TODO: getTopBidAmount this doesn't update properly
+        mMaxBid.setText(mMaxBid.getText() + ": " + mThing.getTopBidAmount());
         mMyBid.setText(mMyBid.getText() + ": " + mBid.getBidAmount());
         mtextViewGameOwner.setText(mtextViewGameOwner.getText() +": "+mThing.getOwnerID());
         mtextViewGameName.setText(mtextViewGameName.getText() + ": " + mThing.getName());
