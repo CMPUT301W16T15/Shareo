@@ -3,7 +3,6 @@ package cmput301w16t15.shareo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,7 +70,7 @@ public class BidsFragment extends Fragment implements Observer {
         mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                ViewGameFragment vgf = new ViewGameFragment();
+                ViewBidFragment vgf = new ViewBidFragment();
                 final Bundle bundle = new Bundle();
 
                 // start new thread to avoid network on main thread.
@@ -79,7 +78,7 @@ public class BidsFragment extends Fragment implements Observer {
                     Thread t = new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            bundle.putSerializable("myThing", ((Bid) mList.getItemAtPosition(position)).getThing());
+                            bundle.putSerializable("myThing", (Bid) mList.getItemAtPosition(position));
                         }
                     });
                     t.start();

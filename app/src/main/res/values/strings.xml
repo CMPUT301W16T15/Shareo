@@ -64,4 +64,9 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="textViewGameTitle">Game Information</string>
     <string name="title_activity_maps">Map</string>
+    <string name="biddedGameTitle">Bid Information</string>
+    <string name="gameInformation">Game</string>
+    <string name="bidInformation">Bid</string>
+    <string name="myBidAmount">My Bid Amount</string>
+    <string name="highestBidAmount">Highest Bid Amount</string>
 </resources>
