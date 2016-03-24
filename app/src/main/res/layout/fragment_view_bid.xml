@@ -12,16 +12,22 @@
         android:layout_marginRight="10.0dip"
         android:orientation="vertical">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/biddedGameTitle"
+            android:id="@+id/textViewGameTitle"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/textViewGameTitle"
-            android:id="@+id/textViewGameTitle"
-            android:layout_gravity="center_horizontal"
+            android:text="@string/gameInformation"
+            android:textSize="20dp"
             android:layout_marginTop="5dp" />
-
 
         <TextView
             android:id="@+id/textViewGameOwner"
@@ -57,7 +63,6 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:layout_marginTop="10dip" />
 
-
         <TextView
             android:id="@+id/textViewNumberPlayers"
             android:layout_width="wrap_content"
@@ -66,13 +71,29 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:layout_marginTop="10dip" />
 
-        <ImageView
-            android:id="@+id/gamePicture"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_add"
-            android:layout_weight="1"
-            android:layout_width="200dp"
-            android:layout_height="200dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/bidInformation"
+            android:textSize="20dp"
+            android:layout_marginTop="40dp" />
+
+        <TextView
+            android:id="@+id/textViewMyBid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/myBidAmount"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_marginTop="10dip" />
+
+        <TextView
+            android:id="@+id/textViewHighestBid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/highestBidAmount"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_marginTop="10dip" />
 
     </LinearLayout>
 
