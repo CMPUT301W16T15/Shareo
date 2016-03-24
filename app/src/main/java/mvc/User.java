@@ -77,6 +77,14 @@ public class User extends JestData {
         private String motto;
         private ShareoData source;
 
+        /**
+         * Set the data for creating a User
+         * @param dataSource
+         * @param username
+         * @param fullName
+         * @param emailAddress
+         * @param motto
+         */
         public Builder(ShareoData dataSource, String username, String fullName, String emailAddress, String motto) {
             this.username = username;
             this.fullName = fullName;
@@ -85,6 +93,11 @@ public class User extends JestData {
             this.source = dataSource;
         }
 
+        /**
+         * Actually create the user, beware create the user synchronous and uses a network call
+         * @return
+         * @throws UsernameAlreadyExistsException
+         */
         public User build() throws UsernameAlreadyExistsException{
             User user = new User(username, fullName, emailAddress, motto);
             source.addUser(user);
@@ -133,6 +146,9 @@ public class User extends JestData {
         deleteDependants(true);
     }
 
+    /**
+     * Delete a user and all its owned games
+     */
     public class Deleter {
         private boolean newThread = true;
 
@@ -210,6 +226,10 @@ public class User extends JestData {
         notifyViews();
     }
 
+    /**
+     * Gets a bid and preloads the things the bids contain
+     * @return a list of bids with preloading things
+     */
     public List<Bid> getBids() {
         if (bids == null) {
             bids = new ArrayList<>(bidIDs.size());
@@ -222,6 +242,11 @@ public class User extends JestData {
         return bids;
     }
 
+    /**
+     * Adds an owned thing to the user, sets the owner of the thing, and then pushes the data to the server
+     * @param thing
+     * @throws NullIDException
+     */
     public void addOwnedThing(Thing thing) throws NullIDException {
         thing.setOwnerSimple(this);
         addOwnedThingSimple(thing);
