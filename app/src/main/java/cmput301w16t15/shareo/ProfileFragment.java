@@ -19,6 +19,9 @@ import mvc.User;
 import mvc.UserDoesNotExistException;
 import mvc.exceptions.NullIDException;
 
+/**
+ * Fragment: the main profile fragment allowing user to see information and edit
+ * */
 public class ProfileFragment extends Fragment {
     private static String TAG ="ProfileFragment";
     private Button mButtonSaveEdits;

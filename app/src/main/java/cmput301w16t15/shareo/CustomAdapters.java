@@ -14,12 +14,13 @@ import mvc.Bid;
 import mvc.Thing;
 
 /**
- * Created by Andrew on 2016-03-13.
+ * holding the adapters used in many listviews throughout
  */
 public class CustomAdapters {
-    /*
+
+    /** Show details:
     * Name, desc, owner, status
-    * */
+    */
     public static class ThingWithStatusAdapter extends ArrayAdapter<Thing> {
 
         private final Context context;
@@ -64,6 +65,10 @@ public class CustomAdapters {
         }
     }
 
+    /**
+     * Show basics:
+     * Name, desc, owner
+     * */
     public static class BasicThingAdapter extends ArrayAdapter<Thing> {
 
         private final Context context;
@@ -100,6 +105,10 @@ public class CustomAdapters {
         }
     }
 
+    /**
+     * basic for bids instead of things
+     * name, desc, owner
+     * */
     public static class BasicBidAdapter extends ArrayAdapter<Bid> {
 
         private final Context context;

@@ -24,6 +24,10 @@ import mvc.Thing;
 import mvc.User;
 
 
+/**
+ * Fragment: bids main page.
+ * offered and bids are the two options using the multistatetoggle button.
+ */
 public class BidsFragment extends Fragment implements Observer {
     private User mUser;
 

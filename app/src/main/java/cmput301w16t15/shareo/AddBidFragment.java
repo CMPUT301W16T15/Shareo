@@ -33,7 +33,8 @@ import mvc.User;
 import mvc.exceptions.NullIDException;
 
 /**
- * Created by anonymous on 3/19/2016.
+ * DialogFragment: shown when clicking on search result.
+ * It allows you to make a bid on an item
  */
 public class AddBidFragment extends DialogFragment {
     private static String TAG ="AddBidFragment";
@@ -46,7 +47,6 @@ public class AddBidFragment extends DialogFragment {
     private TextView mtextViewNumberPlayers;
     private TextView mtextViewCategory;
 
-    //private CustomAdapters.ThingWithStatusAdapter mListAdapter;
     private EditText meditTextMakeOffer;
     private ListView mlistViewBid;
 
@@ -101,29 +101,13 @@ public class AddBidFragment extends DialogFragment {
 
     private void saveBid() {
         User user = AppUserSingleton.getInstance().getUser();
-        try
-        {
+        try {
             //Integer.parseInt(meditTextBidAmount.getText().toString()
             new Bid.Builder(ShareoData.getInstance(), user, mThing, Integer.parseInt(meditTextMakeOffer.getText().toString())).build();
             //new Bid.Builder(ShareoData.getInstance(), user, mThing, .build();
-        }
-        catch (NullIDException e)
-        {
+        } catch (NullIDException e) {
             Log.d(TAG, "Failed to build bid.");
         }
-
-        /* This works as a test.
-        for (Bid b : mThing.getBids())
-        {
-            System.out.println(b.getBidder().getFullName());
-            Log.d(TAG, "Test stuff"+b.getBidder().getFullName());
-            Toast z = Toast.makeText(getActivity(), "My Bid"+b.getBidder().getFullName(), Toast.LENGTH_SHORT);
-            z.show();
-        }
-        */
-
-
-
     }
     private void setUpText() {
         mtextViewGameOwner.setText(mtextViewGameOwner.getText() +": "+mThing.getOwnerID());
@@ -131,15 +115,6 @@ public class AddBidFragment extends DialogFragment {
         mtextViewDescription.setText(mtextViewDescription.getText() + ": " + mThing.getDescription());
         mtextViewNumberPlayers.setText(mtextViewNumberPlayers.getText() + ": " + mThing.getNumberPlayers());
         mtextViewCategory.setText(mtextViewCategory.getText() + ": " + mThing.getCategory());
-
-        /*
-        Log.d(TAG, "Test stuff" + mThing.getBids().size());
-        Toast z = Toast.makeText(getActivity(), "Number of Bids is :"+mThing.getBids().size(), Toast.LENGTH_SHORT);
-        z.show();
-        */
-
-
         mtextViewCurrentTopBid.setText(mtextViewCurrentTopBid.getText() +": "+String.valueOf(mThing.getTopBidAmount()));
     }
-
 }

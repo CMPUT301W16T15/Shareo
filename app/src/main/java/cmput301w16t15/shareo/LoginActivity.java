@@ -16,6 +16,9 @@ import android.widget.Toast;
 import mvc.AppUserSingleton;
 import mvc.Jobs.CallbackInterface;
 
+/**
+ * Activity: login or signin
+ * */
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private String fullName;

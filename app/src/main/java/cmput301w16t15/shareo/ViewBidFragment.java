@@ -16,6 +16,9 @@ import java.util.List;
 import mvc.Bid;
 import mvc.Thing;
 
+/**
+ * DialogFragment: when click on bid from bids tab, will show bid and game information
+ * */
 public class ViewBidFragment extends DialogFragment {
     private static String TAG ="ViewBidFragment";
     private Bid mBid;

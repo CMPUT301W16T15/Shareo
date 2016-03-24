@@ -8,7 +8,7 @@ import com.path.android.jobqueue.JobManager;
 import com.path.android.jobqueue.config.Configuration;
 
 /**
- * Created by Bradshaw on 2016-03-11.
+ * Application: a subclass around Application, holding some app specific functionality
  */
 public class ShareoApplication extends Application {
 

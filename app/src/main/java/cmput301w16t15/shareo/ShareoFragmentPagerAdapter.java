@@ -7,7 +7,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.widget.Toast;
 
 /**
- * Created by Andrew on 2016-02-27.
+ * FragmentPagerAdapter: the controller for the main UI fragments (home, profile, bids, search)
+ * It will render one of the above 4, and allows the cool gestures like swipe between screens :)
  */
 public class ShareoFragmentPagerAdapter extends FragmentPagerAdapter {
     final int PAGE_COUNT = 4;

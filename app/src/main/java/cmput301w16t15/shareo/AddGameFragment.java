@@ -31,7 +31,8 @@ import mvc.UserDoesNotExistException;
 import mvc.exceptions.NullIDException;
 
 /**
- * Created by Andrew on 2016-02-28.
+ * DialogFragment: shown when click floating action button (plus) from home page.
+ * Also used for editing game when position parameter passed in.
  */
 public class AddGameFragment extends DialogFragment {
     private Integer mPositionIndex;

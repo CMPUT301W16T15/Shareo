@@ -21,6 +21,11 @@ import mvc.Observer;
 import mvc.Thing;
 import mvc.User;
 
+/*
+* Fragment: Main screen showing available items, borrowing items, and lent items
+* Each of these choices is selectable by hitting the option on the multi-state toggle button
+* This page is also where games are added and edited
+* */
 public class HomeFragment extends Fragment implements Observer {
     private FloatingActionButton mFab;
     private User mUser;
