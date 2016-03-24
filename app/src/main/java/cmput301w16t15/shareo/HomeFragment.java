@@ -39,14 +39,21 @@ public class HomeFragment extends Fragment implements Observer {
         return new HomeFragment();
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (mUser != null) {
+            mUser.removeView(this);
+        }
+    }
+
     private void setAdapterBasedOnTab() {
         switch (mPosition) {
             case 0:
-                // TODO: avail games data source
                 data = mUser.getAvailableThings();
                 mListAdapter = new CustomAdapters.BasicThingAdapter(getActivity(), R.layout.minimal_thing_row, data);
                 mList.setAdapter(mListAdapter);
-
+                mFab.show();
                 if (data.size() == 0) {
                     mEmptyMessage.setVisibility(View.VISIBLE);
                 } else {
@@ -58,7 +65,7 @@ public class HomeFragment extends Fragment implements Observer {
                 data = mUser.getOffers();
                 mListAdapter = new CustomAdapters.BasicThingAdapter(getActivity(), R.layout.minimal_thing_row, data);
                 mList.setAdapter(mListAdapter);
-
+                mFab.hide();
                 if (data.size() == 0) {
                     mEmptyMessage.setVisibility(View.VISIBLE);
                 } else {
@@ -70,7 +77,7 @@ public class HomeFragment extends Fragment implements Observer {
                 data = mUser.getOffers();
                 mListAdapter = new CustomAdapters.BasicThingAdapter(getActivity(), R.layout.minimal_thing_row, data);
                 mList.setAdapter(mListAdapter);
-
+                mFab.hide();
                 if (data.size() == 0) {
                     mEmptyMessage.setVisibility(View.VISIBLE);
                 } else {

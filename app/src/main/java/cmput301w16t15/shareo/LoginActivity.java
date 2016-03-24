@@ -40,6 +40,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        if (AppUserSingleton.getInstance().getUser() != null) {
+            AppUserSingleton.getInstance().logOut();
+        }
         buttonSignup = (Button) findViewById(R.id.buttonSignup);
         buttonLogin = (Button) findViewById(R.id.buttonLogin);
 
@@ -113,9 +116,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
+    /**
+     * Sign up or login user depending on button clicked. Notify user if login/create fail.
+     * @param v
+     */
     public void onClick(View v) {
         final Intent mainIntent = new Intent(this, MainActivity.class);
-        //TODO actually login and signup users properly
         switch (v.getId()) {
             case R.id.buttonSignup:
                 Log.d(TAG, "Clicked Button Signup");
@@ -133,16 +139,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
-                                    alertDialog.setTitle("User already exists.");
-                                    alertDialog.setMessage("Please choose a different username.");
-                                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                                            new DialogInterface.OnClickListener() {
-                                                public void onClick(DialogInterface dialog, int which) {
-                                                    dialog.dismiss();
-                                                }
-                                            });
-                                    alertDialog.show();
+                                    Toast z = Toast.makeText(LoginActivity.this, "User already exists. Please choose a different username.", Toast.LENGTH_SHORT);
+                                    z.show();
                                 }
                             });
                         }
@@ -172,16 +170,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
-                                alertDialog.setTitle("No user exists.");
-                                alertDialog.setMessage("Please check spelling and try again.");
-                                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                                        new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                dialog.dismiss();
-                                            }
-                                        });
-                                alertDialog.show();
+                                Toast z = Toast.makeText(LoginActivity.this, "No user exists. Please check spelling and try again.", Toast.LENGTH_SHORT);
+                                z.show();
                             }
                         });
                     }
@@ -191,7 +181,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     /**
-     * TODO : Make the sign up and login work over a network
      * Currently, clicking login or sign up just transfers over to the main activity intent
      * and we don't really handle the signup or login.
      */
