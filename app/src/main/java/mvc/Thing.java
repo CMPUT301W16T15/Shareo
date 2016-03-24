@@ -371,6 +371,7 @@ public class Thing extends JestData {
                     bids = getBids();
                 }
                 bids.add(bid);
+                this.status = Status.BIDDED;
                 if (bid.getBidAmount() > topBidAmount)
                 {
                     topBidAmount = bid.getBidAmount();
