@@ -1,8 +1,60 @@
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:map="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/map"
-    android:name="com.google.android.gms.maps.SupportMapFragment"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="cmput301w16t15.shareo.MapsActivity" />
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical">
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <EditText
+        android:layout_width="273dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/SearchLocation"
+        android:hint="Enter address" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:text="Search"
+        android:id="@+id/SearchMapButton"
+        android:onClick="onSearch"
+        android:layout_gravity="right" />
+
+</LinearLayout>
+
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="308dp"
+        android:layout_height="554dp"
+        tools:context="cmput301w16t15.shareo.MapsActivity" />
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+"
+        android:id="@+id/BzoomIn"
+        android:layout_gravity="center_vertical"
+        style="?android:attr/buttonStyleSmall"
+        android:onClick="onZoom" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="-"
+        android:id="@+id/BzoomOut"
+        android:layout_gravity="center_vertical"
+        android:onClick="onZoom" />
+</LinearLayout>
+
+</LinearLayout>
+
+</LinearLayout>

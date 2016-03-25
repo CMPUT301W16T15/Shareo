@@ -124,7 +124,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * @param v
      */
     public void onClick(View v) {
-        final Intent mainIntent = new Intent(this, MainActivity.class);
+        final Intent mainIntent = new Intent(this, MapsActivity.class);
         switch (v.getId()) {
             case R.id.buttonSignup:
                 Log.d(TAG, "Clicked Button Signup");
