@@ -95,7 +95,8 @@ public class AddBidFragment extends DialogFragment {
                 });
 
         setUpText();
-        final AlertDialog dialog = builder.create();
+        final AlertDialog dialog = builder.show();
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
 
         /**
          * This code is modified from here : http://stackoverflow.com/questions/8238952/how-to-disable-enable-dialog-negative-positive-buttons
@@ -125,8 +126,7 @@ public class AddBidFragment extends DialogFragment {
                 /**
                  * They entered an invalid amount --> Their bid is too big.
                  */
-                if (rounded.multiply(new BigDecimal(100)).compareTo(new BigDecimal(Integer.MAX_VALUE)) > 0)
-                {
+                if (rounded.multiply(new BigDecimal(100)).compareTo(new BigDecimal(Integer.MAX_VALUE)) > 0 || rounded.compareTo(new BigDecimal(0)) < 0) {
                     toastobject = Toast.makeText(getActivity(), "Your bid was too large. Please re-enter a valid bid size.", Toast.LENGTH_SHORT);
                     toastobject.show();
 
@@ -137,15 +137,13 @@ public class AddBidFragment extends DialogFragment {
                 /**
                  * They entered a valid amount.
                  */
-                else
-                {
+                else {
                     /**
                      * Cancel getting spammed by toasts if you can..
                      * You can only cancel the last toast.
                      * Making an arraylist of toasts doesnt work :(
                      */
-                    if (toastobject != null)
-                    {
+                    if (toastobject != null) {
                         toastobject.cancel();
 
 
@@ -181,6 +179,6 @@ public class AddBidFragment extends DialogFragment {
         mtextViewDescription.setText(mtextViewDescription.getText() + ": " + mThing.getDescription());
         mtextViewNumberPlayers.setText(mtextViewNumberPlayers.getText() + ": " + mThing.getNumberPlayers());
         mtextViewCategory.setText(mtextViewCategory.getText() + ": " + mThing.getCategory());
-        mtextViewCurrentTopBid.setText(mtextViewCurrentTopBid.getText() +": "+String.valueOf(mThing.getTopBidAmount()));
+        mtextViewCurrentTopBid.setText(mtextViewCurrentTopBid.getText() +": "+String.valueOf(mThing.getTopBidAmount()/100));
     }
 }
