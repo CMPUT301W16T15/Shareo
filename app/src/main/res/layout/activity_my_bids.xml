@@ -93,31 +93,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="number"
+                android:inputType="numberDecimal"
                 android:hint="@string/hintBidAmount">
             </EditText>
-        </LinearLayout>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Offers"
-        android:id="@+id/textViewOffer"
-        android:layout_gravity="center_horizontal" />
-
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:id="@+id/listViewBid"
-        android:layout_gravity="center_horizontal" />
-
-        <LinearLayout
-            android:layout_marginLeft="10.0dip"
-            android:layout_marginRight="10.0dip"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
         </LinearLayout>
 </LinearLayout>
 
