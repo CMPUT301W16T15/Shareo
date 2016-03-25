@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,6 +53,7 @@ public class AddBidFragment extends DialogFragment {
     private TextView mtextViewNumberPlayers;
     private TextView mtextViewCategory;
 
+    private AlertDialog dialog = null;
     private EditText meditTextMakeOffer;
     private ListView mlistViewBid;
 
@@ -95,7 +97,7 @@ public class AddBidFragment extends DialogFragment {
                 });
 
         setUpText();
-        final AlertDialog dialog = builder.show();
+        dialog = builder.show();
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
 
         /**
@@ -120,39 +122,10 @@ public class AddBidFragment extends DialogFragment {
                 /**
                  * Make sure that the bid isn't too large to be stored in cents, which is an int.
                  */
-                BigDecimal amount = new BigDecimal(meditTextMakeOffer.getText().toString());
-                BigDecimal rounded = amount.setScale(0, RoundingMode.HALF_UP);
-                Toast toastobject = null;
-                /**
-                 * They entered an invalid amount --> Their bid is too big.
-                 */
-                if (rounded.multiply(new BigDecimal(100)).compareTo(new BigDecimal(Integer.MAX_VALUE)) > 0 || rounded.compareTo(new BigDecimal(0)) < 0) {
-                    toastobject = Toast.makeText(getActivity(), "Your bid was too large. Please re-enter a valid bid size.", Toast.LENGTH_SHORT);
-                    toastobject.show();
+                validateBidField();
 
-                    ((AlertDialog) dialog).getButton(
-                            AlertDialog.BUTTON_POSITIVE).setEnabled(false);
                 }
 
-                /**
-                 * They entered a valid amount.
-                 */
-                else {
-                    /**
-                     * Cancel getting spammed by toasts if you can..
-                     * You can only cancel the last toast.
-                     * Making an arraylist of toasts doesnt work :(
-                     */
-                    if (toastobject != null) {
-                        toastobject.cancel();
-
-
-                    }
-
-                    ((AlertDialog) dialog).getButton(
-                            AlertDialog.BUTTON_POSITIVE).setEnabled(true);
-                }
-            }
         });
 
         return dialog;
@@ -180,5 +153,48 @@ public class AddBidFragment extends DialogFragment {
         mtextViewNumberPlayers.setText(mtextViewNumberPlayers.getText() + ": " + mThing.getNumberPlayers());
         mtextViewCategory.setText(mtextViewCategory.getText() + ": " + mThing.getCategory());
         mtextViewCurrentTopBid.setText(mtextViewCurrentTopBid.getText() +": "+String.valueOf(mThing.getTopBidAmount()/100));
+    }
+
+    private void validateBidField()
+    {
+        BigDecimal amount;
+        try {
+            amount = new BigDecimal(meditTextMakeOffer.getText().toString());
+            BigDecimal rounded = amount.setScale(0, RoundingMode.HALF_UP);
+            Toast toastobject = null;
+            /**
+             * They entered an invalid amount --> Their bid is too big.
+             */
+            if (rounded.multiply(new BigDecimal(100)).compareTo(new BigDecimal(Integer.MAX_VALUE)) > 0) {
+                toastobject = Toast.makeText(getActivity(), "Your bid was too large. Please re-enter a valid bid size.", Toast.LENGTH_SHORT);
+                toastobject.show();
+
+                ((AlertDialog) dialog).getButton(
+                        AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+            }
+
+            /**
+             * They entered a valid amount.
+             */
+            else {
+                /**
+                 * Cancel getting spammed by toasts if you can..
+                 * You can only cancel the last toast.
+                 * Making an arraylist of toasts doesnt work :(
+                 */
+                if (toastobject != null) {
+                    toastobject.cancel();
+
+
+                }
+
+                ((AlertDialog) dialog).getButton(
+                        AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+            }
+        } catch (NumberFormatException e) {
+            amount = new BigDecimal(0);
+        }
+
+
     }
 }
