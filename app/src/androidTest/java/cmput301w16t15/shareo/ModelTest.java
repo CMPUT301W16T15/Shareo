@@ -7,7 +7,6 @@ import java.util.List;
 import mvc.Bid;
 import mvc.Thing;
 import mvc.ShareoData;
-import mvc.ThingDoesNotExistException;
 import mvc.User;
 import mvc.UserDoesNotExistException;
 import mvc.exceptions.NullIDException;
@@ -160,7 +159,7 @@ public class ModelTest extends ActivityInstrumentationTestCase2 {
 
     public static void testSearch() {
         ShareoData data = ShareoData.getInstance();
-        List<Thing> results = data.getGamesByDescription("one game all");
+        List<Thing> results = data.getGamesByField("one game all");
         for (Thing t : results) {
             assertTrue(t.getDescription().toLowerCase().contains("one"));
             assertTrue(t.getDescription().toLowerCase().contains("game"));

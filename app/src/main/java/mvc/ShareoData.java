@@ -128,13 +128,14 @@ public class ShareoData {
 
     /**
      * Get a list of things that match a set of keywords from the database.
+     * @param field object field to match over
      * @param keywords list of keywords to match.
      * @return A list of things that have matching words in their description.
      */
 
-    public List<Thing> getGamesByDescription(String keywords) {
+    public List<Thing> getGamesByField(String field, String keywords) {
         ArrayList<Thing> games = new ArrayList<Thing>();
-        String search_string = String.format("{\"query\":{\"match\":{\"description\":\"%s\"}}}", keywords);
+        String search_string = String.format("{\"query\":{\"match\":{\"%s\":\"%s\"}}}", field, keywords);
         io.searchbox.core.Search search = new io.searchbox.core.Search.Builder(search_string)
                 .addIndex(ELASTIC_INDEX).addType(ELASTIC_GAME_TYPE).build();
         try {

@@ -4,11 +4,13 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.RadioGroup;
 import android.widget.SearchView;
 
 import java.util.ArrayList;
@@ -24,6 +26,9 @@ public class SearchFragment extends Fragment {
     private ListView mListView;
     private SearchView mSearchView;
     private CustomAdapters.ThingWithStatusAdapter mListAdapter;
+    private RadioGroup mRadioGroup;
+    private String mQueryText;
+    private String mSearchField;
 
     private Handler mHandler;
     private Runnable mRunnable;
@@ -43,6 +48,36 @@ public class SearchFragment extends Fragment {
         mListView = (ListView) v.findViewById(R.id.listview);
         mListAdapter = new CustomAdapters.ThingWithStatusAdapter(this.getContext(), R.layout.detailed_thing_row, new ArrayList<Thing>());
         mListView.setAdapter(mListAdapter);
+        mRadioGroup = (RadioGroup) v.findViewById(R.id.radioGroup);
+
+        if (mSearchField == null) {
+            mSearchField = "description";
+            mRadioGroup.check(R.id.description);
+        }
+
+        mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch(checkedId) {
+                    case R.id.description:
+                        mSearchField = "description";
+                        new SearchTask().execute();
+                        break;
+                    case R.id.category:
+                        mSearchField = "category";
+                        new SearchTask().execute();
+                        break;
+                    case R.id.name:
+                        mSearchField = "name";
+                        new SearchTask().execute();
+                        break;
+                    case R.id.ownerID:
+                        mSearchField = "ownerID";
+                        new SearchTask().execute();
+                        break;
+                }
+            }
+        });
 
         mHandler = new Handler();
 
@@ -57,14 +92,14 @@ public class SearchFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(final String query) {
+                mQueryText = query;
                 if (mRunnable != null) {
                     mHandler.removeCallbacks(mRunnable);
                 }
-                // TODO: don't show items from current user
                 mRunnable = new Runnable() {
                     @Override
                     public void run() {
-                        new SearchTask().execute(query);
+                        new SearchTask().execute(mSearchField, query);
                     }
                 };
                 mHandler.postDelayed(mRunnable, 500);
@@ -94,7 +129,7 @@ public class SearchFragment extends Fragment {
 
         @Override
         protected List<Thing> doInBackground(String... params) {
-            List<Thing> res = ShareoData.getInstance().getGamesByDescription(params[0]);
+            List<Thing> res = ShareoData.getInstance().getGamesByField(mSearchField, mQueryText);
             List<Thing> filtered = new ArrayList<>();
             for (Thing t : res) {
                 if (t.getOwner().getJestID().equals(AppUserSingleton.getInstance().getUser().getJestID())) {
