@@ -1,4 +1,5 @@
 **arhoskin**
+
 did:
 - list of bids and list of offers
 - commenting on UI classes
@@ -9,6 +10,7 @@ next week:
 - UI tests
 
 **sampley**
+
 did:
 - deleters for everything and propogate the delete
 - tests for deleters too
@@ -18,6 +20,7 @@ next week:
 - accept and decline bids dialog fragment
 
 **abradsha**
+
 did:
 - bug fixes and reliability
 - comments in code
@@ -29,6 +32,7 @@ next week:
 - flow of app 
 
 **aolin**
+
 did:
 - added google maps api to app
 
@@ -36,6 +40,7 @@ next week:
 - show map on dialog and put pin
 
 **bpharris**
+
 did:
 - add bid fragment
 - add top bid amount to thing directly (recalc)
