@@ -98,6 +98,11 @@ public class AddBidFragment extends DialogFragment {
 
         setUpText();
         dialog = builder.show();
+        /**
+         * Set the bid button to be disabled by default
+         * so you can't enter in an empty bid which
+         * crashes the app.
+         */
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
 
         /**
@@ -118,7 +123,20 @@ public class AddBidFragment extends DialogFragment {
             }
 
             @Override
-            public void afterTextChanged(Editable s) {
+            public void afterTextChanged(Editable arg0) {
+                /**
+                 * Added from here : http://stackoverflow.com/questions/5357455/limit-decimal-places-in-android-edittext
+                 */
+                String str = meditTextMakeOffer.getText().toString();
+                if (str.isEmpty()) return;
+                String str2 = PerfectDecimal(str, 9, 2);
+
+                if (!str2.equals(str)) {
+                    meditTextMakeOffer.setText(str2);
+                    int pos = meditTextMakeOffer.getText().length();
+                    meditTextMakeOffer.setSelection(pos);
+                }
+
                 /**
                  * Make sure that the bid isn't too large to be stored in cents, which is an int.
                  */
@@ -131,21 +149,55 @@ public class AddBidFragment extends DialogFragment {
         return dialog;
     }
 
-    @Override
-    public void onAttach(Activity a) {
-        super.onAttach(a);
+    /**
+     * Taken from here :
+     * http://stackoverflow.com/questions/5357455/limit-decimal-places-in-android-edittext
+     */
+    public String PerfectDecimal(String str, int MAX_BEFORE_POINT, int MAX_DECIMAL){
+        if(str.charAt(0) == '.') str = "0"+str;
+        int max = str.length();
+
+        String rFinal = "";
+        boolean after = false;
+        int i = 0, up = 0, decimal = 0; char t;
+        while(i < max){
+            t = str.charAt(i);
+            if(t != '.' && after == false){
+                up++;
+                if(up > MAX_BEFORE_POINT) return rFinal;
+            }else if(t == '.') {
+                after = true;
+            }else{
+                decimal++;
+                if(decimal > MAX_DECIMAL)
+                    return rFinal;
+            }
+            rFinal = rFinal + t;
+            i++;
+        }return rFinal;
     }
 
+    /**
+     * Dollars to cents taken from here :
+     * http://stackoverflow.com/questions/2406881/regarding-java-string-dollar-to-cents-conversion/2408469#2408469
+     */
     private void saveBid() {
         User user = AppUserSingleton.getInstance().getUser();
+        BigDecimal dollars = new BigDecimal(meditTextMakeOffer.getText().toString());
+        if(dollars.scale()>2)
+        {
+            throw new IllegalArgumentException();
+        }
+        int cents = dollars.multiply(new BigDecimal(100)).intValue();
         try {
             //Integer.parseInt(meditTextBidAmount.getText().toString()
-            new Bid.Builder(ShareoData.getInstance(), user, mThing, Integer.parseInt(meditTextMakeOffer.getText().toString())*100).build();
+            new Bid.Builder(ShareoData.getInstance(), user, mThing, cents).build();
             //new Bid.Builder(ShareoData.getInstance(), user, mThing, .build();
         } catch (NullIDException e) {
             Log.d(TAG, "Failed to build bid.");
         }
     }
+
     private void setUpText() {
         mtextViewGameOwner.setText(mtextViewGameOwner.getText() +": "+mThing.getOwnerID());
         mtextViewGameName.setText(mtextViewGameName.getText() + ": " + mThing.getName());
