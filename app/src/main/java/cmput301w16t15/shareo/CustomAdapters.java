@@ -1,10 +1,12 @@
 package cmput301w16t15.shareo;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,6 +14,7 @@ import java.util.List;
 
 import mvc.Bid;
 import mvc.Thing;
+import mvc.exceptions.NullIDException;
 
 /**
  * holding the adapters used in many listviews throughout
@@ -70,9 +73,10 @@ public class CustomAdapters {
      * Name, desc, owner
      * */
     public static class BasicThingAdapter extends ArrayAdapter<Thing> {
-
+        private static String TAG ="ListViewThings";
         private final Context context;
         private final List<Thing> things;
+        private Thing t;
 
         public BasicThingAdapter(Context context, int resource, List<Thing> objects) {
             super(context, resource, objects);
@@ -86,7 +90,7 @@ public class CustomAdapters {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View v = inflater.inflate(R.layout.minimal_thing_row, parent, false);
 
-            Thing t = things.get(position);
+            t = things.get(position);
 
             TextView name = (TextView) v.findViewById(R.id.name);
             name.setText(t.getName());
@@ -101,7 +105,28 @@ public class CustomAdapters {
             TextView owner = (TextView) v.findViewById(R.id.owner);
             owner.setText(t.getOwnerID());
 
+            ImageView mDeleteBtn = (ImageView) v.findViewById(R.id.delete);
+            mDeleteBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    buttonClicked(v);
+                }
+            });
             return v;
+        }
+
+        private void buttonClicked(View v)
+        {
+            try
+            {
+                t.new Deleter().delete();
+            }
+
+            catch(NullIDException e)
+            {
+                Log.d(TAG, "Failed to delete a thing from listView");
+            }
+
         }
     }
 
