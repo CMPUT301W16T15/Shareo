@@ -69,4 +69,5 @@
     <string name="bidInformation">Bid</string>
     <string name="myBidAmount">My Bid Amount</string>
     <string name="highestBidAmount">Highest Bid Amount</string>
+    <string name="buttonDeleteImage">Clear Image</string>
 </resources>

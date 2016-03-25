@@ -14,6 +14,7 @@ import android.text.Editable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -59,6 +60,8 @@ public class AddGameFragment extends DialogFragment {
     private AlertDialog dialog = null;
     private AlertDialog.Builder builder = null;
 
+    private Button mButtonDeleteImage;
+
     public AddGameFragment() {
 
     }
@@ -95,6 +98,7 @@ public class AddGameFragment extends DialogFragment {
             mThing.setDescription(gameDescription);
             mThing.setName(gameName);
             mThing.setCategory(category);
+            mThing.setPhoto(gamePhoto);
 
             mThing.update();
         }
@@ -108,6 +112,13 @@ public class AddGameFragment extends DialogFragment {
 
         mPositionIndex = getArguments().getInt("pos");
 
+        mButtonDeleteImage = (Button) v.findViewById(R.id.buttonDeleteImage);
+        mButtonDeleteImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteImageClicked();
+            }
+        });
         mTextViewAddGame = (TextView) v.findViewById(R.id.textViewAddGame);
         editTextGameName = (EditText) v.findViewById(R.id.editTextGameName);
         editTextDescription = (EditText) v.findViewById(R.id.editTextDescription);
@@ -139,7 +150,7 @@ public class AddGameFragment extends DialogFragment {
 
                     .setNeutralButton("Delete Game", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            buttonClicked(v);
+                            buttonClicked();
                             dismiss();
 
                         }
@@ -185,6 +196,8 @@ public class AddGameFragment extends DialogFragment {
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent,
                 "Choose Picture"), CHOOSE_PICTURE);
+        mButtonDeleteImage.setVisibility(View.VISIBLE);
+
     }
 
     @Override
@@ -219,10 +232,16 @@ public class AddGameFragment extends DialogFragment {
         // photo is optional field
         if (mThing.getPhoto() != null) {
             gameImage.setImageBitmap(mThing.getPhoto().getPhoto());
+            mButtonDeleteImage.setVisibility(View.VISIBLE);
+            gamePhoto = mThing.getPhoto();
+        }
+        else
+        {
+            gamePhoto = null;
         }
     }
 
-    private void buttonClicked(View v)
+    private void buttonClicked()
     {
         try
         {
@@ -232,6 +251,16 @@ public class AddGameFragment extends DialogFragment {
         catch(NullIDException e)
         {
             Log.d(TAG, "Failed to delete a thing from listView");
+        }
+
+    }
+
+    private void deleteImageClicked()
+    {
+        if (gamePhoto != null)
+        {
+            gameImage.setVisibility(View.GONE);
+            gamePhoto = null;
         }
 
     }

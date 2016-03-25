@@ -189,6 +189,14 @@
 
         </LinearLayout>
 
+        <Button
+            style="@style/button_styleGreen"
+            android:id="@+id/buttonDeleteImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="@string/buttonDeleteImage" />
+
     </LinearLayout>
 
 </RelativeLayout>
