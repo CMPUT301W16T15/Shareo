@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.text.Editable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -35,6 +36,7 @@ import mvc.exceptions.NullIDException;
  * Also used for editing game when position parameter passed in.
  */
 public class AddGameFragment extends DialogFragment {
+    private static String TAG ="AddEditGame";
     private Integer mPositionIndex;
     private List<Thing> myGames;
 
@@ -54,6 +56,8 @@ public class AddGameFragment extends DialogFragment {
     private String category;
     private Thing mThing;
 
+    private AlertDialog dialog = null;
+    private AlertDialog.Builder builder = null;
 
     public AddGameFragment() {
 
@@ -100,7 +104,7 @@ public class AddGameFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inflater.inflate(R.layout.fragment_addeditgame, null);
+        final View v = inflater.inflate(R.layout.fragment_addeditgame, null);
 
         mPositionIndex = getArguments().getInt("pos");
 
@@ -118,30 +122,61 @@ public class AddGameFragment extends DialogFragment {
             }
         });
 
-        if (mPositionIndex != -1)
-        {
+        if (mPositionIndex != -1) {
             mThing = (Thing) getArguments().getSerializable("myThing");
             populateFields();
+
+            // Build the dialog and set up the button click handlers
+            builder = new AlertDialog.Builder(getActivity());
+            builder.setView(v)
+                    .setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            saveAllText();
+                            dismiss();
+
+                        }
+                    })
+
+                    .setNeutralButton("Delete Game", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            buttonClicked(v);
+                            dismiss();
+
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // don't save, just close
+                            dismiss();
+                        }
+                    });
         }
 
-        // Build the dialog and set up the button click handlers
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage("Game Entry")
-                .setView(v)
-                .setPositiveButton("Save", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        saveAllText();
-                        dismiss();
+        else
+        {
+            // Build the dialog and set up the button click handlers
+            builder = new AlertDialog.Builder(getActivity());
+            builder.setView(v)
+                    .setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            saveAllText();
+                            dismiss();
 
-                    }
-                })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // don't save, just close
-                        dismiss();
-                    }
-                });
-        return builder.create();
+                        }
+                    })
+
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // don't save, just close
+                            dismiss();
+                        }
+                    });
+        }
+
+
+
+        dialog = builder.show();
+        return dialog;
     }
 
     public void imageClicked(View view) {
@@ -185,5 +220,19 @@ public class AddGameFragment extends DialogFragment {
         if (mThing.getPhoto() != null) {
             gameImage.setImageBitmap(mThing.getPhoto().getPhoto());
         }
+    }
+
+    private void buttonClicked(View v)
+    {
+        try
+        {
+            mThing.new Deleter().delete();
+        }
+
+        catch(NullIDException e)
+        {
+            Log.d(TAG, "Failed to delete a thing from listView");
+        }
+
     }
 }
