@@ -21,9 +21,10 @@ import mvc.exceptions.NullIDException;
  */
 public class CustomAdapters {
 
-    /** Show details:
-    * Name, desc, owner, status
-    */
+    /**
+     * Show details:
+     * Name, desc, owner, status
+     */
     public static class ThingWithStatusAdapter extends ArrayAdapter<Thing> {
 
         private final Context context;
@@ -47,7 +48,7 @@ public class CustomAdapters {
             name.setText(t.getName());
 
             ImageView iv = (ImageView) v.findViewById(R.id.status);
-            Thing.Status s =  t.getStatus();
+            Thing.Status s = t.getStatus();
             if (s == Thing.Status.AVAILABLE || s == Thing.Status.BIDDED) {
                 iv.setImageResource(R.drawable.green_circle);
             } else {
@@ -71,9 +72,9 @@ public class CustomAdapters {
     /**
      * Show basics:
      * Name, desc, owner
-     * */
+     */
     public static class BasicThingAdapter extends ArrayAdapter<Thing> {
-        private static String TAG ="ListViewThings";
+        private static String TAG = "ListViewThings";
         private final Context context;
         private final List<Thing> things;
         private Thing t;
@@ -115,15 +116,10 @@ public class CustomAdapters {
             return v;
         }
 
-        private void buttonClicked(View v)
-        {
-            try
-            {
+        private void buttonClicked(View v) {
+            try {
                 t.new Deleter().delete();
-            }
-
-            catch(NullIDException e)
-            {
+            } catch (NullIDException e) {
                 Log.d(TAG, "Failed to delete a thing from listView");
             }
 
@@ -133,9 +129,10 @@ public class CustomAdapters {
     /**
      * basic for bids instead of things
      * name, desc, owner
-     * */
+     */
     public static class BasicBidAdapter extends ArrayAdapter<Bid> {
-
+        private static String TAG = "ListViewBids";
+        private Bid b;
         private final Context context;
         private final List<Bid> bids;
 
@@ -151,7 +148,7 @@ public class CustomAdapters {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View v = inflater.inflate(R.layout.minimal_thing_row, parent, false);
 
-            Bid b = bids.get(position);
+            b = bids.get(position);
 
             TextView name = (TextView) v.findViewById(R.id.name);
             name.setText(b.getThing().getName());
@@ -166,7 +163,22 @@ public class CustomAdapters {
             TextView owner = (TextView) v.findViewById(R.id.owner);
             owner.setText(b.getThing().getOwnerID());
 
+            ImageView mDeleteBtn = (ImageView) v.findViewById(R.id.delete);
+            mDeleteBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    buttonClicked(v);
+                }
+            });
             return v;
+        }
+
+        private void buttonClicked(View v) {
+            try {
+                b.new Deleter().delete();
+            } catch (NullIDException e) {
+                Log.d(TAG, "Failed to delete a bid from listView");
+            }
         }
     }
 }
