@@ -135,7 +135,7 @@ public class ShareoData {
 
     public List<Thing> getGamesByField(String field, String keywords) {
         ArrayList<Thing> games = new ArrayList<Thing>();
-        String search_string = String.format("{\"query\":{\"match\":{\"%s\":\"%s\"}}}", field, keywords);
+        String search_string = String.format("{\"query\":{\"match\":{\"%s\":{\"query\":\"%s\",\"fuzziness\":\"AUTO\"}}}}", field, keywords);
         io.searchbox.core.Search search = new io.searchbox.core.Search.Builder(search_string)
                 .addIndex(ELASTIC_INDEX).addType(ELASTIC_GAME_TYPE).build();
         try {
