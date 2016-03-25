@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -15,7 +16,9 @@ import android.widget.Toast;
 import java.util.List;
 
 import mvc.Bid;
+import mvc.ShareoData;
 import mvc.Thing;
+import mvc.exceptions.NullIDException;
 
 /**
  * DialogFragment: when click on bid from bids tab, will show bid and game information
@@ -39,7 +42,6 @@ public class ViewBidFragment extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Toast.makeText(getActivity(), "create", Toast.LENGTH_SHORT).show();
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.fragment_view_bid, null);
 
@@ -77,10 +79,16 @@ public class ViewBidFragment extends DialogFragment {
         // Build the dialog and set up the button click handlers
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(v)
-                .setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dismiss();
 
+                    }
+                })
+                .setNegativeButton("Remove Bid", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        removeBid();
+                        dismiss();
                     }
                 });
 
@@ -90,6 +98,18 @@ public class ViewBidFragment extends DialogFragment {
     @Override
     public void onAttach(Activity a) {
         super.onAttach(a);
+    }
+
+    private void removeBid()
+    {
+        try
+        {
+            mBid.new Deleter().delete();
+        }
+        catch (NullIDException e)
+        {
+            Log.d(TAG, "Delete Bid Failed!");
+        }
     }
 
 }

@@ -1,5 +1,7 @@
 package mvc;
 
+import android.util.Log;
+
 import cmput301w16t15.shareo.ShareoApplication;
 import io.searchbox.annotations.JestId;
 import mvc.Jobs.CallbackInterface;
@@ -19,7 +21,7 @@ public class Bid extends JestData {
 
     private final String thingID;
     transient private Thing thing;
-
+    private static String TAG ="MVCBID";
     private final int centsPerHour;
 
     /**
@@ -116,10 +118,12 @@ public class Bid extends JestData {
 
                         if (bidder != null) {
                             bidder.removeBidSimple(Bid.this);
+                            Log.d(TAG, "Removing Bid from bidder.removeBidSimple");
                             bidder.update();
                         }
                         if (thing != null) {
                             thing.removeBidSimple(Bid.this);
+                            Log.d(TAG, "Removing Bid from thing.removeBidSimple");
                             thing.update();
                         }
 

@@ -159,7 +159,7 @@ public class ModelTest extends ActivityInstrumentationTestCase2 {
 
     public static void testSearch() {
         ShareoData data = ShareoData.getInstance();
-        List<Thing> results = data.getGamesByField("one game all");
+        List<Thing> results = data.getGamesByField("description","one game all");
         for (Thing t : results) {
             assertTrue(t.getDescription().toLowerCase().contains("one"));
             assertTrue(t.getDescription().toLowerCase().contains("game"));

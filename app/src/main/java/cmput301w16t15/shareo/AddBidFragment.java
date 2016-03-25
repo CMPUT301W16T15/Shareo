@@ -110,6 +110,7 @@ public class AddBidFragment extends DialogFragment {
          * and http://stackoverflow.com/questions/12944559/how-to-multiply-a-bigdecimal-by-an-integer-in-java
          * and http://stackoverflow.com/questions/4134047/java-bigdecimal-round-to-the-nearest-whole-value
          * and http://stackoverflow.com/questions/10070108/can-i-cancel-previous-toast-when-i-want-to-show-an-other-toast
+         * and http://stackoverflow.com/questions/5357455/limit-decimal-places-in-android-edittext
          */
         meditTextMakeOffer.addTextChangedListener(new TextWatcher() {
             @Override
