@@ -1,38 +1,28 @@
 package cmput301w16t15.shareo;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
+import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.apache.commons.lang3.ObjectUtils;
-
-import java.io.IOException;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.math.RoundingMode;
-import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 import mvc.AppUserSingleton;
 import mvc.Bid;
-import mvc.PhotoModel;
 import mvc.ShareoData;
 import mvc.Thing;
 import mvc.User;
@@ -52,6 +42,7 @@ public class AddBidFragment extends DialogFragment {
     private TextView mtextViewDescription;
     private TextView mtextViewNumberPlayers;
     private TextView mtextViewCategory;
+    private ImageView mimageViewGame;
 
     private AlertDialog dialog = null;
     private EditText meditTextMakeOffer;
@@ -74,6 +65,7 @@ public class AddBidFragment extends DialogFragment {
         mtextViewCurrentTopBid = (TextView) v.findViewById(R.id.textViewCurrentTopBid);
         //mtextViewBidAmount = (TextView) v.findViewById(R.id.textViewBidAmount);
         mtextViewGameOwner = (TextView) v.findViewById(R.id.textViewGameOwner);
+        mimageViewGame = (ImageView) v.findViewById(R.id.gamePicture);
         //meditTextBidAmount = (EditText) v.findViewById(R.id.editTextBidAmount);
 
         mlistViewBid = (ListView) v.findViewById(R.id.listViewBid);
@@ -205,7 +197,10 @@ public class AddBidFragment extends DialogFragment {
         mtextViewDescription.setText(mtextViewDescription.getText() + ": " + mThing.getDescription());
         mtextViewNumberPlayers.setText(mtextViewNumberPlayers.getText() + ": " + mThing.getNumberPlayers());
         mtextViewCategory.setText(mtextViewCategory.getText() + ": " + mThing.getCategory());
-        mtextViewCurrentTopBid.setText(mtextViewCurrentTopBid.getText() +": "+String.valueOf(mThing.getTopBidAmount()/100));
+        mtextViewCurrentTopBid.setText(mtextViewCurrentTopBid.getText() + ": " + String.valueOf(mThing.getTopBidAmount() / 100));
+        if (mThing.getPhotoModel() != null) {
+            mimageViewGame.setImageBitmap(mThing.getPhotoModel().getPhoto());
+        }
     }
 
     private void validateBidField()

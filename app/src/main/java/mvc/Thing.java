@@ -198,6 +198,7 @@ public class Thing extends JestData {
 
                         if (owner != null) {
                             owner.removeOwnedThingSimple(Thing.this);
+                            owner.update();
                         }
 
                         deleteDependants();
@@ -359,7 +360,7 @@ public class Thing extends JestData {
     public String getOwnerID() {
         return this.ownerID;
     }
-    public PhotoModel getPhoto() {
+    public PhotoModel getPhotoModel() {
         return this.photo;
     }
 

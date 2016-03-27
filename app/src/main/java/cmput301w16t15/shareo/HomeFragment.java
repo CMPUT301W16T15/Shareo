@@ -33,7 +33,7 @@ public class HomeFragment extends Fragment implements Observer {
     private List<Thing> data;
 
     private ListView mList;
-    private CustomAdapters.BasicThingAdapter mListAdapter;
+    private CustomAdapters.ThingWithStatusAdapter mListAdapter;
     private TextView mEmptyMessage;
 
     public HomeFragment() {
@@ -56,7 +56,7 @@ public class HomeFragment extends Fragment implements Observer {
         switch (mPosition) {
             case 0:
                 data = mUser.getAvailableThings();
-                mListAdapter = new CustomAdapters.BasicThingAdapter(getActivity(), R.layout.minimal_thing_row, data);
+                mListAdapter = new CustomAdapters.ThingWithStatusAdapter(getActivity(), R.layout.minimal_thing_row, data);
                 mList.setAdapter(mListAdapter);
                 mFab.show();
                 if (data.size() == 0) {
@@ -68,7 +68,7 @@ public class HomeFragment extends Fragment implements Observer {
             case 1:
                 // TODO: borrowing games data source
                 data = mUser.getOffers();
-                mListAdapter = new CustomAdapters.BasicThingAdapter(getActivity(), R.layout.minimal_thing_row, data);
+                mListAdapter = new CustomAdapters.ThingWithStatusAdapter(getActivity(), R.layout.minimal_thing_row, data);
                 mList.setAdapter(mListAdapter);
                 mFab.hide();
                 if (data.size() == 0) {
@@ -80,7 +80,7 @@ public class HomeFragment extends Fragment implements Observer {
             case 2:
                 // TODO: lending games data source
                 data = mUser.getOffers();
-                mListAdapter = new CustomAdapters.BasicThingAdapter(getActivity(), R.layout.minimal_thing_row, data);
+                mListAdapter = new CustomAdapters.ThingWithStatusAdapter(getActivity(), R.layout.minimal_thing_row, data);
                 mList.setAdapter(mListAdapter);
                 mFab.hide();
                 if (data.size() == 0) {
@@ -101,7 +101,7 @@ public class HomeFragment extends Fragment implements Observer {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_home, container, false);
         mList = (ListView) v.findViewById(R.id.listview);
-        mListAdapter = new CustomAdapters.BasicThingAdapter(this.getContext(), R.layout.minimal_thing_row, mUser.getOwnedThings());
+        mListAdapter = new CustomAdapters.ThingWithStatusAdapter(this.getContext(), R.layout.minimal_thing_row, mUser.getOwnedThings());
         mList.setAdapter(mListAdapter);
         mEmptyMessage = (TextView) v.findViewById(R.id.empty_notice);
 

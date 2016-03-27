@@ -32,13 +32,7 @@ public class PhotoModel {
     private Bitmap compressBitmap(Bitmap photo)
     {
         int quality = 100;
-        double scale = 0.8;
-        //Resize image based on a fixed largest dimension
-        double scaleFactor = (double)FIXED_DIMENSION / Math.max(photo.getHeight(), photo.getWidth());
-        int newWidth = (int)(photo.getWidth() * scaleFactor);
-        int newHeight = (int)(photo.getHeight() * scaleFactor);
-        photo = Bitmap.createScaledBitmap(photo, newWidth, newHeight, false);
-
+        double scale = 0.5;
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         //Use PNG compression to get maximum quality to check encoded byte size
         photo.compress(Bitmap.CompressFormat.PNG, quality, stream);
@@ -57,6 +51,7 @@ public class PhotoModel {
                     (int)(photo.getHeight()*scale), false);
             photo.compress(Bitmap.CompressFormat.JPEG, quality, stream);
             encodedPhoto = Base64.encodeToString(stream.toByteArray(), Base64.NO_WRAP);
+            byteSize = encodedPhoto.length();
             quality = quality - 10;
             if (quality == 0)
             {

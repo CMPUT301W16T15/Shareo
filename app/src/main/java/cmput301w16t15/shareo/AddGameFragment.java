@@ -6,11 +6,11 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
-import android.text.Editable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,8 +20,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import mvc.AppUserSingleton;
@@ -196,8 +194,6 @@ public class AddGameFragment extends DialogFragment {
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent,
                 "Choose Picture"), CHOOSE_PICTURE);
-        mButtonDeleteImage.setVisibility(View.VISIBLE);
-
     }
 
     @Override
@@ -215,6 +211,7 @@ public class AddGameFragment extends DialogFragment {
                     gamePhoto = new PhotoModel(MediaStore.Images.Media
                             .getBitmap(getActivity().getContentResolver(), imageUri));
                     gameImage.setImageBitmap(gamePhoto.getPhoto());
+                    mButtonDeleteImage.setVisibility(View.VISIBLE);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -230,10 +227,10 @@ public class AddGameFragment extends DialogFragment {
         editTextNumberPlayers.setText(mThing.getNumberPlayers());
 
         // photo is optional field
-        if (mThing.getPhoto() != null) {
-            gameImage.setImageBitmap(mThing.getPhoto().getPhoto());
+        if (mThing.getPhotoModel() != null) {
+            gameImage.setImageBitmap(mThing.getPhotoModel().getPhoto());
             mButtonDeleteImage.setVisibility(View.VISIBLE);
-            gamePhoto = mThing.getPhoto();
+            gamePhoto = mThing.getPhotoModel();
         }
         else
         {
@@ -259,7 +256,8 @@ public class AddGameFragment extends DialogFragment {
     {
         if (gamePhoto != null)
         {
-            gameImage.setVisibility(View.GONE);
+            mButtonDeleteImage.setVisibility(View.GONE);
+            gameImage.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.image_placeholder));
             gamePhoto = null;
         }
 

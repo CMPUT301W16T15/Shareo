@@ -49,8 +49,10 @@ public class CustomAdapters {
 
             ImageView iv = (ImageView) v.findViewById(R.id.status);
             Thing.Status s = t.getStatus();
-            if (s == Thing.Status.AVAILABLE || s == Thing.Status.BIDDED) {
+            if (s == Thing.Status.AVAILABLE) {
                 iv.setImageResource(R.drawable.green_circle);
+            } else if (s == Thing.Status.BIDDED){
+                iv.setImageResource(R.drawable.yellow_circle);
             } else {
                 iv.setImageResource(R.drawable.red_circle);
             }
