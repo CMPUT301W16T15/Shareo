@@ -70,4 +70,8 @@
     <string name="myBidAmount">My Bid Amount</string>
     <string name="highestBidAmount">Highest Bid Amount</string>
     <string name="buttonDeleteImage">Clear Image</string>
+    <string name="bid_accept_decline_username_default">Username</string>
+    <string name="bid_accept">Accept</string>
+    <string name="bid_decline">Decline</string>
+    <string name="bid_accept_decline_bid_default">$0.00/Day</string>
 </resources>
