@@ -228,20 +228,22 @@ public class CustomAdapters {
             rate.setText(rateString);
 
 
-            Button mAcceptButton = (Button) v.findViewById(R.id.bid_decline_button);
-            Button mDeclineButton = (Button) v.findViewById(R.id.bid_accept_button);
+            Button mAcceptButton = (Button) v.findViewById(R.id.bid_accept_button);
+            Button mDeclineButton = (Button) v.findViewById(R.id.bid_decline_button);
 
             mAcceptButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Log.d(TAG, "Clicked accept");
                     accept(v);
                     notifyDataSetChanged();
                 }
             });
 
-            mAcceptButton.setOnClickListener(new View.OnClickListener() {
+            mDeclineButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Log.d(TAG, "Clicked decline");
                     decline(v);
                     notifyDataSetChanged();
                 }
