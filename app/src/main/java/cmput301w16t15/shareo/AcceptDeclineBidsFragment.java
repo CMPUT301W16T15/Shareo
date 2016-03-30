@@ -45,8 +45,10 @@ public class AcceptDeclineBidsFragment extends DialogFragment {
         thing = (Thing) getArguments().getSerializable("myThing");
         bidList = new GetBidsTask().doInBackground();
 
-        TextView title = (TextView) v.findViewById((R.id.ItemSelling));
-        title.setText(thing.getName());
+        this.getDialog().setTitle(thing.getName());
+
+        //TextView title = (TextView) v.findViewById((R.id.ItemSelling));
+        //title.setText(thing.getName());
 
         TextView description = (TextView) v.findViewById(R.id.textViewDescription);
         description.setText(thing.getDescription());

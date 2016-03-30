@@ -224,7 +224,7 @@ public class CustomAdapters {
 
             TextView rate = (TextView) v.findViewById(R.id.bid_accept_decline_rate);
             int rateVal = b.getBidAmount();
-            String rateString =  "$" + (rateVal / 100) + "." + (rateVal % 100) + "/day";
+            String rateString =  String.format("$%d.%02d/day", (rateVal / 100), (rateVal % 100));
             rate.setText(rateString);
 
 
@@ -235,6 +235,7 @@ public class CustomAdapters {
                 @Override
                 public void onClick(View v) {
                     accept(v);
+                    notifyDataSetChanged();
                 }
             });
 
@@ -242,6 +243,7 @@ public class CustomAdapters {
                 @Override
                 public void onClick(View v) {
                     decline(v);
+                    notifyDataSetChanged();
                 }
             });
 
@@ -264,6 +266,7 @@ public class CustomAdapters {
 
             @Override
             protected Void doInBackground(Void... params) {
+
                 b.getBidder().getName();
 
                 return null;
