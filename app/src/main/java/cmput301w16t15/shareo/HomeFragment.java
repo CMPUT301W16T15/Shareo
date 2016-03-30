@@ -130,12 +130,22 @@ public class HomeFragment extends Fragment implements Observer {
         mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                AddGameFragment agf = new AddGameFragment();
-                Bundle bundle = new Bundle();
-                bundle.putInt("pos", position);
-                bundle.putSerializable("myThing",data.get(position));
-                agf.setArguments(bundle);
-                agf.show(getFragmentManager(), "edit");
+                Thing thing = data.get(position);
+                if (thing.getBids().isEmpty()) {
+                    AddGameFragment agf = new AddGameFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("pos", position);
+                    bundle.putSerializable("myThing", data.get(position));
+                    agf.setArguments(bundle);
+                    agf.show(getFragmentManager(), "edit");
+                } else {
+                    AcceptDeclineBidsFragment adbf = new AcceptDeclineBidsFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("pos", position);
+                    bundle.putSerializable("myThing", thing);
+                    adbf.setArguments(bundle);
+                    adbf.show(getFragmentManager(), "accept_decline");
+                }
             }
         });
 

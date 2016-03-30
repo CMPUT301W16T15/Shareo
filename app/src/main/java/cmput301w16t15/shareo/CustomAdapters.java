@@ -1,6 +1,7 @@
 package cmput301w16t15.shareo;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import mvc.Bid;
 import mvc.Thing;
@@ -183,4 +185,90 @@ public class CustomAdapters {
             }
         }
     }
+
+    /**
+     * Show Bid, with user and amount.
+     * Have accept/decline buttons.
+     */
+    public static class AcceptDeclineBidAdapter extends ArrayAdapter<Bid> {
+        private static String TAG = "ListViewBidsAcceptDecline";
+        private final Context context;
+        private final List<Bid> bids;
+        private Bid b;
+
+        public AcceptDeclineBidAdapter(Context context, int resource, List<Bid> objects) {
+            super(context, resource, objects);
+            this.context = context;
+            this.bids = objects;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            LayoutInflater inflater = (LayoutInflater) context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View v = inflater.inflate(R.layout.bid_accept_decline_row, parent, false);
+
+            b = bids.get(position);
+
+            try {
+                new PopulateDataTask().execute().get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+
+
+            TextView username = (TextView) v.findViewById(R.id.bid_accept_decline_username);
+            username.setText(b.getBidder().getName());
+
+            TextView rate = (TextView) v.findViewById(R.id.bid_accept_decline_rate);
+            int rateVal = b.getBidAmount();
+            String rateString =  "$" + (rateVal / 100) + "." + (rateVal % 100) + "/day";
+            rate.setText(rateString);
+
+
+            Button mAcceptButton = (Button) v.findViewById(R.id.bid_decline_button);
+            Button mDeclineButton = (Button) v.findViewById(R.id.bid_accept_button);
+
+            mAcceptButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    accept(v);
+                }
+            });
+
+            mAcceptButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    decline(v);
+                }
+            });
+
+            return v;
+        }
+
+        private void accept(View v) {
+            b.getThing().borrow(b);
+        }
+
+        private void decline(View v) {
+            try {
+                b.new Deleter().delete();
+            } catch (NullIDException e) {
+                e.printStackTrace();
+            }
+        }
+
+        private class PopulateDataTask extends AsyncTask<Void, Void, Void> {
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                b.getBidder().getName();
+
+                return null;
+            }
+        }
+    }
+
 }

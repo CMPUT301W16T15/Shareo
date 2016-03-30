@@ -15,6 +15,7 @@
         android:textSize="20sp"/>
 
     <TextView
+        android:id="@+id/bid_accept_decline_rate"
         android:layout_width="0dp"
         android:layout_weight="2"
         android:layout_height="wrap_content"
@@ -22,12 +23,14 @@
         android:textColor="#111111"/>
 
     <Button
+        android:id="@+id/bid_accept_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/bid_accept"
         android:backgroundTint="@color/accept_green"/>
 
     <Button
+        android:id="@+id/bid_decline_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/bid_decline"/>
