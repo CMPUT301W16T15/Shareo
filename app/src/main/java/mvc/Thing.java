@@ -259,19 +259,25 @@ public class Thing extends JestData {
     {
         Log.d("Thing", "Attempting to borrow game");
         if (getBids().remove(acceptedBid)) {
-            this.acceptedBid = acceptedBid;
+            try {
+                bidIDs.remove(acceptedBid.getJestID());
+                this.acceptedBid = acceptedBid;
+                this.acceptedBidID = acceptedBid.getJestID();
 
-            for (Bid bid : getBids()) {
-                try {
-                    getBids().remove(bid);
-                    bid.new Deleter().delete();
-                } catch (NullIDException e) {
-                    e.printStackTrace();
+                for (Bid bid : getBids()) {
+                    try {
+                        getBids().remove(bid);
+                        bid.new Deleter().delete();
+                    } catch (NullIDException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
 
-            this.status = Status.BORROWED;
-            Log.d("Thing", "Borrowed");
+                this.status = Status.BORROWED;
+                Log.d("Thing", "Borrowed");
+            } catch (NullIDException e) {
+                e.printStackTrace();
+            }
         } else {
             Log.d("Thing", "Failed to borrow thing, bid not found");
         }
