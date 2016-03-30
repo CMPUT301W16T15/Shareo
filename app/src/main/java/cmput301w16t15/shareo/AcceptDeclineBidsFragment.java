@@ -64,7 +64,6 @@ public class AcceptDeclineBidsFragment extends DialogFragment {
     }
 
     private class GetBidsTask extends AsyncTask<Void, Void, List<Bid>> {
-
         @Override
         protected List<Bid> doInBackground(Void... params) {
             return thing.getBids();

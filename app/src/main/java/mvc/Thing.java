@@ -1,5 +1,7 @@
 package mvc;
 
+import android.util.Log;
+
 import com.path.android.jobqueue.AsyncAddCallback;
 
 import org.apache.commons.lang3.ObjectUtils;
@@ -255,12 +257,25 @@ public class Thing extends JestData {
      */
     public void borrow(Bid acceptedBid)
     {
-        this.acceptedBid = acceptedBid;
+        Log.d("Thing", "Attempting to borrow game");
+        if (getBids().remove(acceptedBid)) {
+            this.acceptedBid = acceptedBid;
 
-        // TODO delete all old bids
+            for (Bid bid : getBids()) {
+                try {
+                    getBids().remove(bid);
+                    bid.new Deleter().delete();
+                } catch (NullIDException e) {
+                    e.printStackTrace();
+                }
+            }
 
-        this.bids = null;
-        this.status = Status.BORROWED;
+            this.status = Status.BORROWED;
+            Log.d("Thing", "Borrowed");
+        } else {
+            Log.d("Thing", "Failed to borrow thing, bid not found");
+        }
+        this.update();
     }
 
 

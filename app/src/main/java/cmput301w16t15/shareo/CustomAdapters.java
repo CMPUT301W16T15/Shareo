@@ -235,7 +235,7 @@ public class CustomAdapters {
                 @Override
                 public void onClick(View v) {
                     Log.d(TAG, "Clicked accept");
-                    accept(v);
+                    accept();
                     notifyDataSetChanged();
                 }
             });
@@ -244,7 +244,7 @@ public class CustomAdapters {
                 @Override
                 public void onClick(View v) {
                     Log.d(TAG, "Clicked decline");
-                    decline(v);
+                    decline();
                     notifyDataSetChanged();
                 }
             });
@@ -252,14 +252,22 @@ public class CustomAdapters {
             return v;
         }
 
-        private void accept(View v) {
-            b.getThing().borrow(b);
+        private void accept() {
+            try {
+                new AcceptBidTask().execute().get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
         }
 
-        private void decline(View v) {
+        private void decline() {
             try {
-                b.new Deleter().delete();
-            } catch (NullIDException e) {
+                new DeclineBidTask().execute().get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
                 e.printStackTrace();
             }
         }
@@ -273,6 +281,31 @@ public class CustomAdapters {
 
                 return null;
             }
+        }
+
+        private class AcceptBidTask extends AsyncTask<Void, Void, Void> {
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                b.getThing().borrow(b);
+
+                return null;
+            }
+        }
+
+        private class DeclineBidTask extends AsyncTask<Void, Void, Void> {
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                try {
+                    b.new Deleter().delete();
+                } catch (NullIDException e) {
+                    e.printStackTrace();
+                }
+
+                return null;
+            }
+
         }
     }
 
