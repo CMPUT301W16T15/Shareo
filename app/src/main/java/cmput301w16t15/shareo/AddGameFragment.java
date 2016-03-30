@@ -65,6 +65,10 @@ public class AddGameFragment extends DialogFragment {
     }
 
 
+   /**
+    * When the user has clicked the save button, call thing.builder() if it's a new game entry
+    * Else if the user is editing a game, simply call thing.update() after updating their relevant fields.
+    */
     private void saveAllText()
     {
         gameName = editTextGameName.getText().toString();
@@ -76,7 +80,7 @@ public class AddGameFragment extends DialogFragment {
         User user = AppUserSingleton.getInstance().getUser();
 
         /**
-         * If mPositionIndex == -1, then we are in Add Game mode, so call .build() in Thing.
+         * If mPositionIndex == -1, then we are in Add Game mode, so call .builder() in Thing.
          */
         if (mPositionIndex == -1) {
             try {
@@ -88,7 +92,7 @@ public class AddGameFragment extends DialogFragment {
         }
 
         /**
-         * We are in edit game mode so don't call the same method, call .edit() in Thing.
+         * We are in edit game mode so don't call the same method, call update() in Thing.
          */
 
         else {
@@ -108,6 +112,9 @@ public class AddGameFragment extends DialogFragment {
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View v = inflater.inflate(R.layout.fragment_addeditgame, null);
 
+    	/**
+     	 * The position index is -1 if we are in add game mode, else it is >= 0 for edit game mode. 
+     	 */
         mPositionIndex = getArguments().getInt("pos");
 
         mButtonDeleteImage = (Button) v.findViewById(R.id.buttonDeleteImage);
@@ -120,10 +127,13 @@ public class AddGameFragment extends DialogFragment {
         mTextViewAddGame = (TextView) v.findViewById(R.id.textViewAddGame);
         editTextGameName = (EditText) v.findViewById(R.id.editTextGameName);
         editTextDescription = (EditText) v.findViewById(R.id.editTextDescription);
-        //editTextRate = (EditText) v.findViewById(R.id.editTextRate);
         editTextNumberPlayers = (EditText) v.findViewById(R.id.editTextNumberPlayers);
         editTextCategory = (EditText) v.findViewById(R.id.editTextCategory);
         gameImage = (ImageButton) v.findViewById(R.id.gamePicture);
+	
+	/**
+     	 * They clicked the add image button, so handle it. 
+     	 */
         gameImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,7 +141,15 @@ public class AddGameFragment extends DialogFragment {
             }
         });
 
+	/**
+     	 * If position index doesnt equal -1, then we essentially are in
+	 * Edit Game mode.
+     	 */
         if (mPositionIndex != -1) {
+	/**
+     	 * Get the thing passed in from the listView which corresponds to
+	 * the thing object of the game being edited.
+     	 */
             mThing = (Thing) getArguments().getSerializable("myThing");
             populateFields();
 
@@ -163,7 +181,11 @@ public class AddGameFragment extends DialogFragment {
 
         else
         {
-            // Build the dialog and set up the button click handlers
+           
+	 /**
+     	 * Note that if mPositionIndex equals -1, then it means that we are in new game mode,
+	 * Edit Game mode. In this case, we don't need a delete game button.
+     	 */
             builder = new AlertDialog.Builder(getActivity());
             builder.setView(v)
                     .setPositiveButton("Save", new DialogInterface.OnClickListener() {
@@ -188,6 +210,11 @@ public class AddGameFragment extends DialogFragment {
         return dialog;
     }
 
+   /**
+    * If they clicked this button, the user will be taken to
+    * another screen where they can select the image from their
+    * device storages.
+    */
     public void imageClicked(View view) {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -203,6 +230,10 @@ public class AddGameFragment extends DialogFragment {
 
     }
 
+    /**
+     * Set up a new photo and make the clear image button visible since they clicked
+     * to set up a new image, which means it can also be cleared.
+     */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == CHOOSE_PICTURE) {
@@ -219,6 +250,11 @@ public class AddGameFragment extends DialogFragment {
         }
     }
 
+    /**
+     * populateFields() is only called if we are in edit game mode.
+     * In this case, we want to populate all of the relevant game fields,
+     * which includes the photo.
+     */
     private void populateFields() {
         mTextViewAddGame.setText("Edit a Game");
         editTextGameName.setText(mThing.getName());
@@ -226,6 +262,9 @@ public class AddGameFragment extends DialogFragment {
         editTextCategory.setText(mThing.getCategory());
         editTextNumberPlayers.setText(mThing.getNumberPlayers());
 
+    /**
+     * If they have a photo --> Make it visible, else leave it in GONE state.
+     */
         // photo is optional field
         if (mThing.getPhotoModel() != null) {
             gameImage.setImageBitmap(mThing.getPhotoModel().getPhoto());
@@ -252,6 +291,10 @@ public class AddGameFragment extends DialogFragment {
 
     }
 
+    /**
+     * They clicked the clear image button, so set gamePhoto to null, and make the clear image button
+     * in a GONE state.
+     */
     private void deleteImageClicked()
     {
         if (gamePhoto != null)

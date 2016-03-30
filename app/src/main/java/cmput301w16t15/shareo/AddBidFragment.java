@@ -115,6 +115,9 @@ public class AddBidFragment extends DialogFragment {
 
             }
 
+	/**
+	 *  This is called when someone has finished entering a bid.
+	 */
             @Override
             public void afterTextChanged(Editable arg0) {
                 /**
@@ -122,6 +125,9 @@ public class AddBidFragment extends DialogFragment {
                  */
                 String str = meditTextMakeOffer.getText().toString();
                 if (str.isEmpty()) return;
+		/**
+		 * Limit their bid to 9 places before decimal and 2 places after decimal.
+	 	 */
                 String str2 = PerfectDecimal(str, 9, 2);
 
                 if (!str2.equals(str)) {
@@ -145,6 +151,7 @@ public class AddBidFragment extends DialogFragment {
     /**
      * Taken from here :
      * http://stackoverflow.com/questions/5357455/limit-decimal-places-in-android-edittext
+     * This helper function is used to limit the input of their bid to an appropriate amount.
      */
     public String PerfectDecimal(String str, int MAX_BEFORE_POINT, int MAX_DECIMAL){
         if(str.charAt(0) == '.') str = "0"+str;
@@ -171,6 +178,7 @@ public class AddBidFragment extends DialogFragment {
     }
 
     /**
+     * Try to save the bid by calling the backend Builder function to build it.
      * Dollars to cents taken from here :
      * http://stackoverflow.com/questions/2406881/regarding-java-string-dollar-to-cents-conversion/2408469#2408469
      */
@@ -191,6 +199,10 @@ public class AddBidFragment extends DialogFragment {
         }
     }
 
+   /**
+    * Set up the text of the fragment by setting every attribute of the bid known to the Thing class
+    * The only non-trivial field set is the bid amount, which undergoes a conversion from cents to dollars.
+    */
     private void setUpText() {
         mtextViewGameOwner.setText(mtextViewGameOwner.getText() +": "+mThing.getOwnerID());
         mtextViewGameName.setText(mtextViewGameName.getText() + ": " + mThing.getName());
@@ -203,6 +215,11 @@ public class AddBidFragment extends DialogFragment {
         }
     }
 
+    /**
+     * Validate the bid field by ensuring that the amount entered isn't too large to enter
+     * in an integer format (cents). It does this by undergoing some operations by first storing the bid in BigDecimal
+     * and then comparing the amount entered to be less than the maximum integer value.
+     */
     private void validateBidField()
     {
         BigDecimal amount;

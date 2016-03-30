@@ -17,7 +17,8 @@ import mvc.AppUserSingleton;
 import mvc.Jobs.CallbackInterface;
 
 /**
- * Activity: login or signin
+ * Activity: You can login or signup as a new user from this activity.
+ * For logging in, we don't use passwords -- only the relevant username
  * */
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -49,6 +50,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         buttonSignup = (Button) findViewById(R.id.buttonSignup);
         buttonLogin = (Button) findViewById(R.id.buttonLogin);
 
+	/**
+	 * Wire up the edit texts used for signing up or logging in.
+	 */
         editTextFullName = (EditText) findViewById(R.id.editTextFullName);
         editTextUserNameSignup = (EditText) findViewById(R.id.editTextUserNameSignup);
         editTextUserNameLogin = (EditText) findViewById(R.id.editTextUserNameLogin);
@@ -126,11 +130,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         final Intent mainIntent = new Intent(this, MainActivity.class);
         switch (v.getId()) {
+	   /**
+	    * They clicked on button signup, so parse the signup of a new user.
+	    */
             case R.id.buttonSignup:
                 Log.d(TAG, "Clicked Button Signup");
+		/**
+	 	 * Store the fields userNameSignup, fullName, email, and motto based upon what the user entered.
+	         */
                 parseSignUp();
+		/**
+	 	 * Only if the email is valid(i.e. they entered in blah@blah.com), do we parse the signup.
+	 	 */
                 if (isValidEmail(email))
                 {
+		   /**
+		    * Create a new user by calling the relevant backend call after collecting the fields inputted.
+	 	    */
                     AppUserSingleton.getInstance().createUser(userNameSignup, fullName, email, motto, new CallbackInterface() {
                         @Override
                         public void onSuccess() {
@@ -159,8 +175,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 break;
 
+	    /**
+	     * They clicked the login button, so get their username and log them in if the ID exists.
+	     */
             case R.id.buttonLogin:
                 Log.d(TAG, "Clicked Button Login");
+		/**
+	 	 * Store the relevant field userNameLogin based upon what the user entered.
+	 	 */
                 parseLogin();
                 AppUserSingleton.getInstance().logIn(userNameLogin, new CallbackInterface() {
                     @Override
@@ -184,8 +206,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     /**
-     * Currently, clicking login or sign up just transfers over to the main activity intent
-     * and we don't really handle the signup or login.
+     * Store the relevant fields needed to parse signing up a new user.
      */
     private void parseSignUp() {
         fullName = editTextFullName.getText().toString();
@@ -194,6 +215,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         motto = editTextMotto.getText().toString();
     }
 
+    /**
+     * Store the relevant fields needed to parse logging in a user.
+     */
     private void parseLogin() {
         userNameLogin = editTextUserNameLogin.getText().toString();
     }

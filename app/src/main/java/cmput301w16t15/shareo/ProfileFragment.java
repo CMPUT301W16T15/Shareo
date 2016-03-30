@@ -21,6 +21,8 @@ import mvc.exceptions.NullIDException;
 
 /**
  * Fragment: the main profile fragment allowing user to see information and edit
+ * Note that it is not possible to edit one's username -- only their other related
+ * profile attributes.
  * */
 public class ProfileFragment extends Fragment {
     private static String TAG ="ProfileFragment";
@@ -59,19 +61,34 @@ public class ProfileFragment extends Fragment {
         mEditTextMotto = (EditText) v.findViewById(R.id.editTextMotto);
 
         mButtonSaveEdits = (Button) v.findViewById(R.id.buttonSaveEdits);
+	/**
+     	* They clicked the saveEdits button, so handle it by calling buttonClicked.
+     	* 
+     	*/
         mButtonSaveEdits.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                buttonClicked(v);
+                buttonClicked();
             }
         });
 
+	/**
+     	* As soon as the fragment loads, we need to get relevant information
+     	* such as the user's username, fullname, email address, and motto
+	* so we do this by caling setAttributes() and then setText. Additionally, we need
+	* to set up header text that says whose profile it belngs to.
+     	*/
         setAttributes();
         setProfileText();
         setText();
         return v;
     }
 
+    /**
+     * As soon as the fragment loads, we need to get relevant information
+     * such as the user's username, fullname, email address, and motto
+     * so we do this by caling setAttributes().
+     */
     private void setAttributes()
     {
         myUser = AppUserSingleton.getInstance().getUser();
@@ -81,11 +98,19 @@ public class ProfileFragment extends Fragment {
         motto = myUser.getMotto();
     }
 
+   /**
+    * we need to set up the
+    * header text that says whose profile it belongs to.
+    */
+	
     private void setProfileText()
     {
         mTextCreateProfile.setText(userName+"'s Profile");
     }
 
+   /**
+    * Set up the relevant text collected from setAttributes.
+    */
     private void setText()
     {
         //mEditTextUserName.setHint(userName);
@@ -94,6 +119,10 @@ public class ProfileFragment extends Fragment {
         mEditTextMotto.setText(motto);
     }
 
+   /**
+    * Save the information associated with the profile
+    * that has been edited.
+    */
     private void saveUserClassChanges()
     {
         myUser.setName(userName);
@@ -104,6 +133,10 @@ public class ProfileFragment extends Fragment {
         myUser.update();
     }
 
+    /**
+     * They pressed the save button, so it's time to 
+     * save all of the changes.
+     */
     private void saveAllText()
     {
         fullName = mEditTextFullName.getText().toString();
@@ -128,7 +161,7 @@ public class ProfileFragment extends Fragment {
 
 
     }
-    private void buttonClicked(View v)
+    private void buttonClicked()
     {
         saveAllText();
         setAttributes();
