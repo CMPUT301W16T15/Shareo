@@ -61,6 +61,10 @@ public class Thing extends JestData {
             e.printStackTrace();
         }
 
+        if (getBids().isEmpty()) {
+            status = Status.AVAILABLE;
+        }
+
         return retVal;
     }
 
