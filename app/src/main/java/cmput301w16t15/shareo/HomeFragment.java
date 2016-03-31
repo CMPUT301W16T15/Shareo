@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.honorato.multistatetogglebutton.MultiStateToggleButton;
 import org.honorato.multistatetogglebutton.ToggleButton;
@@ -20,6 +21,7 @@ import mvc.Observable;
 import mvc.Observer;
 import mvc.Thing;
 import mvc.User;
+import mvc.exceptions.NullIDException;
 
 /*
 * Fragment: Main screen showing available items, borrowing items, and lent items
@@ -132,12 +134,18 @@ public class HomeFragment extends Fragment implements Observer {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Thing thing = data.get(position);
                 if (thing.getBids().isEmpty()) {
-                    AddGameFragment agf = new AddGameFragment();
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("pos", position);
-                    bundle.putSerializable("myThing", data.get(position));
-                    agf.setArguments(bundle);
-                    agf.show(getFragmentManager(), "edit");
+                    try {
+                        thing.getJestID();
+                        AddGameFragment agf = new AddGameFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("pos", position);
+                        bundle.putSerializable("myThing", data.get(position));
+                        agf.setArguments(bundle);
+                        agf.show(getFragmentManager(), "edit");
+                    } catch (NullIDException e) {
+                        Toast z = Toast.makeText(getActivity(), "Go online before editing this game.", Toast.LENGTH_SHORT);
+                        z.show();
+                    }
                 } else {
                     AcceptDeclineBidsFragment adbf = new AcceptDeclineBidsFragment();
                     Bundle bundle = new Bundle();

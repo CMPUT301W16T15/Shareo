@@ -18,7 +18,7 @@ public class UpdateGameJob extends Job {
     Thing thing;
 
     public UpdateGameJob(Thing thing) {
-        super(new Params(PRIORITY).requireNetwork());
+        super(new Params(PRIORITY).requireNetwork().persist());
         this.thing = thing;
     }
 
