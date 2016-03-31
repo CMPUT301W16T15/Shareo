@@ -109,23 +109,14 @@ public class Bid extends JestData {
                 ShareoApplication.getInstance().getJobManager().addJobInBackground(new DeleteBidJob(Bid.this, new CallbackInterface() {
                     @Override
                     public void onSuccess() {
-                        if (bidder == null && bidderID != null) {
-                            Bid.this.getBidder();
-                        }
-                        if (thing == null && thingID != null) {
-                            Bid.this.getBidder();
-                        }
 
-                        if (bidder != null) {
-                            bidder.removeBidSimple(Bid.this);
+                            getBidder().removeBidSimple(Bid.this);
                             Log.d(TAG, "Removing Bid from bidder.removeBidSimple");
-                            bidder.update();
-                        }
-                        if (thing != null) {
-                            thing.removeBidSimple(Bid.this);
+                            getBidder().update();
+
+                            getThing().removeBidSimple(Bid.this);
                             Log.d(TAG, "Removing Bid from thing.removeBidSimple");
-                            thing.update();
-                        }
+                            getThing().update();
 
                     }
 
@@ -137,21 +128,11 @@ public class Bid extends JestData {
             } else {
                 ShareoData.getInstance().removeBid(Bid.this);
 
-                if (bidder == null && bidderID != null) {
-                    Bid.this.getBidder();
-                }
-                if (thing == null && thingID != null) {
-                    Bid.this.getBidder();
-                }
+                getBidder().removeBidSimple(Bid.this);
+                getBidder().update();
 
-                if (bidder != null) {
-                    bidder.removeBidSimple(Bid.this);
-                    bidder.update();
-                }
-                if (thing != null) {
-                    thing.removeBidSimple(Bid.this);
-                    thing.update();
-                }
+                getThing().removeBidSimple(Bid.this);
+                getThing().update();
             }
         }
 
