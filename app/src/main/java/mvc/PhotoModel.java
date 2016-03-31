@@ -7,12 +7,13 @@ import android.util.Base64;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.Serializable;
 
 
 /**
  * Created by Bradshaw on 2016-03-06.
  */
-public class PhotoModel {
+public class PhotoModel implements Serializable {
 
     final int MAX_PHOTO_SIZE = 65536;
     final int FIXED_DIMENSION = 1000;
