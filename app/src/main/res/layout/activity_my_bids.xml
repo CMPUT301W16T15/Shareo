@@ -13,15 +13,14 @@
         android:orientation="vertical">
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/textViewBidTitle"
-        android:id="@+id/textViewGameTitle"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="5dp" />
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/textViewBidTitle"
+            android:id="@+id/textViewGameTitle"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp" />
 
         <TextView
             android:id="@+id/textViewGameOwner"
@@ -31,6 +30,11 @@
             android:text="@string/textViewGameOwner"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:layout_marginTop="10dip" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ownerButton" />
 
         <TextView
             android:id="@+id/textViewGameName"

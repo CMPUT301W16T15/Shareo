@@ -12,6 +12,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -37,12 +38,12 @@ public class AddBidFragment extends DialogFragment {
     private Thing mThing;
     private TextView mtextViewBidAmount;
     private TextView mtextViewCurrentTopBid;
-    private TextView mtextViewGameOwner;
     private TextView mtextViewGameName;
     private TextView mtextViewDescription;
     private TextView mtextViewNumberPlayers;
     private TextView mtextViewCategory;
     private ImageView mimageViewGame;
+    private Button mOwnerButton;
 
     private AlertDialog dialog = null;
     private EditText meditTextMakeOffer;
@@ -64,9 +65,21 @@ public class AddBidFragment extends DialogFragment {
         mtextViewCategory = (TextView) v.findViewById(R.id.textViewCategory);
         mtextViewCurrentTopBid = (TextView) v.findViewById(R.id.textViewCurrentTopBid);
         //mtextViewBidAmount = (TextView) v.findViewById(R.id.textViewBidAmount);
-        mtextViewGameOwner = (TextView) v.findViewById(R.id.textViewGameOwner);
+        mOwnerButton = (Button) v.findViewById(R.id.ownerButton);
         mimageViewGame = (ImageView) v.findViewById(R.id.gamePicture);
         //meditTextBidAmount = (EditText) v.findViewById(R.id.editTextBidAmount);
+
+        mOwnerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UserProfileInfo d = new UserProfileInfo();
+                Bundle bundle = new Bundle();
+
+                bundle.putString("userId", mThing.getOwnerID());
+                d.setArguments(bundle);
+                d.show(getActivity().getFragmentManager(), "user_profile");
+            }
+        });
 
         mlistViewBid = (ListView) v.findViewById(R.id.listViewBid);
         mThing = (Thing) getArguments().getSerializable("myThing");
@@ -204,7 +217,7 @@ public class AddBidFragment extends DialogFragment {
     * The only non-trivial field set is the bid amount, which undergoes a conversion from cents to dollars.
     */
     private void setUpText() {
-        mtextViewGameOwner.setText(mtextViewGameOwner.getText() +": "+mThing.getOwnerID());
+        mOwnerButton.setText(mThing.getOwnerID());
         mtextViewGameName.setText(mtextViewGameName.getText() + ": " + mThing.getName());
         mtextViewDescription.setText(mtextViewDescription.getText() + ": " + mThing.getDescription());
         mtextViewNumberPlayers.setText(mtextViewNumberPlayers.getText() + ": " + mThing.getNumberPlayers());

@@ -79,6 +79,7 @@ public class BidsFragment extends Fragment implements Observer {
 
                 // start new thread to avoid network on main thread.
                 try {
+                    // TODO...this either renders things or bids, this can't cast to Bid always
                     Thread t = new Thread(new Runnable() {
                         @Override
                         public void run() {

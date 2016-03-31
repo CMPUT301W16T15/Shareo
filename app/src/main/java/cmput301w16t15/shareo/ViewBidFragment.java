@@ -10,6 +10,7 @@ import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +36,7 @@ public class ViewBidFragment extends DialogFragment {
     private TextView mtextViewCategory;
     private TextView mMaxBid;
     private TextView mMyBid;
+    private Button mOwnerButton;
 
     public ViewBidFragment() {
 
@@ -52,6 +54,19 @@ public class ViewBidFragment extends DialogFragment {
         mtextViewGameOwner = (TextView) v.findViewById(R.id.textViewGameOwner);
         mMaxBid = (TextView) v.findViewById(R.id.textViewHighestBid);
         mMyBid = (TextView) v.findViewById(R.id.textViewMyBid);
+        mOwnerButton = (Button) v.findViewById(R.id.ownerButton);
+
+        mOwnerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UserProfileInfo d = new UserProfileInfo();
+                Bundle bundle = new Bundle();
+
+                bundle.putString("userId", mThing.getOwnerID());
+                d.setArguments(bundle);
+                d.show(getActivity().getFragmentManager(), "user_profile");
+            }
+        });
 
         mBid = (Bid) getArguments().getSerializable("myThing");
 
@@ -70,7 +85,7 @@ public class ViewBidFragment extends DialogFragment {
         // TODO: getTopBidAmount this doesn't update properly
         mMaxBid.setText(mMaxBid.getText() + ": " + mThing.getTopBidAmount());
         mMyBid.setText(mMyBid.getText() + ": " + mBid.getBidAmount());
-        mtextViewGameOwner.setText(mtextViewGameOwner.getText() +": "+mThing.getOwnerID());
+        mOwnerButton.setText(mThing.getOwnerID());
         mtextViewGameName.setText(mtextViewGameName.getText() + ": " + mThing.getName());
         mtextViewDescription.setText(mtextViewDescription.getText() + ": " + mThing.getDescription());
         mtextViewNumberPlayers.setText(mtextViewNumberPlayers.getText() + ": " + mThing.getNumberPlayers());

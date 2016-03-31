@@ -38,6 +38,11 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:layout_marginTop="10dip" />
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ownerButton" />
+
         <TextView
             android:id="@+id/textViewGameName"
             android:layout_width="wrap_content"
