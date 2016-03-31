@@ -211,7 +211,7 @@ public class CustomAdapters {
             b = bids.get(position);
 
             try {
-                new PopulateDataTask().execute().get();
+                new PopulateDataTask().execute(b).get();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {
@@ -231,11 +231,16 @@ public class CustomAdapters {
             Button mAcceptButton = (Button) v.findViewById(R.id.bid_accept_button);
             Button mDeclineButton = (Button) v.findViewById(R.id.bid_decline_button);
 
+            // make sure the buttons know which
+            // bid they manipulate.
+            mAcceptButton.setTag(b);
+            mDeclineButton.setTag(b);
+
             mAcceptButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Log.d(TAG, "Clicked accept");
-                    accept();
+                    accept((Bid)v.getTag());
                     notifyDataSetChanged();
                 }
             });
@@ -244,7 +249,7 @@ public class CustomAdapters {
                 @Override
                 public void onClick(View v) {
                     Log.d(TAG, "Clicked decline");
-                    decline();
+                    decline((Bid)v.getTag());
                     notifyDataSetChanged();
                 }
             });
@@ -252,9 +257,9 @@ public class CustomAdapters {
             return v;
         }
 
-        private void accept() {
+        private void accept(Bid b) {
             try {
-                new AcceptBidTask().execute().get();
+                new AcceptBidTask().execute(b).get();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {
@@ -262,9 +267,9 @@ public class CustomAdapters {
             }
         }
 
-        private void decline() {
+        private void decline(Bid b) {
             try {
-                new DeclineBidTask().execute().get();
+                new DeclineBidTask().execute(b).get();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {
@@ -272,33 +277,33 @@ public class CustomAdapters {
             }
         }
 
-        private class PopulateDataTask extends AsyncTask<Void, Void, Void> {
+        private class PopulateDataTask extends AsyncTask<Bid, Void, Void> {
 
             @Override
-            protected Void doInBackground(Void... params) {
+            protected Void doInBackground(Bid... bid) {
 
-                b.getBidder().getName();
+                bid[0].getBidder().getName();
 
                 return null;
             }
         }
 
-        private class AcceptBidTask extends AsyncTask<Void, Void, Void> {
+        private class AcceptBidTask extends AsyncTask<Bid, Void, Void> {
 
             @Override
-            protected Void doInBackground(Void... params) {
-                b.getThing().borrow(b);
+            protected Void doInBackground(Bid... bid) {
+                bid[0].getThing().borrow(b);
 
                 return null;
             }
         }
 
-        private class DeclineBidTask extends AsyncTask<Void, Void, Void> {
+        private class DeclineBidTask extends AsyncTask<Bid, Void, Void> {
 
             @Override
-            protected Void doInBackground(Void... params) {
+            protected Void doInBackground(Bid... bid) {
                 try {
-                    b.new Deleter().delete();
+                    bid[0].new Deleter().delete();
                 } catch (NullIDException e) {
                     e.printStackTrace();
                 }

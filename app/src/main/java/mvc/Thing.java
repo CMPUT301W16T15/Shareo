@@ -51,14 +51,11 @@ public class Thing extends JestData {
 
         try {
             retVal = bidIDs.remove(bid.getJestID());
-            if (bids != null) {
-                int tempBidAmount = bid.getBidAmount();
-                bids.remove(bid);
-                if (tempBidAmount == topBidAmount)
-                {
-                    recalculateMaxBidAmount();
-                }
-
+            int tempBidAmount = bid.getBidAmount();
+            getBids().remove(bid);
+            if (tempBidAmount == topBidAmount)
+            {
+                recalculateMaxBidAmount();
             }
         } catch (NullIDException e) {
             e.printStackTrace();
