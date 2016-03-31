@@ -116,22 +116,7 @@ public class Thing extends JestData {
             t.setDataSource(data);
             t.setPhoto(p);
             if (newThread) {
-                ShareoApplication.getInstance().getJobManager().addJobInBackground(new CreateGameJob(t, new CallbackInterface() {
-                    @Override
-                    public void onSuccess() {
-                        try {
-                            owner.addOwnedThing(t);
-                            owner.update();
-                        } catch (NullIDException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure() {
-
-                    }
-                }));
+                ShareoApplication.getInstance().getJobManager().addJobInBackground(new CreateGameJob(t,owner));
             } else {
                 data.addGame(t);
                 try {

@@ -1,11 +1,14 @@
 package mvc.Jobs;
 
+import android.util.Log;
+
 import com.path.android.jobqueue.Job;
 import com.path.android.jobqueue.Params;
 import com.path.android.jobqueue.RetryConstraint;
 
 import mvc.ShareoData;
 import mvc.Thing;
+import mvc.User;
 
 /**
  * Created by Bradshaw on 2016-03-11.
@@ -13,23 +16,24 @@ import mvc.Thing;
 public class CreateGameJob extends Job {
     static final int PRIORITY = 1;
     Thing thing;
-    CallbackInterface callback;
+    User owner;
 
-    public CreateGameJob(Thing thing, CallbackInterface callback) {
-        super(new Params(PRIORITY).requireNetwork());
+    public CreateGameJob(Thing thing, User owner) {
+        super(new Params(PRIORITY).persist().requireNetwork());
         this.thing = thing;
-        this.callback = callback;
+        this.owner = owner;
     }
 
     @Override
     protected RetryConstraint shouldReRunOnThrowable(Throwable throwable, int runCount, int maxRunCount) {
-        return RetryConstraint.CANCEL;
+        return RetryConstraint.RETRY;
     }
 
     @Override
     public void onRun() throws Throwable {
         ShareoData.getInstance().addGame(thing);
-        callback.onSuccess();
+        owner.addThingID(thing.getJestID());
+        ShareoData.getInstance().updateUser(owner);
     }
 
     @Override
@@ -39,6 +43,6 @@ public class CreateGameJob extends Job {
 
     @Override
     public void onAdded() {
-
+        owner.addIDLessThing(thing);
     }
 }

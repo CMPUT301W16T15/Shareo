@@ -261,6 +261,18 @@ public class User extends JestData {
         notifyViews();
     }
 
+    public void addIDLessThing(Thing thing) {
+        if (owned == null) {
+            owned = getOwnedThings();
+        }
+        owned.add(thing);
+        notifyViews();
+    }
+
+    public void addThingID(String ID) {
+        ownedIDs.add(ID);
+    }
+
     public boolean removeOwnedThing(Thing thing) {
         if (removeOwnedThingSimple(thing)) {
             thing.setOwnerSimple(null);
