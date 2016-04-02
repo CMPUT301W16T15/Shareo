@@ -76,9 +76,20 @@ public class BidsFragment extends Fragment implements Observer {
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 if (mPosition == 0) {
                     AcceptDeclineBidsFragment adbf = new AcceptDeclineBidsFragment();
-                    Bundle bundle = new Bundle();
+                    final Bundle bundle = new Bundle();
                     bundle.putInt("pos", position);
-                    bundle.putSerializable("myThing", (Thing) mList.getItemAtPosition(position));
+                    try {
+                        Thread t = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                bundle.putSerializable("myThing", (Thing) mList.getItemAtPosition(position));
+                            }
+                        });
+                        t.start();
+                        t.join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     adbf.setArguments(bundle);
                     adbf.show(getFragmentManager(), "accept_decline");
                 } else {

@@ -68,8 +68,7 @@ public class HomeFragment extends Fragment implements Observer {
                 }
                 break;
             case 1:
-                // TODO: borrowing games data source
-                data = mUser.getOffers();
+                data = mUser.getBorrowedThings();
                 mListAdapter = new CustomAdapters.ThingWithStatusAdapter(getActivity(), R.layout.minimal_thing_row, data);
                 mList.setAdapter(mListAdapter);
                 mFab.hide();
@@ -80,8 +79,7 @@ public class HomeFragment extends Fragment implements Observer {
                 }
                 break;
             case 2:
-                // TODO: lending games data source
-                data = mUser.getOffers();
+                data = mUser.getLentThings();
                 mListAdapter = new CustomAdapters.ThingWithStatusAdapter(getActivity(), R.layout.minimal_thing_row, data);
                 mList.setAdapter(mListAdapter);
                 mFab.hide();
@@ -133,26 +131,16 @@ public class HomeFragment extends Fragment implements Observer {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Thing thing = data.get(position);
-                if (thing.getBids().isEmpty()) {
-                    try {
-                        thing.getJestID();
-                        AddGameFragment agf = new AddGameFragment();
-                        Bundle bundle = new Bundle();
-                        bundle.putInt("pos", position);
-                        bundle.putSerializable("myThing", data.get(position));
-                        agf.setArguments(bundle);
-                        agf.show(getFragmentManager(), "edit");
-                    } catch (NullIDException e) {
-                        Toast z = Toast.makeText(getActivity(), "Go online before editing this game.", Toast.LENGTH_SHORT);
-                        z.show();
+                if (mPosition == 0) { // available
+                    if (thing.getBids().isEmpty()) {
+                        showEditGameDialog(thing, position);
+                    } else {
+                        showAcceptDeclineDialog(thing, position);
                     }
-                } else {
-                    AcceptDeclineBidsFragment adbf = new AcceptDeclineBidsFragment();
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("pos", position);
-                    bundle.putSerializable("myThing", thing);
-                    adbf.setArguments(bundle);
-                    adbf.show(getFragmentManager(), "accept_decline");
+                } else if (mPosition == 1) { // borrowed thing...view game info and profile...of maybe just profile
+                    showGameOwnerInfo(thing);
+                } else { // lent, so will have zero gets
+                    showEditGameDialog(thing, position);
                 }
             }
         });
@@ -160,6 +148,39 @@ public class HomeFragment extends Fragment implements Observer {
         setAdapterBasedOnTab();
 
         return v;
+    }
+
+    private void showGameOwnerInfo(Thing thing) {
+        UserProfileInfo d = new UserProfileInfo();
+        Bundle bundle = new Bundle();
+
+        bundle.putString("userId", thing.getOwnerID());
+        d.setArguments(bundle);
+        d.show(getActivity().getFragmentManager(), "user_profile");
+    }
+
+    private void showAcceptDeclineDialog(Thing thing, int position) {
+        AcceptDeclineBidsFragment adbf = new AcceptDeclineBidsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt("pos", position);
+        bundle.putSerializable("myThing", thing);
+        adbf.setArguments(bundle);
+        adbf.show(getFragmentManager(), "accept_decline");
+    }
+
+    private void showEditGameDialog(Thing thing, int position) {
+        try {
+            thing.getJestID();
+            AddGameFragment agf = new AddGameFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt("pos", position);
+            bundle.putSerializable("myThing", data.get(position));
+            agf.setArguments(bundle);
+            agf.show(getFragmentManager(), "edit");
+        } catch (NullIDException e) {
+            Toast z = Toast.makeText(getActivity(), "Go online before editing this game.", Toast.LENGTH_SHORT);
+            z.show();
+        }
     }
 
     @Override

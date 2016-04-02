@@ -388,6 +388,18 @@ public class User extends JestData {
         return available;
     }
 
+    public List<Thing> getLentThings() {
+        getOwnedThings();
+        // only return those that have bids on them
+        List<Thing> available = new ArrayList<>();
+        for (Thing t : owned) {
+            if (t.getStatus() == Thing.Status.BORROWED) {
+                available.add(t);
+            }
+        }
+        return available;
+    }
+
     /**
      *
      */
