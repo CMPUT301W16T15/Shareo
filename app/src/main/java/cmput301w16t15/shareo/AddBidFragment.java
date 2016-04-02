@@ -64,7 +64,7 @@ public class AddBidFragment extends DialogFragment {
         mtextViewDescription = (TextView) v.findViewById(R.id.textViewDescription);
         mtextViewNumberPlayers = (TextView) v.findViewById(R.id.textViewNumberPlayers);
         mtextViewCategory = (TextView) v.findViewById(R.id.textViewCategory);
-        mtextViewPickUpLocation= (TextView)v.findViewById(R.id.editTextPickUpLocation);
+        //mtextViewPickUpLocation= (TextView)v.findViewById(R.id.editTextPickUpLocation);
         mtextViewCurrentTopBid = (TextView) v.findViewById(R.id.textViewCurrentTopBid);
         //mtextViewBidAmount = (TextView) v.findViewById(R.id.textViewBidAmount);
         mOwnerButton = (Button) v.findViewById(R.id.ownerButton);

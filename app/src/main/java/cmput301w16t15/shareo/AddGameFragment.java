@@ -133,7 +133,7 @@ public class AddGameFragment extends DialogFragment {
         editTextDescription = (EditText) v.findViewById(R.id.editTextDescription);
         editTextNumberPlayers = (EditText) v.findViewById(R.id.editTextNumberPlayers);
         editTextCategory = (EditText) v.findViewById(R.id.editTextCategory);
-        editTextPickUpLocation=(EditText)v.findViewById(R.id.editTextPickUpLocation);
+        //editTextPickUpLocation=(EditText)v.findViewById(R.id.editTextPickUpLocation);
         gameImage = (ImageButton) v.findViewById(R.id.gamePicture);
 	
 	/**

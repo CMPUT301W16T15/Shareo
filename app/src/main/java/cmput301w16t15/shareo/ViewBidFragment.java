@@ -52,7 +52,7 @@ public class ViewBidFragment extends DialogFragment {
         mtextViewDescription = (TextView) v.findViewById(R.id.textViewDescription);
         mtextViewNumberPlayers = (TextView) v.findViewById(R.id.textViewNumberPlayers);
         mtextViewCategory = (TextView) v.findViewById(R.id.textViewCategory);
-        mtextViewPickUpLocation = (TextView)v.findViewById(R.id.editTextPickUpLocation);
+        //mtextViewPickUpLocation = (TextView)v.findViewById(R.id.editTextPickUpLocation);
         mtextViewGameOwner = (TextView) v.findViewById(R.id.textViewGameOwner);
         mMaxBid = (TextView) v.findViewById(R.id.textViewHighestBid);
         mMyBid = (TextView) v.findViewById(R.id.textViewMyBid);
