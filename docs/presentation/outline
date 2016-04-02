@@ -1,0 +1,36 @@
+Profile
+1. Create new profile (03.01.01)
+2. Edit contact information (03.02.01)
+
+Games
+3. Add game, view in list (01.01.01, 01.02.01)
+4. Select game to view more info (01.03.01)
+5. Edit game (01.04.01)
+6. Add photo from library (09.01.01)
+6. Add another game
+7. Delete game (01.05.01)
+
+Searching and Bidding
+8. Search for a game (04.01.01, 04.02.01)
+9. Select and view contact info, and then bid (03.03.01, 05.01.01)
+10. View the bid that was placed in the Bids tab (05.02.01)
+11. Wow factor, show off some fuzzy search.
+
+Lending
+11. Log into the owner of the game we just bid on, navigate to Bidded tab (05.03.01, 05.04.01)
+12. Select the Game that was just bid on (05.05.01)
+13. Decline another bid on the game (05.07.01)
+14. Accept the bid we placed earlier (05.06.01)
+15. Set meeting place on map (10.01.01)
+16. Find Game in Lending tab (06.02.01)
+17. Select to view details of borrower
+
+Viewing Borrowed
+18. Log back in to user we first created
+19. Switch to borrowed tab (06.01.01)
+20. Select thing to view info
+21. View meeting location (10.02.01)
+
+Returning
+22. Switch back to user we are borrowing from
+23. Set item to returned (07.01.01)
