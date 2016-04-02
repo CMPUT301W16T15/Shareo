@@ -74,25 +74,33 @@ public class BidsFragment extends Fragment implements Observer {
         mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                ViewBidFragment vgf = new ViewBidFragment();
-                final Bundle bundle = new Bundle();
+                if (mPosition == 0) {
+                    AcceptDeclineBidsFragment adbf = new AcceptDeclineBidsFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("pos", position);
+                    bundle.putSerializable("myThing", (Thing) mList.getItemAtPosition(position));
+                    adbf.setArguments(bundle);
+                    adbf.show(getFragmentManager(), "accept_decline");
+                } else {
+                    ViewBidFragment vgf = new ViewBidFragment();
+                    final Bundle bundle = new Bundle();
 
-                // start new thread to avoid network on main thread.
-                try {
-                    // TODO...this either renders things or bids, this can't cast to Bid always
-                    Thread t = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            bundle.putSerializable("myThing", (Bid) mList.getItemAtPosition(position));
-                        }
-                    });
-                    t.start();
-                    t.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    // start new thread to avoid network on main thread.
+                    try {
+                        Thread t = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                bundle.putSerializable("myThing", (Bid) mList.getItemAtPosition(position));
+                            }
+                        });
+                        t.start();
+                        t.join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    vgf.setArguments(bundle);
+                    vgf.show(getFragmentManager(), "viewGame");
                 }
-                vgf.setArguments(bundle);
-                vgf.show(getFragmentManager(), "viewGame");
             }
         });
 
