@@ -6,6 +6,7 @@ import android.util.Log;
 import org.apache.commons.lang3.ObjectUtils;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import cmput301w16t15.shareo.ShareoApplication;
@@ -432,6 +433,17 @@ public class User extends JestData {
     public void setJestID(String ID) {
         if (ID != null) {
             JestID = ID;
+        }
+    }
+
+    public void removeIDLessThings() {
+        for (Iterator<Thing> iter = owned.iterator(); iter.hasNext();) {
+            Thing t = iter.next();
+            try {
+                t.getJestID();
+            } catch (NullIDException e) {
+                iter.remove();
+            }
         }
     }
 }
