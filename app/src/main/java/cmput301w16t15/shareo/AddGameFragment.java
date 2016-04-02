@@ -45,7 +45,6 @@ public class AddGameFragment extends DialogFragment {
     //private EditText editTextRate;
     private EditText editTextNumberPlayers;
     private EditText editTextCategory;
-    private EditText editTextPickUpLocation;
     private TextView mTextViewAddGame;
     private ImageButton gameImage;
 
@@ -54,7 +53,6 @@ public class AddGameFragment extends DialogFragment {
     private String gameDescription;
     private String numberPlayers;
     private String category;
-    private String PickUpLocation;
     private Thing mThing;
 
     private AlertDialog dialog = null;
@@ -79,7 +77,6 @@ public class AddGameFragment extends DialogFragment {
         numberPlayers = editTextNumberPlayers.getText().toString();
         //int numPlay = Integer.parseInt(numberPlayers);
         category = editTextCategory.getText().toString();
-        PickUpLocation = editTextPickUpLocation.getText().toString();
         User user = AppUserSingleton.getInstance().getUser();
 
         /**
@@ -103,7 +100,6 @@ public class AddGameFragment extends DialogFragment {
             mThing.setDescription(gameDescription);
             mThing.setName(gameName);
             mThing.setCategory(category);
-            mThing.setPickUpLocation(PickUpLocation);
             mThing.setPhoto(gamePhoto);
 
             mThing.update();
@@ -133,7 +129,6 @@ public class AddGameFragment extends DialogFragment {
         editTextDescription = (EditText) v.findViewById(R.id.editTextDescription);
         editTextNumberPlayers = (EditText) v.findViewById(R.id.editTextNumberPlayers);
         editTextCategory = (EditText) v.findViewById(R.id.editTextCategory);
-        //editTextPickUpLocation=(EditText)v.findViewById(R.id.editTextPickUpLocation);
         gameImage = (ImageButton) v.findViewById(R.id.gamePicture);
 	
 	/**
@@ -266,7 +261,6 @@ public class AddGameFragment extends DialogFragment {
         editTextDescription.setText(mThing.getDescription());
         editTextCategory.setText(mThing.getCategory());
         editTextNumberPlayers.setText(mThing.getNumberPlayers());
-        editTextPickUpLocation.setText(mThing.getPickUpLocation());
 
     /**
      * If they have a photo --> Make it visible, else leave it in GONE state.
