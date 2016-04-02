@@ -69,6 +69,14 @@
             android:layout_marginTop="10dip" />
 
         <TextView
+            android:id="@+id/textViewPickUpLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pick-up Location"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_marginTop="10dip" />
+
+        <TextView
             android:id="@+id/textViewNumberPlayers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
