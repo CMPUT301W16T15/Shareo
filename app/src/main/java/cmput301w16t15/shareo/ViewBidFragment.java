@@ -83,8 +83,8 @@ public class ViewBidFragment extends DialogFragment {
             e.printStackTrace();
         }
         // TODO: getTopBidAmount this doesn't update properly
-        mMaxBid.setText(mMaxBid.getText() + ": " + mThing.getTopBidAmount());
-        mMyBid.setText(mMyBid.getText() + ": " + mBid.getBidAmount());
+        mMaxBid.setText(mMaxBid.getText() + ": $" + (double) mThing.getTopBidAmount()/100);
+        mMyBid.setText(mMyBid.getText() + ": $" + (double) mBid.getBidAmount()/100);
         mOwnerButton.setText(mThing.getOwnerID());
         mtextViewGameName.setText(mtextViewGameName.getText() + ": " + mThing.getName());
         mtextViewDescription.setText(mtextViewDescription.getText() + ": " + mThing.getDescription());
@@ -94,7 +94,7 @@ public class ViewBidFragment extends DialogFragment {
         // Build the dialog and set up the button click handlers
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(v)
-                .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dismiss();
 

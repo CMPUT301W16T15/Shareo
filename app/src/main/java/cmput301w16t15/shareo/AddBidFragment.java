@@ -222,7 +222,7 @@ public class AddBidFragment extends DialogFragment {
         mtextViewDescription.setText(mtextViewDescription.getText() + ": " + mThing.getDescription());
         mtextViewNumberPlayers.setText(mtextViewNumberPlayers.getText() + ": " + mThing.getNumberPlayers());
         mtextViewCategory.setText(mtextViewCategory.getText() + ": " + mThing.getCategory());
-        mtextViewCurrentTopBid.setText(mtextViewCurrentTopBid.getText() + ": " + String.valueOf(mThing.getTopBidAmount() / 100));
+        mtextViewCurrentTopBid.setText(mtextViewCurrentTopBid.getText() + ": $" + String.valueOf((double) mThing.getTopBidAmount() / 100));
         if (mThing.getPhotoModel() != null) {
             mimageViewGame.setImageBitmap(mThing.getPhotoModel().getPhoto());
         }
