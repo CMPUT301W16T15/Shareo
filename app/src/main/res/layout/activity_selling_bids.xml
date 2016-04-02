@@ -73,6 +73,31 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/textViewPickUpLocationLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pick-up Location: "
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_marginTop="0dp" />
+
+        <TextView
+            android:id="@+id/textViewPickUpLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:layout_marginTop="0dp">
+        </TextView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginLeft="10.0dip"
+        android:layout_marginRight="10.0dip"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
             android:id="@+id/textViewNumPlayerLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
