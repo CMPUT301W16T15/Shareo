@@ -29,7 +29,6 @@ public class Thing extends JestData {
     private Status status;
     private String category;
     private String numberPlayers;
-    private String PickUpLocation;
     private PhotoModel photo;
     @JestId
     private String JestID;
@@ -87,18 +86,16 @@ public class Thing extends JestData {
         private String description;
         private String category;
         private String numberPlayers;
-        private String PickUpLocation;
         private PhotoModel p;
         private Boolean newThread;
 
-        public Builder(ShareoData data, User owner, String name, String description, String category, String numberPlayers,String PickUpLocation) {
+        public Builder(ShareoData data, User owner, String name, String description, String category, String numberPlayers) {
             this.data = data;
             this.owner = owner;
             this.name = name;
             this.category = category;
             this.numberPlayers = numberPlayers;
             this.description = description;
-            this.PickUpLocation = PickUpLocation;
             newThread = true;
             this.p = null;
         }
@@ -115,7 +112,7 @@ public class Thing extends JestData {
 
         public Thing build() throws UserDoesNotExistException {
 
-            final Thing t = new Thing(name, description, category, numberPlayers,PickUpLocation);
+            final Thing t = new Thing(name, description, category, numberPlayers);
             t.ownerID = owner.getJestID();
             t.setDataSource(data);
             t.setPhoto(p);
@@ -225,16 +222,15 @@ public class Thing extends JestData {
 
     public enum Status {AVAILABLE, BIDDED, BORROWED}
 
-    protected Thing(String gameName, String description, String category, String numberPlayers,String PickUpLocation) {
-        this(gameName, description, category, numberPlayers, PickUpLocation,Status.AVAILABLE);
+    protected Thing(String gameName, String description, String category, String numberPlayers) {
+        this(gameName, description, category, numberPlayers,Status.AVAILABLE);
     }
 
-    public Thing(String gameName, String description, String category, String numberPlayers,String PickUpLocation,Status status) {
+    public Thing(String gameName, String description, String category, String numberPlayers,Status status) {
         this.status = status;
         this.description = description;
         this.category = category;
         this.numberPlayers = numberPlayers;
-        this.PickUpLocation = PickUpLocation;
         this.name = gameName;
         this.bidIDs = new ArrayList<>();
     }
@@ -312,8 +308,6 @@ public class Thing extends JestData {
         this.numberPlayers = numberPlayers;
     }
 
-    public void setPickUpLocation(String PickUpLocation){this.PickUpLocation = PickUpLocation;}
-
     public void setOwner(User owner) throws NullIDException {
         if (this.owner == null) {
             getOwner();
@@ -370,7 +364,6 @@ public class Thing extends JestData {
     public String getName() {
         return name;
     }
-    public String getPickUpLocation (){return PickUpLocation;}
     public String getOwnerID() {
         return this.ownerID;
     }
