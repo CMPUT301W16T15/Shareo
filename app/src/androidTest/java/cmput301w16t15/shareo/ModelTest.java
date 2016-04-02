@@ -23,90 +23,110 @@ public class ModelTest extends ActivityInstrumentationTestCase2 {
 
     public static void populateData() {
         ShareoData data = ShareoData.getInstance();
-        User joe = data.getUser("joe");
-        User sally = data.getUser("sally");
-        User fred = data.getUser("fred");
 
-        if (joe != null) joe.new Deleter().useMainThread().delete();
-        if (sally != null) sally.new Deleter().useMainThread().delete();
-        if (fred != null) fred.new Deleter().useMainThread().delete();
-
-        joe = data.getUser("joe");
-        sally = data.getUser("sally");
-        fred = data.getUser("fred");
-
-        assertNull(joe);
-        assertNull(sally);
-        assertNull(fred);
+        User joe = null;
+        User sally = null;
+        User fred = null;
+        User dan = null;
 
         try {
             joe = new User.Builder(data, "joe", "Joe Smith", "joe455@shaw.ca", "We all live in a yellow submarine").build();
             sally = new User.Builder(data, "sally", "Sally Winchester", "sallywin@gmail.com", "Carpe diem").build();
             fred = new User.Builder(data, "fred", "Fred Tanner", "ftanner@hotmail.com", "Don't skip leg day").build();
+            dan = new User.Builder(data, "dan", "Daniel Simons", "daniel.simons@gmail.com", "Bah-dun-dun-ch").build();
         } catch (UsernameAlreadyExistsException e) {
             e.printStackTrace();
             fail();
         }
 
-        Thing t1 = null;
-        Thing t2 = null;
-        Thing t3 = null;
-        Thing t4 = null;
+        Thing tj_1 = null;
+        Thing tj_2 = null;
+        Thing tj_3 = null;
+        Thing ts_1 = null;
+        Thing ts_2 = null;
+        Thing tf_1 = null;
+        Thing tf_2 = null;
         try {
-            t1 = new Thing.Builder(data, joe, "Monopoly", "The Fast-Dealing Property Trading Game.","Board, Competitive","4").useMainThread().build();
-            t2 = new Thing.Builder(data, joe, "The Game of Life", "Get a job, get married, have children and retire, all in a game's work!","Board, Competitive","6").useMainThread().build();
-            t3 = new Thing.Builder(data, sally, "Hanabi", "A cooperative game in which players try to create the perfect fireworks show by placing the cards on the table in the right order.","Card, Cooperative, Logic","5").useMainThread().build();
-            t4 = new Thing.Builder(data, fred, "Blokus", "Try to fit as many of your pieces on the board as you can, while your opponents to the same.","Board, Competitive, Strategy","4").useMainThread().build();
+            tj_1 = new Thing.Builder(data, joe, "Monopoly",
+                    "The Fast-Dealing Property Trading Game.",
+                    "Board, Competitive","4", null).useMainThread().build();
+            tj_2 = new Thing.Builder(data, joe, "The Game of Life",
+                    "Get a job, get married, have children and retire, all in a game's work!",
+                    "Board, Competitive","6", null).useMainThread().build();
+            tj_3 = new Thing.Builder(data, joe, "Settlers of Catan",
+                    "Embark on a quest to settle the fair isle of Catan! Guide your brave settlers to victory by using clever trading and development.",
+                    "Board, Competitive", "6", null).useMainThread().build();
+            ts_1 = new Thing.Builder(data, sally, "Hanabi",
+                    "A cooperative game in which players try to create the perfect fireworks show by placing the cards on the table in the right order.",
+                    "Card, Cooperative, Logic","5", null).useMainThread().build();
+            ts_2 = new Thing.Builder(data, sally, "Space Alert",
+                    "Players become crew members of a small spaceship scanning dangerous sectors of galaxy. The missions last just 10 real-time minutes (hyperspace jump, sector scan, hyperspace jump back) and the only task the players have is to protect their ship.",
+                    "Board, Cooperative, Space", "5", null).useMainThread().build();
+            tf_1 = new Thing.Builder(data, fred, "Blokus",
+                    "Try to fit as many of your pieces on the board as you can, while your opponents to the same.",
+                    "Board, Competitive, Strategy","4", null).useMainThread().build();
+            tf_2 = new Thing.Builder(data, fred, "Exploding Kittens",
+                    "A kitty-powered version of Russian Roulette",
+                    "Card, Competitive", "5", null).useMainThread().build();
         } catch (UserDoesNotExistException e) {
             e.printStackTrace();
             fail();
         }
 
-        assertTrue(t1.getOwner().equals(joe));
-        assertTrue(t2.getOwner().equals(joe));
-        assertTrue(t3.getOwner().equals(sally));
-        assertTrue(t4.getOwner().equals(fred));
+        assertTrue(tj_1.getOwner().equals(joe));
+        assertTrue(tj_2.getOwner().equals(joe));
+        assertTrue(ts_1.getOwner().equals(sally));
+        assertTrue(tf_1.getOwner().equals(fred));
+        assertTrue(tf_2.getOwner().equals(fred));
+        assertTrue(ts_2.getOwner().equals(sally));
+        assertTrue(tj_3.getOwner().equals(joe));
 
         // TODO add some bids.
-        Bid b1 = null;
-        Bid b2 = null;
-        Bid b3 = null;
-        Bid b4 = null;
-        Bid b5 = null;
+        Bid b1_1 = null;
+        Bid b1_2 = null;
+        Bid b1_3 = null;
+        Bid b2_1 = null;
+        Bid b3_1 = null;
+        Bid b4_1 = null;
         try {
-            b1 = new Bid.Builder(data, joe, t3, 100).useMainThread().build();
-            b2 = new Bid.Builder(data, sally, t1, 200).useMainThread().build();
-            b3 = new Bid.Builder(data, sally, t4, 300).useMainThread().build();
-            b4 = new Bid.Builder(data, fred, t1, 400).useMainThread().build();
-            b5 = new Bid.Builder(data, fred, t2, 500).useMainThread().build();
+            b1_1 = new Bid.Builder(data, sally, tj_1, 1000).useMainThread().build();
+            b1_2 = new Bid.Builder(data, fred, tj_1, 1001).useMainThread().build();
+            b1_3 = new Bid.Builder(data, dan, tj_1, 800).useMainThread().build();
+            b2_1 = new Bid.Builder(data, fred, tj_2, 700).useMainThread().build();
+            b3_1 = new Bid.Builder(data, joe, ts_1, 1500).useMainThread().build();
+            b4_1 = new Bid.Builder(data, sally, tf_1, 1699).useMainThread().build();
         } catch (NullIDException e) {
             e.printStackTrace();
             fail();
         }
 
-        assertTrue(b1.getBidder().equals(joe));
-        assertTrue(b2.getBidder().equals(sally));
-        assertTrue(b3.getBidder().equals(sally));
-        assertTrue(b4.getBidder().equals(fred));
-        assertTrue(b5.getBidder().equals(fred));
+        assertTrue(b1_1.getBidder().equals(sally));
+        assertTrue(b1_2.getBidder().equals(fred));
+        assertTrue(b1_3.getBidder().equals(dan));
+        assertTrue(b2_1.getBidder().equals(fred));
+        assertTrue(b3_1.getBidder().equals(joe));
+        assertTrue(b4_1.getBidder().equals(sally));
 
-        assertTrue(b1.getThing().equals(t3));
-        assertTrue(b2.getThing().equals(t1));
-        assertTrue(b3.getThing().equals(t4));
-        assertTrue(b4.getThing().equals(t1));
-        assertTrue(b5.getThing().equals(t2));
+        assertTrue(b1_1.getThing().equals(tj_1));
+        assertTrue(b1_2.getThing().equals(tj_1));
+        assertTrue(b1_3.getThing().equals(tj_1));
+        assertTrue(b2_1.getThing().equals(tj_2));
+        assertTrue(b3_1.getThing().equals(ts_1));
+        assertTrue(b4_1.getThing().equals(tf_1));
 
-        assertTrue(b1.getBidAmount() == 100);
-        assertTrue(b2.getBidAmount() == 200);
-        assertTrue(b3.getBidAmount() == 300);
-        assertTrue(b4.getBidAmount() == 400);
-        assertTrue(b5.getBidAmount() == 500);
+        assertTrue(b1_1.getBidAmount() == 1000);
+        assertTrue(b1_2.getBidAmount() == 1001);
+        assertTrue(b1_3.getBidAmount() == 800);
+        assertTrue(b2_1.getBidAmount() == 700);
+        assertTrue(b3_1.getBidAmount() == 1500);
+        assertTrue(b4_1.getBidAmount() == 1699);
 
-        assertTrue(joe.getBids().contains(b1));
-        assertTrue(sally.getBids().contains(b2));
-        assertTrue(sally.getBids().contains(b3));
-        assertTrue(fred.getBids().contains(b4));
-        assertTrue(fred.getBids().contains(b5));
+        assertTrue(sally.getBids().contains(b1_1));
+        assertTrue(fred.getBids().contains(b1_2));
+        assertTrue(dan.getBids().contains(b1_3));
+        assertTrue(fred.getBids().contains(b2_1));
+        assertTrue(joe.getBids().contains(b3_1));
+        assertTrue(sally.getBids().contains(b4_1));
     }
 
     public static void testPopulate() {
