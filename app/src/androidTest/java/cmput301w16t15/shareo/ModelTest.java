@@ -39,14 +39,10 @@ public class ModelTest extends ActivityInstrumentationTestCase2 {
         assertNull(sally);
         assertNull(fred);
 
-        String fullName = "my full name";
-        String emailAddress = "my email address";
-        String motto = "my motto";
-
         try {
-            joe = new User.Builder(data, "joe", fullName, emailAddress, motto).build();
-            sally = new User.Builder(data, "sally", fullName, emailAddress, motto).build();
-            fred = new User.Builder(data, "fred", fullName, emailAddress, motto).build();
+            joe = new User.Builder(data, "joe", "Joe Smith", "joe455@shaw.ca", "We all live in a yellow submarine").build();
+            sally = new User.Builder(data, "sally", "Sally Winchester", "sallywin@gmail.com", "Carpe diem").build();
+            fred = new User.Builder(data, "fred", "Fred Tanner", "ftanner@hotmail.com", "Don't skip leg day").build();
         } catch (UsernameAlreadyExistsException e) {
             e.printStackTrace();
             fail();
@@ -57,10 +53,10 @@ public class ModelTest extends ActivityInstrumentationTestCase2 {
         Thing t3 = null;
         Thing t4 = null;
         try {
-            t1 = new Thing.Builder(data, joe, "Game1", "One game to rule them all,","GameCategory","2").useMainThread().build();
-            t2 = new Thing.Builder(data, joe, "Game2", "One game to find them,","GameCategory","2").useMainThread().build();
-            t3 = new Thing.Builder(data, sally, "Game3", "One game to bring them all,","GameCategory","2").useMainThread().build();
-            t4 = new Thing.Builder(data, fred, "Game4", "And in the darkness, bind them.","GameCategory","2").useMainThread().build();
+            t1 = new Thing.Builder(data, joe, "Monopoly", "The Fast-Dealing Property Trading Game.","Board, Competitive","4").useMainThread().build();
+            t2 = new Thing.Builder(data, joe, "The Game of Life", "Get a job, get married, have children and retire, all in a game's work!","Board, Competitive","6").useMainThread().build();
+            t3 = new Thing.Builder(data, sally, "Hanabi", "A cooperative game in which players try to create the perfect fireworks show by placing the cards on the table in the right order.","Card, Cooperative, Logic","5").useMainThread().build();
+            t4 = new Thing.Builder(data, fred, "Blokus", "Try to fit as many of your pieces on the board as you can, while your opponents to the same.","Board, Competitive, Strategy","4").useMainThread().build();
         } catch (UserDoesNotExistException e) {
             e.printStackTrace();
             fail();
@@ -111,26 +107,6 @@ public class ModelTest extends ActivityInstrumentationTestCase2 {
         assertTrue(sally.getBids().contains(b3));
         assertTrue(fred.getBids().contains(b4));
         assertTrue(fred.getBids().contains(b5));
-
-        try {
-            b1.new Deleter().useMainThread().delete();
-
-            assertFalse(joe.getBids().contains(b1));
-            assertNull(data.getBid(b1.getJestID()));
-        } catch (NullIDException e) {
-            fail();
-        }
-
-        sally.new Deleter().useMainThread().delete();
-
-        try {
-            assertNull(data.getUser(sally.getName()));
-            assertNull(data.getGame(t3.getJestID()));
-            assertNull(data.getBid(b2.getJestID()));
-            assertNull(data.getBid(b3.getJestID()));
-        } catch (NullIDException e) {
-            fail();
-        }
     }
 
     public static void testPopulate() {
