@@ -84,7 +84,7 @@ public class AddGameFragment extends DialogFragment {
          */
         if (mPositionIndex == -1) {
             try {
-                new Thing.Builder(ShareoData.getInstance(), user, gameName, gameDescription, category, numberPlayers,PickUpLocation).setPhoto(gamePhoto).build();
+                new Thing.Builder(ShareoData.getInstance(), user, gameName, gameDescription, category, numberPlayers).setPhoto(gamePhoto).build();
             } catch (UserDoesNotExistException e) {
                 // TODO catch error in a meaningful way.
                 e.printStackTrace();
