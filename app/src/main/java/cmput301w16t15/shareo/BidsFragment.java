@@ -35,6 +35,7 @@ public class BidsFragment extends Fragment implements Observer {
     private ArrayAdapter mListAdapter;
     private TextView mEmptyMessage;
     private int mPosition = 0;
+    private List<?> data;
 
 
     public BidsFragment() {
@@ -78,37 +79,13 @@ public class BidsFragment extends Fragment implements Observer {
                     AcceptDeclineBidsFragment adbf = new AcceptDeclineBidsFragment();
                     final Bundle bundle = new Bundle();
                     bundle.putInt("pos", position);
-                    try {
-                        Thread t = new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                bundle.putSerializable("myThing", (Thing) mList.getItemAtPosition(position));
-                            }
-                        });
-                        t.start();
-                        t.join();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                    bundle.putSerializable("myThing", (Thing) data.get(position));
                     adbf.setArguments(bundle);
                     adbf.show(getFragmentManager(), "accept_decline");
                 } else {
                     ViewBidFragment vgf = new ViewBidFragment();
                     final Bundle bundle = new Bundle();
-
-                    // start new thread to avoid network on main thread.
-                    try {
-                        Thread t = new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                bundle.putSerializable("myThing", (Bid) mList.getItemAtPosition(position));
-                            }
-                        });
-                        t.start();
-                        t.join();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                    bundle.putSerializable("myThing", (Bid) data.get(position));
                     vgf.setArguments(bundle);
                     vgf.show(getFragmentManager(), "viewGame");
                 }
@@ -146,6 +123,7 @@ public class BidsFragment extends Fragment implements Observer {
 
         @Override
         protected void onPostExecute(List<Bid> d) {
+            data = d;
             mListAdapter = new CustomAdapters.BasicBidAdapter(getActivity(), R.layout.minimal_thing_row, d);
             mList.setAdapter(mListAdapter);
 
@@ -166,6 +144,7 @@ public class BidsFragment extends Fragment implements Observer {
 
         @Override
         protected void onPostExecute(List<Thing> d) {
+            data = d;
             mListAdapter = new CustomAdapters.BasicThingAdapter(getActivity(), R.layout.minimal_thing_row, d);
             mList.setAdapter(mListAdapter);
 
