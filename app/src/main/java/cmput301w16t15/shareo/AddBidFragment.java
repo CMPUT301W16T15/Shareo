@@ -42,6 +42,7 @@ public class AddBidFragment extends DialogFragment {
     private TextView mtextViewDescription;
     private TextView mtextViewNumberPlayers;
     private TextView mtextViewCategory;
+    private TextView mtextViewPickUpLocation;
     private ImageView mimageViewGame;
     private Button mOwnerButton;
 
@@ -63,6 +64,7 @@ public class AddBidFragment extends DialogFragment {
         mtextViewDescription = (TextView) v.findViewById(R.id.textViewDescription);
         mtextViewNumberPlayers = (TextView) v.findViewById(R.id.textViewNumberPlayers);
         mtextViewCategory = (TextView) v.findViewById(R.id.textViewCategory);
+        mtextViewPickUpLocation= (TextView)v.findViewById(R.id.editTextPickUpLocation);
         mtextViewCurrentTopBid = (TextView) v.findViewById(R.id.textViewCurrentTopBid);
         //mtextViewBidAmount = (TextView) v.findViewById(R.id.textViewBidAmount);
         mOwnerButton = (Button) v.findViewById(R.id.ownerButton);
@@ -222,6 +224,7 @@ public class AddBidFragment extends DialogFragment {
         mtextViewDescription.setText(mtextViewDescription.getText() + ": " + mThing.getDescription());
         mtextViewNumberPlayers.setText(mtextViewNumberPlayers.getText() + ": " + mThing.getNumberPlayers());
         mtextViewCategory.setText(mtextViewCategory.getText() + ": " + mThing.getCategory());
+        mtextViewPickUpLocation.setText(mtextViewPickUpLocation.getText()+ ": " + mThing.getPickUpLocation());
         mtextViewCurrentTopBid.setText(mtextViewCurrentTopBid.getText() + ": $" + String.valueOf((double) mThing.getTopBidAmount() / 100));
         if (mThing.getPhotoModel() != null) {
             mimageViewGame.setImageBitmap(mThing.getPhotoModel().getPhoto());
