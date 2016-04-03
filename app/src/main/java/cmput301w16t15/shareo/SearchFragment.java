@@ -132,7 +132,8 @@ public class SearchFragment extends Fragment {
             List<Thing> res = ShareoData.getInstance().getGamesByField(mSearchField, mQueryText);
             List<Thing> filtered = new ArrayList<>();
             for (Thing t : res) {
-                if (t.getOwner().getJestID().equals(AppUserSingleton.getInstance().getUser().getJestID())) {
+                if (t.getOwner().getJestID().equals(AppUserSingleton.getInstance().getUser().getJestID()) ||
+                        t.getStatus() == Thing.Status.BORROWED) {
                     continue;
                 }
                 filtered.add(t);
