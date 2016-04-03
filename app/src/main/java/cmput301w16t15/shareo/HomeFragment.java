@@ -138,7 +138,7 @@ public class HomeFragment extends Fragment implements Observer {
                         showAcceptDeclineDialog(thing, position);
                     }
                 } else if (mPosition == 1) { // borrowed thing...view game info and profile...of maybe just profile
-                    showGameOwnerInfo(thing);
+                    showBorrowedGameDialog(thing, position);
                 } else { // lent, so will have zero gets
                     showReturnGameDialog(thing, position);
                 }
@@ -190,6 +190,15 @@ public class HomeFragment extends Fragment implements Observer {
         bundle.putSerializable("myThing", data.get(position));
         returnFragment.setArguments(bundle);
         returnFragment.show(getFragmentManager(), "return");
+    }
+
+    private void showBorrowedGameDialog(Thing thing, int position) {
+        BorrowingGameFragment borrowFragment = new BorrowingGameFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt("pos", position);
+        bundle.putSerializable("myThing", data.get(position));
+        borrowFragment.setArguments(bundle);
+        borrowFragment.show(getFragmentManager(), "borrowed");
     }
 
     @Override
