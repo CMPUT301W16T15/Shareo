@@ -65,7 +65,6 @@ public class AcceptDeclineBidsFragment extends DialogFragment implements Observe
         mListView = (ListView) v.findViewById(R.id.listViewBid);
         mListAdapter = new CustomAdapters.AcceptDeclineBidAdapter(this.getContext(), R.layout.bid_accept_decline_row, bidList);
         mListView.setAdapter(mListAdapter);
-
         return v;
     }
 
@@ -74,6 +73,7 @@ public class AcceptDeclineBidsFragment extends DialogFragment implements Observe
         super.onDestroyView();
         if (mUser != null) {
             mUser.removeView(this);
+            thing.update();
         }
     }
 
@@ -84,9 +84,11 @@ public class AcceptDeclineBidsFragment extends DialogFragment implements Observe
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mListAdapter.notifyDataSetChanged();
-                if (bidList.size() == 0) {
-                    dismiss();
+                if (mListAdapter != null && bidList != null) {
+                    mListAdapter.notifyDataSetChanged();
+                    if (bidList.size() == 0) {
+                        dismiss();
+                    }
                 }
             }
         });
@@ -95,7 +97,9 @@ public class AcceptDeclineBidsFragment extends DialogFragment implements Observe
     private class GetBidsTask extends AsyncTask<Void, Void, List<Bid>> {
         @Override
         protected List<Bid> doInBackground(Void... params) {
-            return thing.getBids();
+            List<Bid> bids = thing.getBids();
+            thing.setChecked(true);
+            return bids;
         }
     }
 }

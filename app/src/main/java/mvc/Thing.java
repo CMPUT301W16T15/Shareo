@@ -41,6 +41,7 @@ public class Thing extends JestData {
     private String acceptedBidID;
     private transient Bid acceptedBid;
     private Location meetingPlace;
+    private Boolean checked = false;
 
     public boolean removeBid(Bid bid) {
         //TODO notify bid that it is removed.
@@ -392,6 +393,7 @@ public class Thing extends JestData {
         try {
             if (!bidIDs.contains(bid.getJestID())) {
                 bidIDs.add(bid.getJestID());
+                checked = false;
                 if (bids == null) {
                     bids = getBids();
                 }
@@ -424,6 +426,14 @@ public class Thing extends JestData {
             throw new NullIDException();
         }
         return JestID;
+    }
+
+    public Boolean getChecked() {
+        return checked;
+    }
+
+    public void setChecked(Boolean checked) {
+        this.checked = checked;
     }
 
     @Override

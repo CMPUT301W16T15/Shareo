@@ -79,7 +79,8 @@ public class BidsFragment extends Fragment implements Observer {
                     AcceptDeclineBidsFragment adbf = new AcceptDeclineBidsFragment();
                     final Bundle bundle = new Bundle();
                     bundle.putInt("pos", position);
-                    bundle.putSerializable("myThing", (Thing) data.get(position));
+                    Thing clicked = (Thing)data.get(position);
+                    bundle.putSerializable("myThing", (Thing) clicked);
                     adbf.setArguments(bundle);
                     adbf.show(getFragmentManager(), "accept_decline");
                 } else {

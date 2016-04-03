@@ -107,7 +107,13 @@ public class CustomAdapters {
             View v = inflater.inflate(R.layout.minimal_thing_row, parent, false);
 
             t = things.get(position);
-
+            //backwards compatability for things missing checked variable
+            try {
+                if (t.getChecked() == true) {
+                    v.findViewById(R.id.notification).setVisibility(View.INVISIBLE);
+                }
+            } catch (Exception e) {
+            }
             TextView name = (TextView) v.findViewById(R.id.name);
             name.setText(t.getName());
 

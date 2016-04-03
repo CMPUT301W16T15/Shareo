@@ -77,7 +77,6 @@ public class Bid extends JestData {
                         try {
                             user.addBid(bid);
                             thing.addBid(bid);
-
                             user.update();
                             thing.update();
                         } catch (NullIDException e) {
