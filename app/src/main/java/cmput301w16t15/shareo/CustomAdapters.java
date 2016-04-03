@@ -291,7 +291,6 @@ public class CustomAdapters {
             @Override
             protected Void doInBackground(Bid... bid) {
                 bid[0].getThing().borrow(b);
-
                 return null;
             }
         }

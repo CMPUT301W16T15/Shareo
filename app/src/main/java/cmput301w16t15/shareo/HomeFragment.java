@@ -140,7 +140,7 @@ public class HomeFragment extends Fragment implements Observer {
                 } else if (mPosition == 1) { // borrowed thing...view game info and profile...of maybe just profile
                     showGameOwnerInfo(thing);
                 } else { // lent, so will have zero gets
-                    showEditGameDialog(thing, position);
+                    showReturnGameDialog(thing, position);
                 }
             }
         });
@@ -181,6 +181,15 @@ public class HomeFragment extends Fragment implements Observer {
             Toast z = Toast.makeText(getActivity(), "Go online before editing this game.", Toast.LENGTH_SHORT);
             z.show();
         }
+    }
+
+    private void showReturnGameDialog(Thing thing, int position) {
+        ReturnFragment returnFragment = new ReturnFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt("pos", position);
+        bundle.putSerializable("myThing", data.get(position));
+        returnFragment.setArguments(bundle);
+        returnFragment.show(getFragmentManager(), "return");
     }
 
     @Override

@@ -254,7 +254,9 @@ public class Thing extends JestData {
                         e.printStackTrace();
                     }
                 }
-
+                User bidder = acceptedBid.getBidder();
+                bidder.addBorrowedThingSimple(this);
+                bidder.update();
                 this.status = Status.BORROWED;
                 Log.d("Thing", "Borrowed");
             } catch (NullIDException e) {
@@ -276,10 +278,19 @@ public class Thing extends JestData {
     }
 
     /**
-     * Used to return a thing.
+     * Used to return a thing, deletes the bid, removes it from the bidder and sets it to available.
      */
     public void returnThing()
     {
+        topBidAmount = 0;
+        User bidder = this.acceptedBid.getBidder();
+        bidder.removeBorrowedThingSimple(this);
+        bidder.update();
+        try {
+            this.acceptedBid.new Deleter().delete();
+        } catch (NullIDException e) {
+            e.printStackTrace();
+        }
         this.acceptedBid = null;
         this.status = Status.AVAILABLE;
     }
