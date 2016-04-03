@@ -1,9 +1,12 @@
 package cmput301w16t15.shareo;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -174,7 +177,7 @@ public class CustomAdapters {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(int position, View convertView, final ViewGroup parent) {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View v = inflater.inflate(R.layout.bid_accept_decline_row, parent, false);
@@ -191,6 +194,17 @@ public class CustomAdapters {
 
 
             TextView username = (TextView) v.findViewById(R.id.bid_accept_decline_username);
+            username.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    UserProfileInfo d = new UserProfileInfo();
+                    Bundle bundle = new Bundle();
+
+                    bundle.putString("userId", b.getBidder().getJestID());
+                    d.setArguments(bundle);
+                    d.show(((Activity) context).getFragmentManager(), "user_profile");
+                }
+            });
             username.setText(b.getBidder().getName());
 
             TextView rate = (TextView) v.findViewById(R.id.bid_accept_decline_rate);

@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/bid_accept_decline_username_default"
                 android:textColor="@color/black"
-                android:textSize="20sp"/>
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/bid_accept_decline_rate"
