@@ -1,11 +1,13 @@
 package cmput301w16t15.shareo;
 
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -50,8 +52,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        EditText location_ad  = (EditText)findViewById(R.id.SearchLocation);
-        String location = location_ad.getText().toString();
+        Intent intent = getIntent();
+        String location = intent.getStringExtra(LOCATION_KEY);
+        TextView textView = new TextView(this);
+        textView.setText(location);
+        setContentView(R.layout.activity_maps);
         List<Address>addressList=null;
         if (location != null || location.equals("")){
             Geocoder geocoder = new Geocoder(this);
@@ -62,13 +67,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
             Address address = addressList.get(0);
             LatLng latLng = new LatLng(address.getLatitude(),address.getLongitude());
+            // Add a marker in Sydney and move the camera
             mMap.addMarker(new MarkerOptions().position(latLng).title("Meeting Place"));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 
         }
-        // Add a marker in Sydney and move the camera
-       // LatLng sydney = new LatLng(-34, 151);
-       // mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-       // mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 }
