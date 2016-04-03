@@ -114,15 +114,6 @@ public class CustomAdapters {
             owner.setText(t.getOwnerID());
             return v;
         }
-
-        private void buttonClicked(View v) {
-            try {
-                t.new Deleter().delete();
-            } catch (NullIDException e) {
-                Log.d(TAG, "Failed to delete a thing from listView");
-            }
-
-        }
     }
 
     /**
@@ -162,14 +153,6 @@ public class CustomAdapters {
             TextView owner = (TextView) v.findViewById(R.id.owner);
             owner.setText(b.getThing().getOwnerID());
             return v;
-        }
-
-        private void buttonClicked(View v) {
-            try {
-                b.new Deleter().delete();
-            } catch (NullIDException e) {
-                Log.d(TAG, "Failed to delete a bid from listView");
-            }
         }
     }
 
