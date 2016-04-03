@@ -19,7 +19,10 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:vmSafeMode="true"
+        android:allowClearUserData="true"
+        android:hardwareAccelerated="true" >
         <activity
             android:name=".LoginActivity"
             android:label="@string/app_name"
