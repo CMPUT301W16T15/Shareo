@@ -27,6 +27,16 @@
         <item name="android:layout_marginTop">8.0dip</item>
     </style>
 
+    <style name="button_styleGreenTwo" parent="@android:style/Widget.Button">
+        <item name="android:textSize">14.0sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:background">@drawable/hbuttongreen</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">50.0dip</item>
+        <item name="android:layout_marginTop">8.0dip</item>
+    </style>
+
     <style name="button_styleYellow" parent="@android:style/Widget.Button">
         <item name="android:textSize">@dimen/button_textSize</item>
         <item name="android:textColor">@color/black</item>

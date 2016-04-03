@@ -190,7 +190,7 @@
         </LinearLayout>
 
         <Button
-            style="@style/button_styleGreen"
+            style="@style/button_styleGreenTwo"
             android:id="@+id/buttonDeleteImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
