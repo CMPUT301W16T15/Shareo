@@ -329,7 +329,8 @@ public class Thing extends JestData {
             User loggedIn = AppUserSingleton.getInstance().getUser();
             if (loggedIn != null && loggedIn.getName().equals(ownerID)) {
                 owner = loggedIn;
-            } else {
+            }
+            if (owner == null) {
                 owner = getDataSource().getUser(ownerID);
             }
         }

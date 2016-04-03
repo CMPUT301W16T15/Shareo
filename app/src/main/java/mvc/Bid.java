@@ -154,7 +154,8 @@ public class Bid extends JestData {
                         e.printStackTrace();
                     }
                 }
-            } else {
+            }
+            if (thing == null) {
                 thing = getDataSource().getGame(thingID);
             }
         }
@@ -165,7 +166,8 @@ public class Bid extends JestData {
             User loggedIn = AppUserSingleton.getInstance().getUser();
             if (loggedIn != null && bidderID.equals(loggedIn.getName())) {
                 bidder = loggedIn;
-            } else {
+            }
+            if (bidder == null) {
                 bidder = getDataSource().getUser(bidderID);
             }
         }
