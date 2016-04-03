@@ -19,7 +19,9 @@ import android.widget.TextView;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import mvc.AppUserSingleton;
 import mvc.Bid;
+import mvc.ShareoData;
 import mvc.Thing;
 import mvc.exceptions.NullIDException;
 
@@ -72,7 +74,11 @@ public class CustomAdapters {
             desc.setText(descText);
 
             TextView owner = (TextView) v.findViewById(R.id.owner);
-            owner.setText(t.getOwnerID());
+            if (AppUserSingleton.getInstance().getUser().getJestID().equals(t.getOwnerID())) {
+                owner.setText(" ");
+            } else {
+                owner.setText(t.getOwnerID());
+            }
 
             return v;
         }
@@ -113,7 +119,12 @@ public class CustomAdapters {
             desc.setText(descText);
 
             TextView owner = (TextView) v.findViewById(R.id.owner);
-            owner.setText(t.getOwnerID());
+            if (AppUserSingleton.getInstance().getUser().getJestID().equals(t.getOwnerID())) {
+                owner.setText(" ");
+            } else {
+                owner.setText(t.getOwnerID());
+            }
+
             return v;
         }
     }
