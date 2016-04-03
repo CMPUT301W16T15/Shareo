@@ -1,8 +1,10 @@
 package cmput301w16t15.shareo;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -194,7 +196,7 @@ public class CustomAdapters {
 
         @Override
         public View getView(int position, View convertView, final ViewGroup parent) {
-            LayoutInflater inflater = (LayoutInflater) context
+            final LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View v = inflater.inflate(R.layout.bid_accept_decline_row, parent, false);
 
@@ -240,24 +242,23 @@ public class CustomAdapters {
             mAcceptButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d(TAG, "Clicked accept");
-                    accept((Bid) v.getTag());
-                    notifyDataSetChanged();
-                    final Dialog dialog = new Dialog(context);
-                    dialog.setTitle("Setting a meeting place");
-                    dialog.setContentView(R.layout.setlocation);
-                    dialog.show();
-                    final EditText editText = (EditText)dialog.findViewById(R.id.locationshow);
-                    Button showMaps = (Button)dialog.findViewById(R.id.ShowMaps);
-                    Button setMaps = (Button)dialog.findViewById(R.id.SetMap);
 
-                    //store the location and show it on maps
+                    View dv = inflater.inflate(R.layout.setlocation, null);
+                    final EditText editText = (EditText)dv.findViewById(R.id.locationshow);
+                    Button showMaps = (Button)dv.findViewById(R.id.ShowMaps);
+                    Button setMaps = (Button)dv.findViewById(R.id.SetMap);
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Setting a meeting place");
+                    builder.setView(dv);
+                    final AlertDialog dialog = builder.show();
+
                     showMaps.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             String location = editText.getText().toString();
-                            Intent intent = new Intent(context,MapsActivity.class);
-                            intent.putExtra(LOCATION_KEY,location);
+                            Intent intent = new Intent(context, MapsActivity.class);
+                            intent.putExtra(LOCATION_KEY, location);
                             context.startActivity(intent);
 
                             dialog.cancel();
@@ -272,6 +273,12 @@ public class CustomAdapters {
                             dialog.cancel();
                         }
                     });
+
+                    dialog.show();
+
+                    Log.d(TAG, "Clicked accept");
+                    accept((Bid) v.getTag());
+                    notifyDataSetChanged();
                 }
             });
 
