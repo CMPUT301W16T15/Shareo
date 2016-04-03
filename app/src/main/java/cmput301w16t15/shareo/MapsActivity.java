@@ -3,11 +3,13 @@ package cmput301w16t15.shareo;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -29,7 +31,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+                .findFragmentById(R.id.mapFragment);
         mapFragment.getMapAsync(this);
     }
     public void onZoom(View view){
@@ -56,21 +58,39 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String location = intent.getStringExtra(LOCATION_KEY);
         TextView textView = new TextView(this);
         textView.setText(location);
-        setContentView(R.layout.activity_maps);
-        List<Address>addressList=null;
+        Log.v("TAG", location);
         if (location != null || location.equals("")){
-            Geocoder geocoder = new Geocoder(this);
+            new Task(new Geocoder(this)).execute(location);
+        }
+    }
+
+    private class Task extends AsyncTask<String, Void, List<Address>> {
+
+        private final Geocoder mGeo;
+
+        public Task(Geocoder g) {
+            this.mGeo = g;
+        }
+
+        @Override
+        protected List<Address> doInBackground(String... params) {
+            List<Address> a = null;
             try {
-                addressList=geocoder.getFromLocationName(location, 1);
-            }catch (IOException e){
+                a = mGeo.getFromLocationName(params[0], 1);
+            } catch (IOException e) {
                 e.printStackTrace();
             }
-            Address address = addressList.get(0);
-            LatLng latLng = new LatLng(address.getLatitude(),address.getLongitude());
-            // Add a marker in Sydney and move the camera
-            mMap.addMarker(new MarkerOptions().position(latLng).title("Meeting Place"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            return a;
+        }
 
+        @Override
+        public void onPostExecute(List<Address> o) {
+            if (o != null) { // ddin't find address
+                Address address = o.get(0);
+                LatLng latLng = new LatLng(address.getLatitude(),address.getLongitude());
+                mMap.addMarker(new MarkerOptions().position(latLng).title("Meeting Place"));
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            }
         }
     }
 }
