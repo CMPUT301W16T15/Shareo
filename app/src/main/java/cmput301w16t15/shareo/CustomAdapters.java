@@ -237,7 +237,7 @@ public class CustomAdapters {
 
             // make sure the buttons know which
             // bid they manipulate.
-            mAcceptButton.setTag(b);
+             mAcceptButton.setTag(b);
             mDeclineButton.setTag(b);
 
             mAcceptButton.setOnClickListener(new View.OnClickListener() {
@@ -246,7 +246,7 @@ public class CustomAdapters {
                     Log.d(TAG, "Clicked accept");
                     accept((Bid) v.getTag());
                     notifyDataSetChanged();
-                    Dialog dialog = new Dialog(context);
+                    final Dialog dialog = new Dialog(context);
                     dialog.setTitle("Setting a meeting place");
                     dialog.setContentView(R.layout.setlocation);
                     dialog.show();
@@ -263,6 +263,7 @@ public class CustomAdapters {
                             intent.putExtra(LOCATION_KEY,location);
                             context.startActivity(intent);
 
+                            dialog.cancel();
                         }
                     });
                     //only store the location
@@ -270,6 +271,8 @@ public class CustomAdapters {
                         @Override
                         public void onClick(View v) {
 
+
+                            dialog.cancel();
                         }
                     });
                 }
