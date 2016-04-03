@@ -85,6 +85,9 @@ public class AcceptDeclineBidsFragment extends DialogFragment implements Observe
             @Override
             public void run() {
                 mListAdapter.notifyDataSetChanged();
+                if (bidList.size() == 0) {
+                    dismiss();
+                }
             }
         });
     }
