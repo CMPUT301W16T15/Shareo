@@ -1,6 +1,8 @@
 package cmput301w16t15.shareo;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -192,6 +195,7 @@ public class CustomAdapters {
      */
     public static class AcceptDeclineBidAdapter extends ArrayAdapter<Bid> {
         private static String TAG = "ListViewBidsAcceptDecline";
+        public final static String LOCATION_KEY = "maps";
         private final Context context;
         private final List<Bid> bids;
         private Bid b;
@@ -240,8 +244,34 @@ public class CustomAdapters {
                 @Override
                 public void onClick(View v) {
                     Log.d(TAG, "Clicked accept");
-                    accept((Bid)v.getTag());
+                    accept((Bid) v.getTag());
                     notifyDataSetChanged();
+                    Dialog dialog = new Dialog(context);
+                    dialog.setTitle("Setting a meeting place");
+                    dialog.setContentView(R.layout.setlocation);
+                    dialog.show();
+                    final EditText editText = (EditText)dialog.findViewById(R.id.locationshow);
+                    Button showMaps = (Button)dialog.findViewById(R.id.ShowMaps);
+                    Button setMaps = (Button)dialog.findViewById(R.id.SetMap);
+
+                    //store the location and show it on maps
+                    showMaps.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String location = editText.getText().toString();
+                            Intent intent = new Intent(context,MapsActivity.class);
+                            intent.putExtra(LOCATION_KEY,location);
+                            context.startActivity(intent);
+
+                        }
+                    });
+                    //only store the location
+                    setMaps.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                        }
+                    });
                 }
             });
 
