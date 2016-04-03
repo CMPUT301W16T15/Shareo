@@ -261,6 +261,8 @@ public class CustomAdapters {
                             intent.putExtra(LOCATION_KEY, location);
                             context.startActivity(intent);
 
+                            // TODO set location
+
                             dialog.cancel();
                         }
                     });
@@ -269,7 +271,7 @@ public class CustomAdapters {
                         @Override
                         public void onClick(View v) {
 
-
+                            // TODO set location
                             dialog.cancel();
                         }
                     });

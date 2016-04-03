@@ -31,6 +31,7 @@
     <string name="hintRate">Hourly borrowing rate</string>
     <string name="textViewCategory">Category</string>
     <string name="hintCategory">Game category</string>
+    <string name="textViewOwner">Owner</string>
     <string name="textViewNumberPlayers">Number of Players</string>
     <string name="hintNumberPlayers"># Game Players</string>
     <string name="buttonCancel">Cancel</string>
