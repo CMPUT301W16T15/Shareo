@@ -70,6 +70,14 @@ public class AcceptDeclineBidsFragment extends DialogFragment implements Observe
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (mUser != null) {
+            mUser.removeView(this);
+        }
+    }
+
+    @Override
     public void update(Observable observable) {
         if (getActivity() == null)
             return;

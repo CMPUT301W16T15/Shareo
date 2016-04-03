@@ -48,7 +48,7 @@
     <string name="hintBidAmount">Bid on this Item</string>
     <string name="textViewBidTitle">Bid on this Item</string>
     <string name="buttonBid">Make Offer</string>
-    <string name="textViewMakeOffer">Make Offer</string>
+    <string name="textViewMakeOffer">Make Offer $</string>
 
     <string-array name="home_choices">
         <item>Available</item>

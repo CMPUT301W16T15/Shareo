@@ -121,6 +121,14 @@ public class BidsFragment extends Fragment implements Observer {
         });
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (mUser != null) {
+            mUser.removeView(this);
+        }
+    }
+
     class GetBidsTask extends AsyncTask<String, Void, List<Bid>> {
 
         @Override
