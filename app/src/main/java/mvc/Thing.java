@@ -180,20 +180,11 @@ public class Thing extends JestData {
                 ShareoApplication.getInstance().getJobManager().addJobInBackground(new DeleteGameJob(Thing.this, new CallbackInterface() {
                     @Override
                     public void onSuccess() {
-                        User gameOwner = null;
-                        User loggedIn = AppUserSingleton.getInstance().getUser();
-                        if (loggedIn != null && loggedIn.getName().equals(ownerID)) {
-                            gameOwner = loggedIn;
-                        } else if (owner == null && ownerID != null) {
-                            Thing.this.getOwner();
-                            gameOwner = owner;
-                        }
-
+                        User gameOwner = getOwner();
                         if (gameOwner != null) {
                             gameOwner.removeOwnedThingSimple(Thing.this);
                             gameOwner.update();
                         }
-
                         deleteDependants();
                     }
 
@@ -335,7 +326,12 @@ public class Thing extends JestData {
 
     public User getOwner() {
         if (owner == null && ownerID != null) {
-            owner = getDataSource().getUser(ownerID);
+            User loggedIn = AppUserSingleton.getInstance().getUser();
+            if (loggedIn != null && loggedIn.getName().equals(ownerID)) {
+                owner = loggedIn;
+            } else {
+                owner = getDataSource().getUser(ownerID);
+            }
         }
         return owner;
     }

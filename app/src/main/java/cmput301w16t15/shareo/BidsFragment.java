@@ -15,11 +15,11 @@ import org.honorato.multistatetogglebutton.MultiStateToggleButton;
 import org.honorato.multistatetogglebutton.ToggleButton;
 
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 
 import mvc.AppUserSingleton;
 import mvc.Bid;
+import mvc.Observable;
+import mvc.Observer;
 import mvc.Thing;
 import mvc.User;
 
@@ -66,7 +66,7 @@ public class BidsFragment extends Fragment implements Observer {
                              Bundle savedInstanceState) {
         // user singleton...used for getting data
         mUser = AppUserSingleton.getInstance().getUser();
-        //mUser.addObserver(this);
+        mUser.addView(this);
 
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_bids, container, false);
@@ -110,8 +110,15 @@ public class BidsFragment extends Fragment implements Observer {
     }
 
     @Override
-    public void update(Observable observable, Object data) {
-        mListAdapter.notifyDataSetChanged();
+    public void update(Observable observable) {
+        if (getActivity() == null)
+            return;
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                setAdapterBasedOnTab();
+            }
+        });
     }
 
     class GetBidsTask extends AsyncTask<String, Void, List<Bid>> {

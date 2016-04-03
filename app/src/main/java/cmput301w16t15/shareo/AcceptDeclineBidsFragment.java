@@ -19,13 +19,18 @@ import java.util.List;
 
 import mvc.AppUserSingleton;
 import mvc.Bid;
+import mvc.Observable;
+import mvc.Observer;
 import mvc.ShareoData;
 import mvc.Thing;
+import mvc.User;
 
-public class AcceptDeclineBidsFragment extends DialogFragment {
+public class AcceptDeclineBidsFragment extends DialogFragment implements Observer {
+
     private static String TAG ="AcceptDeclineBidsFragment";
     private List<Bid> bidList;
     private Thing thing;
+    User mUser;
 
     private ListView mListView;
     private CustomAdapters.AcceptDeclineBidAdapter mListAdapter;
@@ -41,7 +46,8 @@ public class AcceptDeclineBidsFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_selling_bids, container, false);
-
+        mUser = AppUserSingleton.getInstance().getUser();
+        mUser.addView(this);
         thing = (Thing) getArguments().getSerializable("myThing");
         bidList = new GetBidsTask().doInBackground();
 
@@ -61,6 +67,18 @@ public class AcceptDeclineBidsFragment extends DialogFragment {
         mListView.setAdapter(mListAdapter);
 
         return v;
+    }
+
+    @Override
+    public void update(Observable observable) {
+        if (getActivity() == null)
+            return;
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mListAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     private class GetBidsTask extends AsyncTask<Void, Void, List<Bid>> {

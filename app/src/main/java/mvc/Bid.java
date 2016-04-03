@@ -1,5 +1,6 @@
 package mvc;
 
+import android.app.Application;
 import android.util.Log;
 
 import cmput301w16t15.shareo.ShareoApplication;
@@ -109,14 +110,13 @@ public class Bid extends JestData {
                 ShareoApplication.getInstance().getJobManager().addJobInBackground(new DeleteBidJob(Bid.this, new CallbackInterface() {
                     @Override
                     public void onSuccess() {
+                        getBidder().removeBidSimple(Bid.this);
+                        Log.d(TAG, "Removing Bid from bidder.removeBidSimple");
+                        getBidder().update();
 
-                            getBidder().removeBidSimple(Bid.this);
-                            Log.d(TAG, "Removing Bid from bidder.removeBidSimple");
-                            getBidder().update();
-
-                            getThing().removeBidSimple(Bid.this);
-                            Log.d(TAG, "Removing Bid from thing.removeBidSimple");
-                            getThing().update();
+                        getThing().removeBidSimple(Bid.this);
+                        Log.d(TAG, "Removing Bid from thing.removeBidSimple");
+                        getThing().update();
 
                     }
 
@@ -129,10 +129,9 @@ public class Bid extends JestData {
                 ShareoData.getInstance().removeBid(Bid.this);
 
                 getBidder().removeBidSimple(Bid.this);
-                getBidder().update();
-
                 getThing().removeBidSimple(Bid.this);
                 getThing().update();
+                getBidder().update();
             }
         }
 
@@ -144,13 +143,31 @@ public class Bid extends JestData {
 
     public Thing getThing() {
         if (thing == null) {
-            thing = getDataSource().getGame(thingID);
+            User loggedIn = AppUserSingleton.getInstance().getUser();
+            if (loggedIn != null) {
+                for (Thing t : loggedIn.getOwnedThings()) {
+                    try {
+                        if (t.getJestID().equals(thingID)) {
+                            thing = t;
+                        }
+                    } catch (NullIDException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } else {
+                thing = getDataSource().getGame(thingID);
+            }
         }
         return thing;
     }
     public User getBidder() {
         if (bidder == null) {
-            bidder = getDataSource().getUser(bidderID);
+            User loggedIn = AppUserSingleton.getInstance().getUser();
+            if (loggedIn != null && bidderID.equals(loggedIn.getName())) {
+                bidder = loggedIn;
+            } else {
+                bidder = getDataSource().getUser(bidderID);
+            }
         }
         return bidder;
     }

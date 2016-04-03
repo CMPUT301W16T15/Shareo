@@ -3,6 +3,8 @@ package mvc;
 import java.util.ArrayList;
 import java.util.List;
 
+import cmput301w16t15.shareo.ShareoApplication;
+
 /**
  * Created by A on 2016-02-10.
  */
