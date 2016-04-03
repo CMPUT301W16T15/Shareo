@@ -112,14 +112,6 @@ public class CustomAdapters {
 
             TextView owner = (TextView) v.findViewById(R.id.owner);
             owner.setText(t.getOwnerID());
-
-            ImageView mDeleteBtn = (ImageView) v.findViewById(R.id.delete);
-            mDeleteBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    buttonClicked(v);
-                }
-            });
             return v;
         }
 
@@ -169,14 +161,6 @@ public class CustomAdapters {
 
             TextView owner = (TextView) v.findViewById(R.id.owner);
             owner.setText(b.getThing().getOwnerID());
-
-            ImageView mDeleteBtn = (ImageView) v.findViewById(R.id.delete);
-            mDeleteBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    buttonClicked(v);
-                }
-            });
             return v;
         }
 
