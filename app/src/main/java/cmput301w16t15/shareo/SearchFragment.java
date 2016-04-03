@@ -10,8 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +31,9 @@ public class SearchFragment extends Fragment {
     private RadioGroup mRadioGroup;
     private String mQueryText;
     private String mSearchField;
+    private TextView mSearchTitle;
+    private ProgressBar mProgressBar;
+    private TextView mEmpty;
 
     private Handler mHandler;
     private Runnable mRunnable;
@@ -49,9 +54,14 @@ public class SearchFragment extends Fragment {
         mListAdapter = new CustomAdapters.ThingWithStatusAdapter(this.getContext(), R.layout.detailed_thing_row, new ArrayList<Thing>());
         mListView.setAdapter(mListAdapter);
         mRadioGroup = (RadioGroup) v.findViewById(R.id.radioGroup);
+        mSearchTitle = (TextView) v.findViewById(R.id.title);
+        mProgressBar = (ProgressBar) v.findViewById(R.id.progressBar);
+        mProgressBar.setVisibility(View.GONE);
+        mEmpty = (TextView) v.findViewById(R.id.empty);
 
         if (mSearchField == null) {
             mSearchField = "description";
+            mSearchTitle.setText("Search by Description");
             mRadioGroup.check(R.id.description);
         }
 
@@ -61,18 +71,22 @@ public class SearchFragment extends Fragment {
                 switch(checkedId) {
                     case R.id.description:
                         mSearchField = "description";
+                        mSearchTitle.setText("Search by Description");
                         new SearchTask().execute();
                         break;
                     case R.id.category:
                         mSearchField = "category";
+                        mSearchTitle.setText("Search by Category");
                         new SearchTask().execute();
                         break;
                     case R.id.name:
                         mSearchField = "name";
+                        mSearchTitle.setText("Search by Name");
                         new SearchTask().execute();
                         break;
                     case R.id.ownerID:
                         mSearchField = "ownerID";
+                        mSearchTitle.setText("Search by Owner ID");
                         new SearchTask().execute();
                         break;
                 }
@@ -92,6 +106,8 @@ public class SearchFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(final String query) {
+                // show waiting bar
+                mProgressBar.setVisibility(View.VISIBLE);
                 mQueryText = query;
                 if (mRunnable != null) {
                     mHandler.removeCallbacks(mRunnable);
@@ -100,6 +116,8 @@ public class SearchFragment extends Fragment {
                     @Override
                     public void run() {
                         new SearchTask().execute(mSearchField, query);
+                        // hide waiting bar
+                        mProgressBar.setVisibility(View.GONE);
                     }
                 };
                 mHandler.postDelayed(mRunnable, 500);
@@ -143,6 +161,11 @@ public class SearchFragment extends Fragment {
 
         @Override
         protected void onPostExecute(List<Thing> res) {
+            if (res.size() == 0) {
+                mEmpty.setVisibility(View.VISIBLE);
+            } else {
+                mEmpty.setVisibility(View.GONE);
+            }
             mListAdapter = new CustomAdapters.ThingWithStatusAdapter(getActivity(), R.layout.detailed_thing_row, res);
             mListView.setAdapter(mListAdapter);
             mListAdapter.notifyDataSetChanged();
