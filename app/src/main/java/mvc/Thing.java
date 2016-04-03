@@ -40,6 +40,7 @@ public class Thing extends JestData {
     private transient List<Bid> bids;
     private String acceptedBidID;
     private transient Bid acceptedBid;
+    private Location meetingPlace;
 
     public boolean removeBid(Bid bid) {
         //TODO notify bid that it is removed.
@@ -236,8 +237,9 @@ public class Thing extends JestData {
      * Used to lend a thing. Pass in the username of the person who is borrowing the game.
      * Clear any bids the game had on it.
      * @param acceptedBid Winning bid that was accepted
+     * @param meetingPlace Place to meet to pick up game.
      */
-    public void borrow(Bid acceptedBid)
+    public void borrow(Bid acceptedBid, Location meetingPlace)
     {
         Log.d("Thing", "Attempting to borrow game");
         if (getBids().remove(acceptedBid)) {
@@ -245,6 +247,7 @@ public class Thing extends JestData {
                 bidIDs.remove(acceptedBid.getJestID());
                 this.acceptedBid = acceptedBid;
                 this.acceptedBidID = acceptedBid.getJestID();
+                this.meetingPlace = meetingPlace;
 
                 for (Bid bid : getBids()) {
                     try {
@@ -292,6 +295,7 @@ public class Thing extends JestData {
             e.printStackTrace();
         }
         this.acceptedBid = null;
+        this.meetingPlace = null;
         this.status = Status.AVAILABLE;
     }
 
