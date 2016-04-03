@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
-
+    public final static String LOCATION_KEY = "maps";
     private GoogleMap mMap;
 
     @Override
@@ -29,25 +29,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-    }
-
-    public void onSearch(View view){
-        EditText location_ad  = (EditText)findViewById(R.id.SearchLocation);
-        String location = location_ad.getText().toString();
-        List<Address>addressList=null;
-        if (location != null || location.equals("")){
-            Geocoder geocoder = new Geocoder(this);
-            try {
-                addressList=geocoder.getFromLocationName(location, 1);
-            }catch (IOException e){
-                e.printStackTrace();
-            }
-            Address address = addressList.get(0);
-            LatLng latLng = new LatLng(address.getLatitude(),address.getLongitude());
-            mMap.addMarker(new MarkerOptions().position(latLng).title("Meeting Place"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-
-        }
     }
     public void onZoom(View view){
         if (view.getId()==R.id.BzoomIn){
@@ -69,7 +50,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        EditText location_ad  = (EditText)findViewById(R.id.SearchLocation);
+        String location = location_ad.getText().toString();
+        List<Address>addressList=null;
+        if (location != null || location.equals("")){
+            Geocoder geocoder = new Geocoder(this);
+            try {
+                addressList=geocoder.getFromLocationName(location, 1);
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+            Address address = addressList.get(0);
+            LatLng latLng = new LatLng(address.getLatitude(),address.getLongitude());
+            mMap.addMarker(new MarkerOptions().position(latLng).title("Meeting Place"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 
+        }
         // Add a marker in Sydney and move the camera
        // LatLng sydney = new LatLng(-34, 151);
        // mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
