@@ -158,6 +158,7 @@ public class BorrowingGameFragment extends DialogFragment implements OnMapReadyC
     @Override
     public void onMapReady(GoogleMap googleMap) {
         // Add a marker in Sydney, Australia, and move the camera.
+        this.googleMap = googleMap;
         LatLng sydney = new LatLng(-34, 151);
         this.googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         this.googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));

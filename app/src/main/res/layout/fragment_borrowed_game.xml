@@ -200,6 +200,7 @@
 
             <com.google.android.gms.maps.MapView
                 android:id="@+id/mapView"
+                android:apiKey="@string/google_maps_key"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
