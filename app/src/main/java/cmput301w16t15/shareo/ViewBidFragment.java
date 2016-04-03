@@ -83,8 +83,8 @@ public class ViewBidFragment extends DialogFragment {
             e.printStackTrace();
         }
         // TODO: getTopBidAmount this doesn't update properly
-        mMaxBid.setText(mMaxBid.getText() + ": $" + (double) mThing.getTopBidAmount()/100);
-        mMyBid.setText(mMyBid.getText() + ": $" + (double) mBid.getBidAmount()/100);
+        mMaxBid.setText(String.format("%s: $%d.%02d", mMaxBid.getText(), mThing.getTopBidAmount()/100, mThing.getTopBidAmount()%100));
+        mMyBid.setText(String.format("%s: $%d.%02d", mMaxBid.getText(), mThing.getTopBidAmount()/100, mThing.getTopBidAmount()%100));
         mOwnerButton.setText(mThing.getOwnerID());
         mtextViewGameName.setText(mtextViewGameName.getText() + ": " + mThing.getName());
         mtextViewDescription.setText(mtextViewDescription.getText() + ": " + mThing.getDescription());

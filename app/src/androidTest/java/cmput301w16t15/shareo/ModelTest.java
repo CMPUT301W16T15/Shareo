@@ -49,25 +49,25 @@ public class ModelTest extends ActivityInstrumentationTestCase2 {
         try {
             tj_1 = new Thing.Builder(data, joe, "Monopoly",
                     "The Fast-Dealing Property Trading Game.",
-                    "Board, Competitive","4", null).useMainThread().build();
+                    "Board, Competitive","4").useMainThread().build();
             tj_2 = new Thing.Builder(data, joe, "The Game of Life",
                     "Get a job, get married, have children and retire, all in a game's work!",
-                    "Board, Competitive","6", null).useMainThread().build();
+                    "Board, Competitive","6").useMainThread().build();
             tj_3 = new Thing.Builder(data, joe, "Settlers of Catan",
                     "Embark on a quest to settle the fair isle of Catan! Guide your brave settlers to victory by using clever trading and development.",
-                    "Board, Competitive", "6", null).useMainThread().build();
+                    "Board, Competitive", "6").useMainThread().build();
             ts_1 = new Thing.Builder(data, sally, "Hanabi",
                     "A cooperative game in which players try to create the perfect fireworks show by placing the cards on the table in the right order.",
-                    "Card, Cooperative, Logic","5", null).useMainThread().build();
+                    "Card, Cooperative, Logic","5").useMainThread().build();
             ts_2 = new Thing.Builder(data, sally, "Space Alert",
                     "Players become crew members of a small spaceship scanning dangerous sectors of galaxy. The missions last just 10 real-time minutes (hyperspace jump, sector scan, hyperspace jump back) and the only task the players have is to protect their ship.",
-                    "Board, Cooperative, Space", "5", null).useMainThread().build();
+                    "Board, Cooperative, Space", "5").useMainThread().build();
             tf_1 = new Thing.Builder(data, fred, "Blokus",
                     "Try to fit as many of your pieces on the board as you can, while your opponents to the same.",
-                    "Board, Competitive, Strategy","4", null).useMainThread().build();
+                    "Board, Competitive, Strategy","4").useMainThread().build();
             tf_2 = new Thing.Builder(data, fred, "Exploding Kittens",
                     "A kitty-powered version of Russian Roulette",
-                    "Card, Competitive", "5", null).useMainThread().build();
+                    "Card, Competitive", "5").useMainThread().build();
         } catch (UserDoesNotExistException e) {
             e.printStackTrace();
             fail();
