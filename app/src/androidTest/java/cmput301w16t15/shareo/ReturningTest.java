@@ -6,6 +6,7 @@ import java.util.List;
 
 import mvc.Thing;
 import mvc.User;
+import mvc.exceptions.NullIDException;
 
 /**
  * Created by anonymous on 2/12/2016.
@@ -26,23 +27,27 @@ public class ReturningTest extends ActivityInstrumentationTestCase2 {
         super(MainActivity.class);
     }
 
-    /*
     public void initializeTestData() {
-        borrower1 = new User("Jack");
-        borrower2 = new User("John");
-        owner1 = new User("Michael");
-        owner2 = new User("Teddy");
+        borrower1 = new User("Jack", "Jack Snow", "123@ualberta.ca", "7807091234");
+        borrower1 = new User("John", "John Snow", "123@ualberta.ca", "7807092234");
+        owner1 = new User("Teddy", "Teddy Snow", "123@ualberta.ca", "7807091234");
+        owner2 = new User("Michael", "Michael Snow", "123@ualberta.ca", "78072221234");
 
-        t1 = new Game("Blank", Thing.Status.AVAILABLE);
-        t2 = new Game("Blank", Thing.Status.BIDDED);
-        t3 = new Game("Blank", Thing.Status.BORROWED);
-        t4 = new Game("Blank", Thing.Status.AVAILABLE);
+//        t1 = new Game("Blank", Thing.Status.AVAILABLE);
+//        t2 = new Game("Blank", Thing.Status.BIDDED);
+//        t3 = new Game("Blank", Thing.Status.BORROWED);
+//        t4 = new Game("Blank", Thing.Status.AVAILABLE);
     }
 
     public void testreturnToAvailable()
     {
         initializeTestData();
-        owner1.addOwnedThing(t1);
+        try {
+            owner1.addOwnedThing(t1);
+        } catch(NullIDException e) {
+            e.printStackTrace();
+            fail();
+        }
         borrower1.addBorrowedThing(t1);
         assertTrue(t1.getStatus() == Thing.Status.BORROWED);
         borrower1.removeBorrowedThing(t1);
@@ -52,8 +57,18 @@ public class ReturningTest extends ActivityInstrumentationTestCase2 {
 
         assertTrue(t1.getStatus() == Thing.Status.AVAILABLE);
 
-        owner1.addOwnedThing(t3);
-        owner1.addOwnedThing(t2);
+        try {
+            owner1.addOwnedThing(t3);
+        } catch(NullIDException e) {
+            e.printStackTrace();
+            fail();
+        }
+        try {
+            owner1.addOwnedThing(t2);
+        } catch(NullIDException e) {
+            e.printStackTrace();
+            fail();
+        }
         borrower1.addBorrowedThing(t3);
         assertTrue(t3.getStatus() == Thing.Status.BORROWED);
         borrower2.addBorrowedThing(t2);
@@ -77,6 +92,5 @@ public class ReturningTest extends ActivityInstrumentationTestCase2 {
             fail();
         }
     }
-    */
 
 }
