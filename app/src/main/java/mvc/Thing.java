@@ -43,11 +43,38 @@ public class Thing extends JestData {
     private transient Bid acceptedBid;
     private Boolean checked = false;
 
+    public enum Status {AVAILABLE, BIDDED, BORROWED}
+
+    protected Thing(String gameName, String description, String category, String numberPlayers) {
+        this(gameName, description, category, numberPlayers,Status.AVAILABLE);
+    }
+
+    public Thing(String gameName, String description, String category, String numberPlayers,Status status) {
+        this.status = status;
+        this.description = description;
+        this.category = category;
+        this.numberPlayers = numberPlayers;
+        this.name = gameName;
+        this.bidIDs = new ArrayList<>();
+    }
+
+    /**
+     * Remove a bid that the is on the thing. This does not remove the bid from the server. Also removes
+     * the thing from the bid (TODO).
+     * @param bid bid to remove.
+     * @return true, if the bid is removed.
+     */
     public boolean removeBid(Bid bid) {
         //TODO notify bid that it is removed.
         return removeBidSimple(bid);
     }
 
+    /**
+     * Remove a bid that is on the Thing. This does not remove the bid from the server. Does not
+     * tell the bid to remove the thing.
+     * @param bid bid to remove.
+     * @return true, if the bid is removed.
+     */
     protected boolean removeBidSimple(Bid bid) {
         boolean retVal = false;
         try {
@@ -69,6 +96,9 @@ public class Thing extends JestData {
         return retVal;
     }
 
+    /**
+     * Recalculates the maximum bid. Should be called after adding or removing bids.
+     */
     private void recalculateMaxBidAmount()
     {
         topBidAmount = 0;
@@ -80,6 +110,11 @@ public class Thing extends JestData {
         }
     }
 
+    /**
+     * Used to create a thing, by default synchronously. To stop the creation from being
+     * synchronous, see {@link Builder#useMainThread()}. The purpose for this is to allow creation
+     * of things to be called from the UI thread.
+     */
     public static class Builder {
         private ShareoData data;
         private User owner;
@@ -133,10 +168,19 @@ public class Thing extends JestData {
 
     }
 
+    /**
+     * Delete all the objects that depend on a {@link Thing}, specifically, any bids that exist on
+     * the object. This is called when deleting the {@link Thing}. Deletes synchronously.
+     */
     private void deleteDependants() {
         deleteDependants(true);
     }
 
+    /**
+     * Delete all the objects that depend on a {@link Thing}, specifically, any bids that exist on
+     * the object. This is called when deleting the {@link Thing}.
+     * @param newThread true to delete synchronously, false to use current thread.
+     */
     private void deleteDependants(boolean newThread) {
         if (bids == null) {
             Thing.this.getBids();
@@ -171,7 +215,11 @@ public class Thing extends JestData {
             }
         }
     }
-
+    /**
+     * Used to delete a thing, by default synchronously. To stop the deletion from being
+     * synchronous, see {@link Deleter#useMainThread()}. The purpose for this is to allow deletion
+     * of things to be called from the UI thread.
+     */
     public class Deleter {
         private boolean newThread = true;
 
@@ -215,22 +263,6 @@ public class Thing extends JestData {
         }
     }
 
-
-
-    public enum Status {AVAILABLE, BIDDED, BORROWED}
-
-    protected Thing(String gameName, String description, String category, String numberPlayers) {
-        this(gameName, description, category, numberPlayers,Status.AVAILABLE);
-    }
-
-    public Thing(String gameName, String description, String category, String numberPlayers,Status status) {
-        this.status = status;
-        this.description = description;
-        this.category = category;
-        this.numberPlayers = numberPlayers;
-        this.name = gameName;
-        this.bidIDs = new ArrayList<>();
-    }
 
 
     /**
@@ -307,26 +339,55 @@ public class Thing extends JestData {
         this.status = Status.AVAILABLE;
     }
 
+    /**
+     * Set the name of the thing.
+     * @param name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Set the description of the thing.
+     * @param description
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * Set the status of the thing.
+     * @param status one of available statuses.
+     * @see mvc.Thing.Status
+     */
     public void setStatus(Status status) {
         this.status = status;
     }
 
+    /**
+     * Set the category of the game.
+     * @param category
+     */
     public void setCategory(String category) {
         this.category = category;
     }
 
+    /**
+     * Set the number of players allowed to play the game.
+     * @param numberPlayers
+     */
     public void setNumberPlayers(String numberPlayers) {
         this.numberPlayers = numberPlayers;
     }
 
+    /**
+     * Set the owner of the game, and notify the user that it now owns the game. In order to update
+     * the server, one should call {@link Thing#update()} upon completion of changes. The thing
+     * should be added to the server before setting the owner of the game, or else this will throw
+     * a {@link NullIDException}.
+     * @param owner new owner.
+     * @throws NullIDException this Thing does not have an ID yet.
+     */
     public void setOwner(User owner) throws NullIDException {
         if (this.owner == null) {
             getOwner();
@@ -342,11 +403,23 @@ public class Thing extends JestData {
         }
     }
 
+    /**
+     * Set the owner of the game, but do not notify the user that it now owns the game. In order to update
+     * the server, one should call {@link Thing#update()} upon completion of changes. The thing
+     * should be added to the server before setting the owner of the game, or else this will throw
+     * a {@link NullIDException}.
+     * @param owner new owner.
+     * @throws NullIDException this Thing does not have an ID yet.
+     */
     public void setOwnerSimple(User owner) {
         this.ownerID = owner.getJestID();
         this.owner = owner;
     }
 
+    /**
+     * Returns the owner of this game, accessing the server if it has not been accessed before.
+     * @return the owner of the game.
+     */
     public User getOwner() {
         if (owner == null && ownerID != null) {
             User loggedIn = AppUserSingleton.getInstance().getUser();
@@ -360,13 +433,27 @@ public class Thing extends JestData {
         return owner;
     }
 
+    /**
+     * If this thing is borrowed, return the bid associated with the borrowing.
+     * @return the bid associated with the borrowing of the thing.
+     */
     public Bid getAcceptedBid() {
-        if (acceptedBid == null) {
+        if (acceptedBid == null && acceptedBidID != null) {
             acceptedBid = getDataSource().getBid(acceptedBidID);
         }
         return acceptedBid;
     }
+
+    /**
+     * Returns the status of the thing.
+     * @see mvc.Thing.Status
+     */
     public Status getStatus() { return status; }
+
+    /**
+     * Returns all the bids on the object, if the bid is not borrowed.
+     * @return list of bids.
+     */
     public List<Bid> getBids() {
         if (bids == null) {
             bids = new ArrayList<>();
@@ -377,25 +464,61 @@ public class Thing extends JestData {
         return bids;
     }
 
+    /**
+     * Returns the description of the thing.
+     * @return description
+     */
     public String getDescription() {
         return description;
     }
+
+    /**
+     * Returns the category of the thing.
+     * @return category
+     */
     public String getCategory() {
         return category;
     }
+
+    /**
+     * Returns the number of players of the thing.
+     * @return number of players
+     */
     public String getNumberPlayers() {
         return numberPlayers;
     }
+
+    /**
+     * Returns the name of the thing.
+     * @return name
+     */
     public String getName() {
         return name;
     }
+
+    /**
+     * Returns the JestID of the owner.
+     * @return JestID of the owner.
+     * @see JestData
+     * @see User
+     */
     public String getOwnerID() {
         return this.ownerID;
     }
+
+    /**
+     * Returns the picture for the game.
+     * @return picture.
+     */
     public PhotoModel getPhotoModel() {
         return this.photo;
     }
 
+    /**
+     * Add a bid to the game, and update the top bid amount. {@link Thing#update()} should be called
+     * to make the changes on the server.
+     * @param bid bid to add.
+     */
     public void addBid(Bid bid) {
         try {
             if (!bidIDs.contains(bid.getJestID())) {
@@ -416,6 +539,10 @@ public class Thing extends JestData {
         }
     }
 
+    /**
+     * Set the picture of the game.
+     * @param p picture of the game.
+     */
     public void setPhoto(PhotoModel p)
     {
         this.photo = p;
@@ -448,11 +575,11 @@ public class Thing extends JestData {
         JestID = ID;
     }
 
+    /**
+     * Returns the value, in cents, of the top bid on the game.
+     * @return cents of the top bid.
+     */
     public int getTopBidAmount() {
         return topBidAmount;
-    }
-
-    public void setTopBidAmount(int topBidAmount) {
-        this.topBidAmount = topBidAmount;
     }
 }
