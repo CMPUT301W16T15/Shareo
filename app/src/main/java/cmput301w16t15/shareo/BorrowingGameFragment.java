@@ -4,6 +4,9 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.location.Address;
+import android.location.Geocoder;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -19,6 +22,9 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.io.IOException;
+import java.util.List;
 
 import mvc.PhotoModel;
 import mvc.Thing;
@@ -155,11 +161,39 @@ public class BorrowingGameFragment extends DialogFragment implements OnMapReadyC
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        // Add a marker in Sydney, Australia, and move the camera.
         this.googleMap = googleMap;
-        LatLng sydney = new LatLng(-34, 151);
-        this.googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        this.googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        new Task(new Geocoder(getContext())).execute(mThing);
+    }
+
+    private class Task extends AsyncTask<Thing, Void, List<Address>> {
+
+        private final Geocoder mGeo;
+
+        public Task(Geocoder g) {
+            this.mGeo = g;
+        }
+
+        @Override
+        protected List<Address> doInBackground(Thing... params) {
+            List<Address> a = null;
+            try {
+                String location = params[0].getAcceptedBid().getMeetingPlace();
+                a = mGeo.getFromLocationName(location, 1);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return a;
+        }
+
+        @Override
+        public void onPostExecute(List<Address> o) {
+            if (o != null) { // ddin't find address
+                Address address = o.get(0);
+                LatLng latLng = new LatLng(address.getLatitude(),address.getLongitude());
+                googleMap.addMarker(new MarkerOptions().position(latLng).title("Meeting Place"));
+                googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            }
+        }
     }
 
 }

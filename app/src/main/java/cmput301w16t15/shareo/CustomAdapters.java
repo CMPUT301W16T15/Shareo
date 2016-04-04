@@ -268,12 +268,13 @@ public class CustomAdapters {
                             }
                         }
                     });
-                    //only store the location
+                    //save and store the location
                     setMaps.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             String location = editText.getText().toString();
                             if (!location.equals("")) {
+                                b.setMeetingPlace(location);
                                 accept(b);
                                 notifyDataSetChanged();
                                 dialog.cancel();
@@ -332,7 +333,7 @@ public class CustomAdapters {
 
             @Override
             protected Void doInBackground(Bid... bid) {
-                bid[0].getThing().borrow(b, null);
+                bid[0].getThing().borrow(b);
                 return null;
             }
         }

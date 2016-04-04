@@ -77,7 +77,7 @@ public class ReturnFragment extends DialogFragment {
         populateFields();
         builder = new AlertDialog.Builder(getActivity());
         builder.setView(v)
-                .setPositiveButton("Return", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Return Game", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         returnGame();
                         dismiss();

@@ -24,6 +24,7 @@ public class Bid extends JestData {
     transient private Thing thing;
     private static String TAG ="MVCBID";
     private final int centsPerHour;
+    private String meetingPlace;
 
     /**
      * <p>
@@ -109,7 +110,7 @@ public class Bid extends JestData {
                 ShareoApplication.getInstance().getJobManager().addJobInBackground(new DeleteBidJob(Bid.this, new CallbackInterface() {
                     @Override
                     public void onSuccess() {
-                        getBidder().removeBidSimple(Bid.this);
+                        getBidderFresh().removeBidSimple(Bid.this);
                         Log.d(TAG, "Removing Bid from bidder.removeBidSimple");
                         getBidder().update();
 
@@ -195,6 +196,14 @@ public class Bid extends JestData {
             throw new NullIDException();
         }
         return JestID;
+    }
+
+    public String getMeetingPlace() {
+        return meetingPlace;
+    }
+
+    public void setMeetingPlace(String meetingPlace) {
+        this.meetingPlace = meetingPlace;
     }
 
     @Override
