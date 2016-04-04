@@ -1,6 +1,5 @@
 package mvc;
 
-import android.app.Application;
 import android.util.Log;
 
 import cmput301w16t15.shareo.ShareoApplication;
@@ -25,6 +24,8 @@ public class Bid extends JestData {
     private static String TAG ="MVCBID";
     private final int centsPerHour;
     private String meetingPlace;
+
+    private String acceptedLocationName;
 
     /**
      * <p>
@@ -172,6 +173,14 @@ public class Bid extends JestData {
             }
         }
         return bidder;
+    }
+
+    public void setAcceptedLocationName(String loc) {
+        this.acceptedLocationName = loc;
+    }
+
+    public String getAcceptedLocationName() {
+        return this.acceptedLocationName;
     }
 
     /**
