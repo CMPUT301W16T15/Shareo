@@ -72,6 +72,7 @@ public class ReturnFragment extends DialogFragment {
         textViewNumberPlayers = (TextView) v.findViewById(R.id.textViewNumberPlayers);
         textViewCategory = (TextView) v.findViewById(R.id.textViewCategory);
         textViewGameOwner = (TextView) v.findViewById(R.id.textViewOwner);
+        textViewGameOwner.setText("Borrower");
         gameImage = (ImageButton) v.findViewById(R.id.gamePicture);
         mThing = (Thing) getArguments().getSerializable("myThing");
         populateFields();

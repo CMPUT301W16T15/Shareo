@@ -112,8 +112,8 @@ public class CustomAdapters {
             t = things.get(position);
             //backwards compatability for things missing checked variable
             try {
-                if (t.getChecked() == true) {
-                    v.findViewById(R.id.notification).setVisibility(View.INVISIBLE);
+                if (t.getChecked() == false) {
+                    v.findViewById(R.id.notification).setVisibility(View.VISIBLE);
                 }
             } catch (Exception e) {
             }
