@@ -50,11 +50,21 @@ public class User extends JestData {
         this.borrowedIDs = new ArrayList<>();
     }
 
+    /**
+     * Removes a bid from the user, and notifies the bid that the user no longer has it (TODO).
+     * @param bid bid to remove
+     * @return true if the bid was removed.
+     */
     public boolean removeBid(Bid bid) {
         // TODO notify bid that it is removed.
         return removeBidSimple(bid);
     }
 
+    /**
+     * Removes a bid from the user, without notifying the bid.
+     * @param bid bid to remove
+     * @return true if the bid was removed.
+     */
     protected boolean removeBidSimple(Bid bid) {
         boolean retVal = false;
         try {
@@ -107,6 +117,11 @@ public class User extends JestData {
 
     }
 
+    /**
+     * Delete all data that is dependant on the user, including any things that it owns, and any
+     * bids that it has made.
+     * @param newThread true if th
+     */
     private void deleteDependants(boolean newThread) {
         // Deleted all owned things
         if (owned == null) {
