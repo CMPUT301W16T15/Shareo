@@ -111,6 +111,13 @@ public class Bid extends JestData {
                 ShareoApplication.getInstance().getJobManager().addJobInBackground(new DeleteBidJob(Bid.this, new CallbackInterface() {
                     @Override
                     public void onSuccess() {
+                        //Make sure the logged in user reflects the online user
+                        User loggedIn = AppUserSingleton.getInstance().getUser();
+                        if (loggedIn != null) {
+                            if (loggedIn.getName().equals(Bid.this.bidderID)) {
+                                loggedIn.removeBidSimple(Bid.this);
+                            }
+                        }
                         getBidderFresh().removeBidSimple(Bid.this);
                         Log.d(TAG, "Removing Bid from bidder.removeBidSimple");
                         getBidder().update();
