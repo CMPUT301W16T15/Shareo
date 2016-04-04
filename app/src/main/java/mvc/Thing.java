@@ -8,6 +8,7 @@ import org.apache.commons.lang3.ObjectUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import cmput301w16t15.shareo.ShareoApplication;
@@ -50,7 +51,6 @@ public class Thing extends JestData {
 
     protected boolean removeBidSimple(Bid bid) {
         boolean retVal = false;
-
         try {
             retVal = bidIDs.remove(bid.getJestID());
             int tempBidAmount = bid.getBidAmount();
@@ -249,19 +249,25 @@ public class Thing extends JestData {
                 this.acceptedBid = acceptedBid;
                 this.acceptedBidID = acceptedBid.getJestID();
                 this.meetingPlace = meetingPlace;
-
-                for (Bid bid : getBids()) {
+                Iterator<Bid> iter = getBids().iterator();
+                while (iter.hasNext()) {
                     try {
-                        getBids().remove(bid);
-                        bid.new Deleter().delete();
+                        Bid b = iter.next();
+                        User u = b.getBidderFresh();
+                        iter.remove();
+                        ShareoData.getInstance().removeBid(b);
+                        u.removeBidSimple(b);
+                        bidIDs.remove(b.getJestID());
+                        getDataSource().updateUser(u);
+                        getDataSource().updateGame(b.getThing());
                     } catch (NullIDException e) {
                         e.printStackTrace();
                     }
                 }
-                User bidder = acceptedBid.getBidder();
+                User bidder = acceptedBid.getBidderFresh();
+                this.status = Status.BORROWED;
                 bidder.addBorrowedThingSimple(this);
                 bidder.update();
-                this.status = Status.BORROWED;
                 Log.d("Thing", "Borrowed");
             } catch (NullIDException e) {
                 e.printStackTrace();

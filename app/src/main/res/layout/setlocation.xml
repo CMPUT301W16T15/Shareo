@@ -24,13 +24,13 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Show Maps"
+            android:text="View Location"
             android:layout_weight="1"
             android:id="@+id/ShowMaps" />
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Set Maps"
+            android:text="Confirm Location"
             android:id="@+id/SetMap"
             android:layout_weight="1"
             android:layout_gravity="right" />

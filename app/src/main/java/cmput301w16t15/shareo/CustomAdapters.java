@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -257,28 +258,33 @@ public class CustomAdapters {
                         @Override
                         public void onClick(View v) {
                             String location = editText.getText().toString();
-                            Intent intent = new Intent(context, MapsActivity.class);
-                            intent.putExtra(LOCATION_KEY, location);
-                            context.startActivity(intent);
-
-                            dialog.cancel();
+                            if (!location.equals("")) {
+                                Intent intent = new Intent(context, MapsActivity.class);
+                                intent.putExtra(LOCATION_KEY, location);
+                                context.startActivity(intent);
+                            } else {
+                                Toast z = Toast.makeText(context, "Enter a location to meet.", Toast.LENGTH_SHORT);
+                                z.show();
+                            }
                         }
                     });
                     //only store the location
                     setMaps.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-
-
-                            dialog.cancel();
+                            String location = editText.getText().toString();
+                            if (!location.equals("")) {
+                                accept(b);
+                                notifyDataSetChanged();
+                                dialog.cancel();
+                            } else {
+                                Toast z = Toast.makeText(context, "Enter a location to meet.", Toast.LENGTH_SHORT);
+                                z.show();
+                            }
                         }
                     });
-
                     dialog.show();
-
                     Log.d(TAG, "Clicked accept");
-                    accept((Bid) v.getTag());
-                    notifyDataSetChanged();
                 }
             });
 
@@ -290,7 +296,6 @@ public class CustomAdapters {
                     notifyDataSetChanged();
                 }
             });
-
             return v;
         }
 

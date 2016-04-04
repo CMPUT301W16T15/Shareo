@@ -129,8 +129,8 @@ public class Bid extends JestData {
 
                 getBidder().removeBidSimple(Bid.this);
                 getThing().removeBidSimple(Bid.this);
-                getThing().update();
-                getBidder().update();
+                getDataSource().updateUser(getBidder());
+                getDataSource().updateGame(getThing());
             }
         }
 
@@ -170,6 +170,15 @@ public class Bid extends JestData {
                 bidder = getDataSource().getUser(bidderID);
             }
         }
+        return bidder;
+    }
+
+    /**
+     * Used to refresh the bidder
+     * @return
+     */
+    public User getBidderFresh() {
+        bidder = getDataSource().getUser(bidderID);
         return bidder;
     }
     public int getBidAmount() { return centsPerHour; }
