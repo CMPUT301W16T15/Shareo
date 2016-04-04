@@ -1,3 +1,11 @@
+#Shareo
+
+Shareo is a game trading app built for CMPUT 301.  Our **WOW** factor is search - it supports search by field and uses fuzzy matching.
+We support game images and maps.  Note: use an emulator with API level 23 and "Google API's" image in order to use maps.  **Our app is targeted at API 23**.
+
+The test directory has a combination of espresso UI tests and normal unit tests.  The normal unit tests can be run all together.  The UI tests are intended to be ran **individually**.  With some more time we would have liked to streamline the execution of the tests, but our current setup suffices for the purpose of this project.
+
+
 # CMPUT301
 Group Project Android App
 
