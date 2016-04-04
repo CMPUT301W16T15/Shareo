@@ -218,10 +218,10 @@ public class User extends JestData {
      */
     public void addBid(Bid bid) throws NullIDException {
         if (!bidIDs.contains(bid.getJestID())) {
-            bidIDs.add(bid.getJestID());
             if (bids == null) {
                 bids = getBids();
             }
+            bidIDs.add(bid.getJestID());
             bids.add(bid);
         }
         notifyViews();
