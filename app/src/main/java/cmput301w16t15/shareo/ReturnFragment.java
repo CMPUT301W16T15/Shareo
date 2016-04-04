@@ -14,6 +14,16 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import org.w3c.dom.Text;
+
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -21,27 +31,25 @@ import mvc.Bid;
 import mvc.PhotoModel;
 import mvc.Thing;
 
+
 /**
- * Created by Bradshaw on 2016-04-02.
- * Used for showing a dialog to set a game to returned
+ * Created by Bradshaw on 2016-04-03.
  */
 public class ReturnFragment extends DialogFragment {
 
-    private static String TAG ="ReturnGame";
+    private static String TAG ="Borrowing";
 
     private Integer mPositionIndex;
-    private EditText editTextGameName;
-    private EditText editTextDescription;
-    private EditText editTextNumberPlayers;
-    private EditText editTextCategory;
+    private TextView textViewGameName;
+    private TextView textViewDescription;
+    private TextView textViewNumberPlayers;
+    private TextView textViewCategory;
+    private TextView textViewGameOwner;
     private TextView mTextViewAddGame;
     private ImageButton gameImage;
+    private String mPersonLending;
 
     private PhotoModel gamePhoto;
-    private String gameName;
-    private String gameDescription;
-    private String numberPlayers;
-    private String category;
     private Thing mThing;
 
     private AlertDialog dialog = null;
@@ -56,13 +64,14 @@ public class ReturnFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View v = inflater.inflate(R.layout.fragment_addeditgame, null);
+        final View v = inflater.inflate(R.layout.fragment_lent_game, null);
         mPositionIndex = getArguments().getInt("pos");
         mTextViewAddGame = (TextView) v.findViewById(R.id.textViewAddGame);
-        editTextGameName = (EditText) v.findViewById(R.id.editTextGameName);
-        editTextDescription = (EditText) v.findViewById(R.id.editTextDescription);
-        editTextNumberPlayers = (EditText) v.findViewById(R.id.editTextNumberPlayers);
-        editTextCategory = (EditText) v.findViewById(R.id.editTextCategory);
+        textViewGameName = (TextView) v.findViewById(R.id.textViewGameName);
+        textViewDescription = (TextView) v.findViewById(R.id.textViewDescription);
+        textViewNumberPlayers = (TextView) v.findViewById(R.id.textViewNumberPlayers);
+        textViewCategory = (TextView) v.findViewById(R.id.textViewCategory);
+        textViewGameOwner = (TextView) v.findViewById(R.id.textViewOwner);
         gameImage = (ImageButton) v.findViewById(R.id.gamePicture);
         mThing = (Thing) getArguments().getSerializable("myThing");
         populateFields();
@@ -81,38 +90,23 @@ public class ReturnFragment extends DialogFragment {
                     }
                 });
         dialog = builder.show();
+        try {
+            MapsInitializer.initialize(getContext());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return dialog;
     }
 
-    private void returnGame() {
-        try {
-            new AcceptBidTask().execute(mThing).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-    }
-
     private void populateFields() {
-        mTextViewAddGame.setText("Return a Game");
-        editTextGameName.setText(mThing.getName());
-        editTextDescription.setText(mThing.getDescription());
-        editTextCategory.setText(mThing.getCategory());
-        editTextNumberPlayers.setText(mThing.getNumberPlayers());
+        new PersonLendingTask().execute(mThing);
+        mTextViewAddGame.setText("Lent Game");
+        textViewGameName.setText(textViewGameName.getText() + ": " + mThing.getName());
+        textViewDescription.setText(textViewDescription.getText() + ": " + mThing.getDescription());
+        textViewCategory.setText(textViewCategory.getText() + ": " + mThing.getCategory());
+        textViewNumberPlayers.setText(textViewNumberPlayers.getText() + ": " + mThing.getNumberPlayers());
 
-        mTextViewAddGame.setFocusable(false);
-        editTextGameName.setFocusable(false);
-        editTextDescription.setFocusable(false);
-        editTextCategory.setFocusable(false);
-        editTextNumberPlayers.setFocusable(false);
-        gameImage.setFocusable(false);
-
-        mTextViewAddGame.setClickable(false);
-        editTextGameName.setClickable(false);
-        editTextDescription.setClickable(false);
-        editTextCategory.setClickable(false);
-        editTextNumberPlayers.setClickable(false);
         gameImage.setClickable(false);
 
         /**
@@ -129,6 +123,16 @@ public class ReturnFragment extends DialogFragment {
         }
     }
 
+    private void returnGame() {
+        try {
+            new AcceptBidTask().execute(mThing).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+
     private class AcceptBidTask extends AsyncTask<Thing, Void, Void> {
         @Override
         protected Void doInBackground(Thing... thing) {
@@ -136,4 +140,28 @@ public class ReturnFragment extends DialogFragment {
             return null;
         }
     }
+
+    private class PersonLendingTask extends AsyncTask<Thing, Void, String> {
+        @Override
+        protected String doInBackground(Thing... thing) {
+            return thing[0].getAcceptedBid().getBidder().getJestID();
+        }
+        @Override
+        public void onPostExecute(final String person) {
+            textViewGameOwner.setText(textViewGameOwner.getText() + ": " + person);
+            textViewGameOwner.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    UserProfileInfo d = new UserProfileInfo();
+                    Bundle bundle = new Bundle();
+
+                    bundle.putString("userId", person);
+                    d.setArguments(bundle);
+                    d.show(getActivity().getFragmentManager(), "user_profile");
+                }
+            });
+        }
+    }
+
 }
+

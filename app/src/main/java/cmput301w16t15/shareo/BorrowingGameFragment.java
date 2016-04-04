@@ -4,13 +4,11 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -21,8 +19,6 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import java.util.concurrent.ExecutionException;
 
 import mvc.PhotoModel;
 import mvc.Thing;
@@ -35,10 +31,11 @@ public class BorrowingGameFragment extends DialogFragment implements OnMapReadyC
     private static String TAG ="Borrowing";
 
     private Integer mPositionIndex;
-    private EditText editTextGameName;
-    private EditText editTextDescription;
-    private EditText editTextNumberPlayers;
-    private EditText editTextCategory;
+    private TextView textViewGameName;
+    private TextView textViewDescription;
+    private TextView textViewNumberPlayers;
+    private TextView textViewCategory;
+    private TextView textViewGameOwner;
     private TextView mTextViewAddGame;
     private ImageButton gameImage;
     private MapView mMapView;
@@ -66,10 +63,11 @@ public class BorrowingGameFragment extends DialogFragment implements OnMapReadyC
         final View v = inflater.inflate(R.layout.fragment_borrowed_game, null);
         mPositionIndex = getArguments().getInt("pos");
         mTextViewAddGame = (TextView) v.findViewById(R.id.textViewAddGame);
-        editTextGameName = (EditText) v.findViewById(R.id.editTextGameName);
-        editTextDescription = (EditText) v.findViewById(R.id.editTextDescription);
-        editTextNumberPlayers = (EditText) v.findViewById(R.id.editTextNumberPlayers);
-        editTextCategory = (EditText) v.findViewById(R.id.editTextCategory);
+        textViewGameName = (TextView) v.findViewById(R.id.textViewGameName);
+        textViewDescription = (TextView) v.findViewById(R.id.textViewDescription);
+        textViewNumberPlayers = (TextView) v.findViewById(R.id.textViewNumberPlayers);
+        textViewCategory = (TextView) v.findViewById(R.id.textViewCategory);
+        textViewGameOwner = (TextView) v.findViewById(R.id.textViewOwner);
         gameImage = (ImageButton) v.findViewById(R.id.gamePicture);
         mMapView = (MapView) v.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
@@ -98,23 +96,23 @@ public class BorrowingGameFragment extends DialogFragment implements OnMapReadyC
 
     private void populateFields() {
         mTextViewAddGame.setText("Borrowed Game");
-        editTextGameName.setText(mThing.getName());
-        editTextDescription.setText(mThing.getDescription());
-        editTextCategory.setText(mThing.getCategory());
-        editTextNumberPlayers.setText(mThing.getNumberPlayers());
+        textViewGameName.setText(textViewGameName.getText() + ": " + mThing.getName());
+        textViewDescription.setText(textViewDescription.getText() + ": " + mThing.getDescription());
+        textViewCategory.setText(textViewCategory.getText() + ": " + mThing.getCategory());
+        textViewNumberPlayers.setText(textViewNumberPlayers.getText() + ": " + mThing.getNumberPlayers());
+        textViewGameOwner.setText(textViewGameOwner.getText() + ": " + mThing.getOwnerID());
+        textViewGameOwner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UserProfileInfo d = new UserProfileInfo();
+                Bundle bundle = new Bundle();
 
-        mTextViewAddGame.setFocusable(false);
-        editTextGameName.setFocusable(false);
-        editTextDescription.setFocusable(false);
-        editTextCategory.setFocusable(false);
-        editTextNumberPlayers.setFocusable(false);
-        gameImage.setFocusable(false);
+                bundle.putString("userId", mThing.getOwnerID());
+                d.setArguments(bundle);
+                d.show(getActivity().getFragmentManager(), "user_profile");
+            }
+        });
 
-        mTextViewAddGame.setClickable(false);
-        editTextGameName.setClickable(false);
-        editTextDescription.setClickable(false);
-        editTextCategory.setClickable(false);
-        editTextNumberPlayers.setClickable(false);
         gameImage.setClickable(false);
 
         /**
