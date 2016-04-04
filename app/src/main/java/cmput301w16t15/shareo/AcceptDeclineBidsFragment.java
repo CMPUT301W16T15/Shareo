@@ -53,6 +53,9 @@ public class AcceptDeclineBidsFragment extends DialogFragment implements Observe
         TextView category = (TextView) v.findViewById(R.id.textViewCategory);
         category.setText(thing.getCategory());
 
+        TextView textViewNumPlayer = (TextView) v.findViewById((R.id.textViewNumPlayer));
+        textViewNumPlayer.setText(thing.getNumberPlayers());
+
         mListView = (ListView) v.findViewById(R.id.listViewBid);
         mListAdapter = new CustomAdapters.AcceptDeclineBidAdapter(this.getContext(), R.layout.bid_accept_decline_row, bidList);
         mListView.setAdapter(mListAdapter);

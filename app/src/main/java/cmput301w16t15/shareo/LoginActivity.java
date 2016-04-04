@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -62,11 +63,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         buttonSignup.setOnClickListener(this);
         buttonLogin.setOnClickListener(this);
+
     }
 
     @Override
     protected void onResume() {
         Log.d(TAG + "Cycle", "Called the onResume method for " + TAG);
+        resetText();
         super.onResume();
         // The activity has become visible (it is now "resumed").
     }
@@ -233,6 +236,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return false;
 
         return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
+    }
+
+    private void resetText()
+    {
+        editTextFullName.setText("");
+        editTextUserNameSignup.setText("");
+        editTextUserNameLogin.setText("");
+        editTextEmail.setText("");
+        editTextMotto.setText("");
+        editTextUserNameLogin.setText("");
     }
 
 }
